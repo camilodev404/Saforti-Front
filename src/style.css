@@ -2,6 +2,15 @@
   background-color: #fff;
 }
 
+.footer {
+  background-color: #005DCB;
+  bottom: 0;
+  width: 100%;
+  height: 450px;
+  padding: 10px 0;
+  text-align: center;
+}
+
 .primera-fila {
   background-color: #005DCB;
   color: #fff;
@@ -25,6 +34,7 @@
 }
 
 .segunda-fila img {
+  margin-top: 15px;
   width: 300px;
   height: 150px;
 }
