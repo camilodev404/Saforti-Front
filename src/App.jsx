@@ -1,9 +1,11 @@
+import { Navbar } from "./Components/Navbar/Navbar";
+import './style.css';
 
 export const App = () => {
 
     return (
         <>
-            <h1>SAFORTI</h1>
+            <Navbar/>
         </>
     );
 
