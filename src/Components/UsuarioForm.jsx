@@ -14,10 +14,14 @@ export const UsuarioForm = () => {
         <form onSubmit={onSubmitRegisterForm}>
             <div className="login-fields-register">
                 <div className="row" style={{padding: '40px'}}>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Nombre (s)</label>
+                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Primer Nombre</label>
                     <input className="label-register-user" type="text" id="usuario" name="usuario" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Apellido (s)</label>
-                    <input className="label-register-user" type="text" id="contrasena" name="contrasena" />
+                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Segundo Nombre</label>
+                    <input className="label-register-user" type="text" id="usuario2" name="usuario2" />
+                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Primer Apellido</label>
+                    <input className="label-register-user" type="text" id="apellido1" name="apellido1" />
+                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Segundo Apellido</label>
+                    <input className="label-register-user" type="text" id="apellido2" name="apellido2" />
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Email</label>
                     <input className="label-register-user" type="text" id="email" name="email" />
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Contraseña</label>
