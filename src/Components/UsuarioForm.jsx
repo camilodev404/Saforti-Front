@@ -23,7 +23,11 @@ export const UsuarioForm = () => {
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Contraseña</label>
                     <input className="label-register-user" type="password" id="password" name="password" />
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Tipo de Documento</label>
-                    <input className="label-register-user" type="text" id="tipodoc" name="tipodoc" />
+                    <select className="label-register-user" id="tipodoc" name="tipodoc">
+                        <option value="dni">Tarjeta de Identidad</option>
+                        <option value="pasaporte">Cédula de Extranjeria</option>
+                        <option value="cedula">Cédula de Ciudadania</option>
+                    </select>
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Número de Documento</label>
                     <input className="label-register-user" type="text" id="documento" name="documento"/>
                 </div>
