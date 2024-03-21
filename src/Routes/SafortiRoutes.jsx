@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "../Pages/Login";
 import { RegistroUsuario } from "../Pages/RegistroUsuario";
 import { MenuUsuario } from "../Pages/MenuUsuario";
+import { Solicitud } from "../Pages/Solicitud";
 
 export const SafortiRoutes = () => {
     return (
@@ -20,6 +21,11 @@ export const SafortiRoutes = () => {
                 <Route
                     path="user/menu"
                     element={<MenuUsuario/>}
+                >
+                </Route>
+                <Route
+                    path="solicitud"
+                    element={<Solicitud/>}
                 >
                 </Route>
                 <Route path="/" element={<Navigate to={'/login'} />}/>
