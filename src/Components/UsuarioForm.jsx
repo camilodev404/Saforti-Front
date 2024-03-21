@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
 
 export const UsuarioForm = () => {
+
+    const navigate = useNavigate();
 
     const onSubmitRegisterForm = (event) => {
         event.preventDefault();
         console.log("Estoy en el form de registro");
+        navigate('/user/menu');
     }
 
     return (
