@@ -1,6 +1,6 @@
 import { Footer } from "./Components/Footer";
 import { Navbar } from "./Components/Navbar/Navbar";
-import { Login } from "./Pages/Login";
+import { SafortiRoutes } from "./Routes/SafortiRoutes";
 import './style.css';
 
 export const App = () => {
@@ -8,7 +8,7 @@ export const App = () => {
     return (
         <>
             <Navbar/>
-            <Login/>
+            <SafortiRoutes/>
             <Footer/>
         </>
     );

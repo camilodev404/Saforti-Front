@@ -68,3 +68,39 @@
   font-size: large;
   color: #fff;
 }
+
+.login-fields-register {
+  align-items: center;
+  justify-content: center;
+  background-color: #037250;
+  padding: 10px;
+  border-radius: 10px;
+  width: 600px;
+  height: 720px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.login-botom-register {
+  margin: 0 auto;
+  margin-bottom: 70px;
+  width: 600px;
+  display: flex;
+}
+
+.login-botom-register button {
+  width: 600px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #037250;
+  font-weight: bold;
+  font-size: large;
+  color: #fff;
+}
+
+.label-register-user {
+  margin-bottom: 20px;
+  width: 500px;
+  height: 40px;
+  border-radius: 10px;
+}
