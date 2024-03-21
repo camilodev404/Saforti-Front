@@ -11,6 +11,7 @@ export const LoginFields = () => {
     const onSubmitLoginForm = (event) => {
         event.preventDefault();
         console.log("Estoy aca");
+        navigate('/user/menu');
     }
 
     return (
