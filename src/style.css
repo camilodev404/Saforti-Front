@@ -200,3 +200,15 @@
   font-weight: 700;
   margin-top: 2%;
 }
+
+.login-fields-register-fun {
+  align-items: center;
+  justify-content: center;
+  background-color: #037250;
+  padding: 10px;
+  border-radius: 10px;
+  width: 600px;
+  height: 49vw;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}

@@ -10,7 +10,7 @@ export const MenuAdmin = () => {
     }
 
     const onNuevoFuncionario = () => {
-        navigate("/");
+        navigate("/funcionario/register");
     }
 
     return (
