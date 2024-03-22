@@ -16,7 +16,7 @@ export const Solicitud = () => {
             <h2 style={{ textAlign: 'center', color: '#4f4f4d', fontWeight: '800' }}>
                 FORMULARIO DE INSCRIPCIÓN<br/> DE SUJETOS DE ORDENAMIENTO
             </h2>
-            <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw' }}>FORMULARIO</h3>
+            <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw', marginTop: '4vw' }}>FORMULARIO FISO</h3>
             <Formulario/>
             <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw' }}>DOCUMENTOS</h3>
             <Documentos/>
