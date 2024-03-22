@@ -3,6 +3,7 @@ import { Login } from "../Pages/Login";
 import { RegistroUsuario } from "../Pages/RegistroUsuario";
 import { MenuUsuario } from "../Pages/MenuUsuario";
 import { Solicitud } from "../Pages/Solicitud";
+import { MenuAbodago } from "../Pages/MenuAbogado";
 
 export const SafortiRoutes = () => {
     return (
@@ -26,6 +27,11 @@ export const SafortiRoutes = () => {
                 <Route
                     path="solicitud"
                     element={<Solicitud/>}
+                >
+                </Route>
+                <Route
+                    path="funcionario/menu"
+                    element={<MenuAbodago/>}
                 >
                 </Route>
                 <Route path="/" element={<Navigate to={'/login'} />}/>
