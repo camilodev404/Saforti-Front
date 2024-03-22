@@ -8,15 +8,16 @@ export const Solicitudes = () => {
                         <tr>
                             <th>#Formulario</th>
                             <th>Fecha</th>
+                            <th>Estado</th>
                             <th>Ver</th>
                             <th>Editar</th>
-                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>0123</td>
                             <td>01-02-2024</td>
+                            <td>Enviado</td>
                             <td>
                                 <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
                                     Ver
@@ -27,11 +28,11 @@ export const Solicitudes = () => {
                                     Editar
                                 </button>
                             </td>
-                            <td>Enviado</td>
                         </tr>
                         <tr>
                             <td>0123</td>
                             <td>01-02-2024</td>
+                            <td>Enviado</td>
                             <td>
                                 <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
                                     Ver
@@ -42,11 +43,11 @@ export const Solicitudes = () => {
                                     Editar
                                 </button>
                             </td>
-                            <td>Enviado</td>
                         </tr>
                         <tr>
                             <td>0123</td>
                             <td>01-02-2024</td>
+                            <td>Enviado</td>
                             <td>
                                 <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
                                     Ver
@@ -57,7 +58,6 @@ export const Solicitudes = () => {
                                     Editar
                                 </button>
                             </td>
-                            <td>Enviado</td>
                         </tr>
                     </tbody>
                 </table>
