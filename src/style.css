@@ -141,11 +141,13 @@
   border-width: 3px;
   border-style: solid;
   width: 80vw;
-  height: 18vw;
   margin-left: 10%;
   margin-top: 1vw;
   margin-bottom: 1vw;
   padding: 1vw;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  height: 100%;
 } 
 
 .div-formulario-documentos {
