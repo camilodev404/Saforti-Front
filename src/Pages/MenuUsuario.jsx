@@ -18,10 +18,11 @@ export const MenuUsuario = () => {
             <button 
                 className="button-nuevo-registro"
                 onClick={onNuevaSolicitud}
+                style={{ marginTop: '4vw' }}
             >
             NUEVO REGISTRO
             </button>
-            <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw' }}>SOLICITUDES</h3>
+            <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw', marginTop: '4vw' }}>SOLICITUDES</h3>
             <Solicitudes/>
         </>
     );

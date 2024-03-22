@@ -4,6 +4,7 @@ import { RegistroUsuario } from "../Pages/RegistroUsuario";
 import { MenuUsuario } from "../Pages/MenuUsuario";
 import { Solicitud } from "../Pages/Solicitud";
 import { MenuAbodago } from "../Pages/MenuAbogado";
+import { MenuAdmin } from "../Pages/MenuAdmin";
 
 export const SafortiRoutes = () => {
     return (
@@ -32,6 +33,11 @@ export const SafortiRoutes = () => {
                 <Route
                     path="funcionario/menu"
                     element={<MenuAbodago/>}
+                >
+                </Route>
+                <Route
+                    path="administrador/menu"
+                    element={<MenuAdmin/>}
                 >
                 </Route>
                 <Route path="/" element={<Navigate to={'/login'} />}/>
