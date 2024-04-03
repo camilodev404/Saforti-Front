@@ -9,3 +9,13 @@ export const findAll = async() => {
     }
     return null;
 }
+
+export const findAllFunc = async() => {
+    try {
+        const response = await axios.get('http://localhost:8082/funcionario/all');
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

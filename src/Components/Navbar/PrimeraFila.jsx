@@ -1,9 +1,19 @@
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import { useLocation } from "react-router-dom";
 
 export const PrimeraFila = () => {
 
     const { login, handlerLogout } = useContext(UserContext);
+    const location = useLocation();
+    let currentPath = location.pathname;
+
+    if(currentPath.includes("/login")){
+        currentPath = false;
+        sessionStorage.removeItem('login');
+    } else {
+        currentPath = true;
+    }
 
     const salir = () => {
         handlerLogout();
@@ -18,7 +28,7 @@ export const PrimeraFila = () => {
                 <h5>Regresar Agencia Nacional de Tierras</h5>
             </div>
             {
-                login.isAuth ? <div>
+                login.isAuth && currentPath ? <div>
                                     <button className="boton-salir" onClick={salir}>Salir</button>
                             </div> : null
             }
