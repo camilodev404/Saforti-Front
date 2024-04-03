@@ -4,7 +4,7 @@ import { Solicitudes } from "../Components/Solicitudes";
 
 export const MenuUsuario = () => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
         navigate("/solicitud");

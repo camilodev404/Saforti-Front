@@ -16,7 +16,16 @@
   color: #fff;
   padding: 10px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.boton-salir {
+  background-color: #005DCB;
+  color: #fff;
+  padding: 1vw;
+  border-radius: 1vw;
+  border-color: black;
 }
 
 .ant {
