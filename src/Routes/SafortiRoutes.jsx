@@ -25,15 +25,15 @@ export const SafortiRoutes = () => {
                         element={<Login/>}
                         >
                         </Route>
-                        <Route path="/" element={<Navigate to={'/login'} />}/>
-                    </>
-                    :
-                    <>
                         <Route
                             path="user/register"
                             element={<RegistroUsuario/>}
                         >
                         </Route>
+                        <Route path="/" element={<Navigate to={'/login'} />}/>
+                    </>
+                    :
+                    <>
                         <Route
                             path="user/menu"
                             element={<MenuUsuario/> }
