@@ -1,6 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import { findAll } from "../services/usuarioService";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
+
+const initialLoginForm = {
+    email: '',
+    password: '',
+}
 
 export const LoginFields = () => {
+
+    const { handlerLogin } = useContext(UserContext);
+
+    const [ loginForm, setLoginForm ] = useState(initialLoginForm);
+    const { email, password } = loginForm;
+
+    const onInputChange = ({target}) => {
+        const { name, value } = target;
+        setLoginForm({
+            ...loginForm,
+            [ name ]: value,
+        });
+    }
 
     const navigate = useNavigate();
 
@@ -8,10 +29,10 @@ export const LoginFields = () => {
         navigate('/user/register')
     }
 
-    const onSubmitLoginForm = (event) => {
+    const onSubmitLoginForm = async(event) => {
         event.preventDefault();
-        console.log("Estoy aca");
-        navigate('/user/menu');
+        handlerLogin({email, password});
+        setLoginForm(initialLoginForm);
     }
 
     return (
@@ -19,9 +40,9 @@ export const LoginFields = () => {
             <div className="login-fields">
                 <div className="row" style={{padding: '70px'}}>
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>USUARIO</label>
-                    <input type="text" id="usuario" name="usuario" style={{ marginBottom: '20px', marginLeft: '10px', width: '400px', height: '40px', borderRadius: '10px' }}/>
+                    <input onChange={onInputChange} type="text" id="email" name="email" style={{ marginBottom: '20px', marginLeft: '10px', width: '400px', height: '40px', borderRadius: '10px' }}/>
                     <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>CONTRASEÑA</label>
-                    <input type="password" id="contrasena" name="contrasena" style={{ marginBottom: '20px', marginLeft: '10px', width: '400px', height: '40px', borderRadius: '10px' }} />
+                    <input onChange={onInputChange} type="password" id="password" name="password" style={{ marginBottom: '20px', marginLeft: '10px', width: '400px', height: '40px', borderRadius: '10px' }} />
                 </div>
             </div>
             <div className="login-botoms">
