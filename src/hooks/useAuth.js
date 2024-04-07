@@ -13,6 +13,7 @@ export const useAuth = () => {
 
     const [ login, dispatch ] = useReducer(loginReducer, initialLogin);
     const navigate = useNavigate();
+    const [ userLoged, setUserLoged ] = useState(null);
     let isFunc = false;
     let isAdmin = false;
 
@@ -26,6 +27,7 @@ export const useAuth = () => {
             isAuth: true,
             user: user.correo,
         }));
+        setUserLoged(response.data);
         navigate('/user/menu');
     }
 
@@ -41,6 +43,7 @@ export const useAuth = () => {
 
         if (userWithEmail) {
             if(userWithEmail.password === password){
+                setUserLoged(userWithEmail);
                 return true;
             }
             
@@ -48,6 +51,7 @@ export const useAuth = () => {
             if(funcWithEmail){
                 if(funcWithEmail.password === password){
                     isFunc = true;
+                    setUserLoged(funcWithEmail);
                     if(funcWithEmail.rol === "Administrativo"){
                         isAdmin = true;
                     }
@@ -115,6 +119,7 @@ export const useAuth = () => {
 
     return {
         login, 
+        userLoged,
         handlerLogin,
         handlerLogout,
         registerUser,

@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { Informacion } from "../Components/Informacion";
 import { Solicitudes } from "../Components/Solicitudes";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
 
 export const MenuUsuario = () => {
 
+    const { userLoged } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
+        console.log(userLoged);
         navigate("/solicitud");
     }
 
