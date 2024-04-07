@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { generateFuncId, saveFunc } from "../services/usuarioService";
 
 const nuevoEmpleadoFields = {
     idFuncionario: '',
@@ -10,15 +12,27 @@ const nuevoEmpleadoFields = {
     documento: '',
     cargo: '',
     rol: '',
-    idUgt: ''
+    idugt: ''
 }
 
 export const EmpleadoForm = () => {
+
+    const [ registerFuncForm, setRegisterFuncForm ] = useState(nuevoEmpleadoFields);
     const navigate = useNavigate();
 
-    const onSubmitRegisterForm = (event) => {
+    const onInputChange = ({target}) => {
+        const { name, value } = target;
+        const id = generateFuncId();
+        setRegisterFuncForm({
+            ...registerFuncForm,
+            idFuncionario: id,
+            [ name ]: value,
+        });
+    } 
+
+    const onSubmitRegisterForm = async(event) => {
         event.preventDefault();
-        console.log("Estoy en el form de registro");
+        const respuesta = await saveFunc(registerFuncForm);
         navigate('/administrador/menu');
     }
 
@@ -27,36 +41,39 @@ export const EmpleadoForm = () => {
             <div className="login-fields-register-fun">
                 <div className="row" style={{padding: '2vw'}}>
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Nombres</label>
-                    <input className="label-register-user" type="text" id="usuario" name="usuario" />
+                    <input onChange={onInputChange} className="label-register-user" type="text" id="nombres" name="nombres" />
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Apellidos</label>
-                    <input className="label-register-user" type="text" id="apellido1" name="apellido1" />
+                    <input onChange={onInputChange} className="label-register-user" type="text" id="apellidos" name="apellidos" />
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Email</label>
-                    <input className="label-register-user" type="text" id="email" name="email" />
+                    <input onChange={onInputChange} className="label-register-user" type="text" id="correo" name="correo" />
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Contraseña</label>
-                    <input className="label-register-user" type="password" id="password" name="password" />
+                    <input onChange={onInputChange} className="label-register-user" type="password" id="password" name="password" />
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Tipo de Documento</label>
-                    <select className="label-register-user" id="tipodoc" name="tipodoc">
-                        <option value="dni">Tarjeta de Identidad</option>
-                        <option value="pasaporte">Cédula de Extranjeria</option>
-                        <option value="cedula">Cédula de Ciudadania</option>
+                    <select onChange={onInputChange} className="label-register-user" id="tipodoc" name="tipodoc">
+                        <option value="TI">Tarjeta de Identidad</option>
+                        <option value="CE">Cédula de Extranjeria</option>
+                        <option value="CC">Cédula de Ciudadania</option>
                     </select>
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Número de Documento</label>
-                    <input className="label-register-user" type="text" id="documento" name="documento"/>
+                    <input onChange={onInputChange} className="label-register-user" type="text" id="documento" name="documento"/>
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Cargo</label>
-                    <input className="label-register-user" type="text" id="cargo" name="cargo"/>
+                    <input onChange={onInputChange} className="label-register-user" type="text" id="cargo" name="cargo"/>
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Rol</label>
-                    <input className="label-register-user" type="text" id="rol" name="rol"/>
+                    <select onChange={onInputChange} className="label-register-user" id="rol" name="rol">
+                        <option value="Administrativo">Administrativo</option>
+                        <option value="Empleado">Empleado</option>
+                    </select>
                     <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>UGT</label>
-                    <select className="label-register-user" id="ugt" name="ugt">
-                        <option value="antioquia">Antioquia, Eje Cafetero y Choco</option>
-                        <option value="caribe">Caribe</option>
-                        <option value="centro-oriente">Centro Oriente</option>
-                        <option value="occidente">Occidente</option>
-                        <option value="oriente">Oriente</option>
-                        <option value="sur-amazonia">Sur Amazonia</option>
-                        <option value="noroccidente">Noroccidente</option>
-                        <option value="suroccidente">Suroccidente</option>
-                        <option value="operador">Operador</option>
+                    <select onChange={onInputChange} className="label-register-user" id="idugt" name="idugt">
+                        <option value="UGT3">Antioquia, Eje Cafetero y Choco</option>
+                        <option value="UGT4">Caribe</option>
+                        <option value="UGT5">Centro Oriente</option>
+                        <option value="UGT1">Occidente</option>
+                        <option value="UGT2">Oriente</option>
+                        <option value="UGT6">Sur Amazonia</option>
+                        <option value="UGT7">Noroccidente</option>
+                        <option value="UGT8">Suroccidente</option>
+                        <option value="UGT9">Otras</option>
                     </select>
                 </div>
             </div>
