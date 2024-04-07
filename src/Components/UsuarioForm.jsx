@@ -25,7 +25,6 @@ export const UsuarioForm = () => {
             ...registerForm,
             [ name ]: value,
         });
-        console.log(registerForm);
     } 
 
     const onSubmitRegisterForm = async(event) => {
