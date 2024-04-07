@@ -44,22 +44,6 @@ export const Informacion = () => {
                         <label className="label-info">Dirección:</label><br/>
                         <input className="input-info" type="text" value="Direccion" readOnly /><br/>
                     </div>
-                    <div className="col">
-                        <label className="label-info">Telefono:</label><br/>
-                        <input className="input-info" type="text" value="Telefono" readOnly /><br/>
-                    </div>
-                    <div className="col">
-                        <label className="label-info">Estado Civil:</label><br/>
-                        <input className="input-info" type="text" value="Estado Civil" readOnly /><br/>
-                    </div>
-                    <div className="col">
-                        <label className="label-info">Municipio:</label><br/>
-                        <input className="input-info" type="text" value="Municipio" readOnly /><br/>
-                    </div>
-                    <div className="col">
-                        <label className="label-info">Vereda:</label><br/>
-                        <input className="input-info" type="text" value="Vereda" readOnly /><br/>
-                    </div>
                 </div>
             </div>
         </>

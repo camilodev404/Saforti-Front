@@ -200,16 +200,19 @@
 
 .label-info {
   color: #037250;
-  font-size: larger;
-  font-weight: 700;
-  margin-top: 2%;
+  font-size: 1vw;
+  font-weight: 600;
+  margin-top: 0.2vw;
+
 }
 
 .input-info {
   color: black;
-  font-size: large;
-  font-weight: 700;
-  margin-top: 2%;
+  font-size: 1vw;
+  font-weight: 600;
+  margin-top: 1vw;
+
+
 }
 
 .login-fields-register-fun {
