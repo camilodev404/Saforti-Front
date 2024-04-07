@@ -19,7 +19,8 @@ export const UserProvider = ({children}) => {
     } = useUsers();*/
 
     const users = [];
-    const { login, handlerLogin, handlerLogout } = useAuth();
+    
+    const { login, handlerLogin, handlerLogout, registerUser } = useAuth();
 
     return (
         <UserContext.Provider value={
@@ -28,6 +29,7 @@ export const UserProvider = ({children}) => {
                 handlerLogin,
                 login,
                 handlerLogout,
+                registerUser,
             }
         }>
             {children}

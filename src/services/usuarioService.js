@@ -19,3 +19,21 @@ export const findAllFunc = async() => {
     }
     return null;
 }
+
+export const saveUser = async({cedula, tipoDocumento, correo, password, primerNombre, segundoNombre, primerApellido, segundoApellido}) => {
+    try {
+        return await axios.post('http://localhost:8081/usuario/save', {
+            cedula,
+            tipoDocumento,
+            correo,
+            password,
+            primerNombre,
+            segundoNombre,
+            primerApellido,
+            segundoApellido
+        });
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

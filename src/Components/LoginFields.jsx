@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { findAll } from "../services/usuarioService";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 

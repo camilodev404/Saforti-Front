@@ -1,6 +1,6 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { loginReducer } from "../reducers/loginReducer";
-import { findAll, findAllFunc } from "../services/usuarioService";
+import { findAll, findAllFunc, saveUser } from "../services/usuarioService";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -9,14 +9,25 @@ const initialLogin = JSON.parse(sessionStorage.getItem('login')) || {
     user: undefined,
 }
 
-
-
 export const useAuth = () => {
 
     const [ login, dispatch ] = useReducer(loginReducer, initialLogin);
     const navigate = useNavigate();
     let isFunc = false;
     let isAdmin = false;
+
+    const registerUser = async(user) => {
+        const response = await saveUser(user);
+        dispatch({
+            type: 'login',
+            payload: user,
+        });
+        sessionStorage.setItem('login', JSON.stringify({
+            isAuth: true,
+            user: user.correo,
+        }));
+        navigate('/user/menu');
+    }
 
     const loginUser = async({email, password}) => {
         const response = await findAll();
@@ -106,6 +117,7 @@ export const useAuth = () => {
         login, 
         handlerLogin,
         handlerLogout,
+        registerUser,
     };
 
 }
