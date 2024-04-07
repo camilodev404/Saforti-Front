@@ -3,6 +3,7 @@ import { loginReducer } from "../reducers/loginReducer";
 import { findAll, findAllFunc, saveUser } from "../services/usuarioService";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { findUgtById } from "../services/ugtService";
 
 const initialLogin = JSON.parse(sessionStorage.getItem('login')) || {
     isAuth: false,
@@ -14,6 +15,7 @@ export const useAuth = () => {
     const [ login, dispatch ] = useReducer(loginReducer, initialLogin);
     const navigate = useNavigate();
     const [ userLoged, setUserLoged ] = useState(null);
+    const [ ugtLoged, setUgtLoged ] = useState(null);
     let isFunc = false;
     let isAdmin = false;
 
@@ -52,6 +54,8 @@ export const useAuth = () => {
                 if(funcWithEmail.password === password){
                     isFunc = true;
                     setUserLoged(funcWithEmail);
+                    const ugt = await findUgtById(funcWithEmail.idugt);
+                    setUgtLoged(ugt.data);
                     if(funcWithEmail.rol === "Administrativo"){
                         isAdmin = true;
                     }
@@ -120,6 +124,7 @@ export const useAuth = () => {
     return {
         login, 
         userLoged,
+        ugtLoged,
         handlerLogin,
         handlerLogout,
         registerUser,

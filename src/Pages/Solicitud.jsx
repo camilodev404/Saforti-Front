@@ -8,6 +8,7 @@ export const Solicitud = () => {
     
     const onSendForm = () => {
         console.log("Envio de formulario")
+        //FIXME: HACER DINAMICO EL PATH SEGUN SEA EL USUARIO LOGUEADO
         navigate('/user/menu');
     }
 

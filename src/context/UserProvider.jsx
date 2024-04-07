@@ -20,7 +20,7 @@ export const UserProvider = ({children}) => {
 
     const users = [];
     
-    const { login, handlerLogin, handlerLogout, registerUser, userLoged } = useAuth();
+    const { login, handlerLogin, handlerLogout, registerUser, userLoged, ugtLoged } = useAuth();
 
     return (
         <UserContext.Provider value={
@@ -29,6 +29,7 @@ export const UserProvider = ({children}) => {
                 handlerLogin,
                 login,
                 userLoged,
+                ugtLoged,
                 handlerLogout,
                 registerUser,
             }
