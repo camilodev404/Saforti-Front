@@ -1,5 +1,18 @@
 import { useNavigate } from "react-router-dom";
 
+const nuevoEmpleadoFields = {
+    idFuncionario: '',
+    nombres: '',
+    apellidos: '',
+    correo: '',
+    password: '',
+    tipodoc: '',
+    documento: '',
+    cargo: '',
+    rol: '',
+    idUgt: ''
+}
+
 export const EmpleadoForm = () => {
     const navigate = useNavigate();
 
@@ -12,32 +25,28 @@ export const EmpleadoForm = () => {
     return (
         <form onSubmit={onSubmitRegisterForm}>
             <div className="login-fields-register-fun">
-                <div className="row" style={{padding: '40px'}}>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Primer Nombre</label>
+                <div className="row" style={{padding: '2vw'}}>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Nombres</label>
                     <input className="label-register-user" type="text" id="usuario" name="usuario" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Segundo Nombre</label>
-                    <input className="label-register-user" type="text" id="usuario2" name="usuario2" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Primer Apellido</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Apellidos</label>
                     <input className="label-register-user" type="text" id="apellido1" name="apellido1" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Segundo Apellido</label>
-                    <input className="label-register-user" type="text" id="apellido2" name="apellido2" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Email</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Email</label>
                     <input className="label-register-user" type="text" id="email" name="email" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Contraseña</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Contraseña</label>
                     <input className="label-register-user" type="password" id="password" name="password" />
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Tipo de Documento</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Tipo de Documento</label>
                     <select className="label-register-user" id="tipodoc" name="tipodoc">
                         <option value="dni">Tarjeta de Identidad</option>
                         <option value="pasaporte">Cédula de Extranjeria</option>
                         <option value="cedula">Cédula de Ciudadania</option>
                     </select>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Número de Documento</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Número de Documento</label>
                     <input className="label-register-user" type="text" id="documento" name="documento"/>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Cargo</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Cargo</label>
                     <input className="label-register-user" type="text" id="cargo" name="cargo"/>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>Rol</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>Rol</label>
                     <input className="label-register-user" type="text" id="rol" name="rol"/>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>UGT</label>
+                    <label style={{ marginBottom: '0.4vw', color: '#FFF', fontSize: '1vw', fontWeight: 'bold', textAlign: 'left' }}>UGT</label>
                     <select className="label-register-user" id="ugt" name="ugt">
                         <option value="antioquia">Antioquia, Eje Cafetero y Choco</option>
                         <option value="caribe">Caribe</option>
