@@ -163,7 +163,7 @@
   border-color: #037250;
   border-width: 3px;
   border-style: solid;
-  width: 70vw;
+  width: 79vw;
   height: 8vw;
   margin-left: 10%;
   margin-top: 1vw;
@@ -174,11 +174,12 @@
   border-color: #037250;
   border-width: 3px;
   border-style: solid;
-  width: 70vw;
+  width: 79vw;
   height: 100vw;
   margin-left: 10%;
   margin-top: 1vw;
   margin-bottom: 1vw;
+  text-align: center;
 } 
 
 .button-enviar {

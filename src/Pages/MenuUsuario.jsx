@@ -4,13 +4,18 @@ import { Solicitudes } from "../Components/Solicitudes";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
+const initialFiso = {
+    nroformulario: null,
+}
+
 export const MenuUsuario = () => {
 
-    const { userLoged } = useContext(UserContext);
+
+    const { generateFormularioId, solicitud } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
-        console.log(userLoged);
+        generateFormularioId();
         navigate("/solicitud");
     }
 
