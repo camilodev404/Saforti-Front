@@ -37,7 +37,7 @@ export const LoginFields = () => {
     return (
         <form onSubmit={onSubmitLoginForm}>
             <div className="login-fields">
-                <div className="row" style={{padding: '3vw'}}>
+                <div className="row" style={{padding: '2.5vw'}}>
                     <label style={{ marginBottom: '1vw', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>USUARIO</label>
                     <input onChange={onInputChange} type="text" id="email" name="email" style={{ marginBottom: '1vw', marginLeft: '10px', width: '20vw', height: '2vw', borderRadius: '10px' }}/>
                     <label style={{ marginBottom: '1vw', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>CONTRASEÑA</label>
