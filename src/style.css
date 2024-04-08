@@ -54,8 +54,8 @@
   background-color: #037250;
   padding: 0.2vw;
   border-radius: 10px;
-  width: 30vw;
-  height: 19vw;
+  width: 28vw;
+  height: 16vw;
   margin: 0 auto;
   margin-bottom: 1vw;
 }
@@ -63,7 +63,7 @@
 .login-botoms {
   margin: 0 auto;
   margin-bottom: 3vw;
-  width: 30vw;
+  width: 28vw;
   display: flex;
   justify-content: space-between;
 }

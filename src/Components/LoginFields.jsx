@@ -37,11 +37,11 @@ export const LoginFields = () => {
     return (
         <form onSubmit={onSubmitLoginForm}>
             <div className="login-fields">
-                <div className="row" style={{padding: '70px'}}>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>USUARIO</label>
-                    <input onChange={onInputChange} type="text" id="email" name="email" style={{ marginBottom: '20px', marginLeft: '10px', width: '400px', height: '40px', borderRadius: '10px' }}/>
-                    <label style={{ marginBottom: '20px', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>CONTRASEÑA</label>
-                    <input onChange={onInputChange} type="password" id="password" name="password" style={{ marginBottom: '20px', marginLeft: '10px', width: '400px', height: '40px', borderRadius: '10px' }} />
+                <div className="row" style={{padding: '3vw'}}>
+                    <label style={{ marginBottom: '1vw', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>USUARIO</label>
+                    <input onChange={onInputChange} type="text" id="email" name="email" style={{ marginBottom: '1vw', marginLeft: '10px', width: '20vw', height: '2vw', borderRadius: '10px' }}/>
+                    <label style={{ marginBottom: '1vw', color: '#FFF', fontSize: 'large', fontWeight: 'bold', textAlign: 'left' }}>CONTRASEÑA</label>
+                    <input onChange={onInputChange} type="password" id="password" name="password" style={{ marginBottom: '1vw', marginLeft: '10px', width: '20vw', height: '2vw', borderRadius: '10px' }} />
                 </div>
             </div>
             <div className="login-botoms">
