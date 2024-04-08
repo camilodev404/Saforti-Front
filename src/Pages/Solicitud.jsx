@@ -1,15 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { Documentos } from "../Components/Documentos";
 import { Formulario } from "../Components/Formulario";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 export const Solicitud = () => {
 
+    const { userLoged } = useContext(UserContext);
+
     const navigate = useNavigate();
+
+    const naigateBack = () => {
+        if(userLoged.rol == "Administrativo"){
+            navigate('/administrador/menu');
+        } else if (userLoged.rol == "Empleado"){
+            navigate('/funcionario/menu');
+        } else {
+            navigate('/user/menu');
+        }
+    }
     
     const onSendForm = () => {
-        console.log("Envio de formulario")
-        //FIXME: HACER DINAMICO EL PATH SEGUN SEA EL USUARIO LOGUEADO
-        navigate('/user/menu');
+        naigateBack();
     }
 
     return (
