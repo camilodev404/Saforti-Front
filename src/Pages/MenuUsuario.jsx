@@ -11,7 +11,7 @@ const initialFiso = {
 export const MenuUsuario = () => {
 
 
-    const { generateFormularioId, solicitud } = useContext(UserContext);
+    const { generateFormularioId } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {

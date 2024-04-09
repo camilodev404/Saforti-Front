@@ -1,10 +1,15 @@
 import { useReducer } from "react"
 import { formReducer } from "../reducers/formReducer"
-import { generateFormId } from "../services/formularioService";
+import { findAllDeptosForm, findMunByDeptoForm, generateFormId } from "../services/formularioService";
 
 
 const initialFiso = {
     nroformulario: null,
+    departamentosForm: null,
+    municipiosForm: null,
+    fecha: null, 
+    tipoentrada: null,
+    idbarrido: null,
 }
 
 export const useFiso = () => {
@@ -18,6 +23,8 @@ export const useFiso = () => {
             payload: id,
         });
     }
+
+
 
     return {
         generateFormularioId,

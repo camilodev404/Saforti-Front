@@ -117,6 +117,8 @@ export const useAuth = () => {
         dispatch({
             type: 'logout',
         });
+        setUserLoged(null);
+        setUgtLoged(null);
         sessionStorage.removeItem('login');
         navigate('/login', { replace: true });
     }
