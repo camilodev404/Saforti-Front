@@ -15,7 +15,6 @@ export const MenuUsuario = () => {
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
-        generateFormularioId();
         navigate("/solicitud");
     }
 
