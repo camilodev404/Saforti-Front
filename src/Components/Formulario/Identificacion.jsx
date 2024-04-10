@@ -4,7 +4,7 @@ import { findAllDeptosForm, findMunByDeptoForm, generateFormId } from "../../ser
 
 export const Identificacion = () => {
 
-    const { ugtLoged, solicitud, handlerInitialFiso, handlerId } = useContext(UserContext);
+    const { ugtLoged, solicitud, handlerInitialFiso } = useContext(UserContext);
     const [ deptos, setDeptos ] = useState([]);
     const [ municipios, setMunicipios ] = useState([]);
     const [ formValues, setFormValues ] = useState(solicitud);
@@ -98,7 +98,7 @@ export const Identificacion = () => {
             <div className="col" style={{ textAlign: 'left', marginTop: '1vw' }}>
                 <label>Responsable del diligenciamiento de la solicitud: <b>UGT { ugtLoged ? ugtLoged.nombre : '' }</b></label>
             </div>
-            <button onClick={onClickButon}>as</button>
+            <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
         </div>
     );
 

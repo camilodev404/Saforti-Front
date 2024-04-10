@@ -15,6 +15,13 @@ export const formReducer = (state = {}, action) => {
                 ...state,
                 nroformulario: action.payload,
             };
+        case 'autorizaciones':
+            return {
+                ...state,
+                declaroverdad: action.payload.declaroverdad,
+                autorizacion: action.payload.autorizacion,
+                autconyuge: action.payload.autconyuge,
+            };
         case 'reset':
             return {
                 nroformulario: null,
@@ -23,6 +30,10 @@ export const formReducer = (state = {}, action) => {
                 fecha: null,
                 tipoentrada: null,
                 idbarrido: null,
+                declaroverdad: null,
+                autorizacion: null,
+                autconyuge: null,
+                idfuncionario: null,
             };
         default:
             return state;

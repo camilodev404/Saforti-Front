@@ -9,6 +9,10 @@ const initialFiso = {
     fecha: "", 
     tipoentrada: "",
     idbarrido: "",
+    declaroverdad: null,
+    autorizacion: null,
+    autconyuge: null,
+    idfuncionario: "",
 }
 
 export const useFiso = () => {
@@ -19,13 +23,20 @@ export const useFiso = () => {
         dispatch({
             type: 'formValues',
             payload: formvalues,
-        })
+        });
     }
 
     const handlerId = (id) => {
         dispatch({
             type: 'id',
             payload: id,
+        });
+    }
+
+    const handlerAuths = (auths) => {
+        dispatch({
+            type: 'autorizaciones',
+            payload: auths,
         });
     }
 
@@ -40,6 +51,7 @@ export const useFiso = () => {
         handlerInitialFiso,
         handlerId,
         handlerResetValuesForm,
+        handlerAuths,
     };
 
 }
