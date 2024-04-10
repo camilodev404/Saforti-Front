@@ -3,6 +3,7 @@ import { Informacion } from "../Components/Informacion";
 import { Solicitudes } from "../Components/Solicitudes";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
+import { generateFormId } from "../services/formularioService";
 
 const initialFiso = {
     nroformulario: null,
@@ -11,10 +12,12 @@ const initialFiso = {
 export const MenuUsuario = () => {
 
 
-    const { generateFormularioId } = useContext(UserContext);
+    const { handlerId } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
+        const id = generateFormId();
+        handlerId(id);
         navigate("/solicitud");
     }
 

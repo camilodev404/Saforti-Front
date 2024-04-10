@@ -6,14 +6,14 @@ import { UserContext } from "../context/UserContext";
 
 export const Solicitud = () => {
 
-    const { userLoged } = useContext(UserContext);
+    const { userLoged, solicitud } = useContext(UserContext);
 
     const navigate = useNavigate();
 
     const naigateBack = () => {
-        if(userLoged.rol == "Administrativo"){
+        if(userLoged && userLoged.rol == "Administrativo"){
             navigate('/administrador/menu');
-        } else if (userLoged.rol == "Empleado"){
+        } else if (userLoged && userLoged.rol == "Empleado"){
             navigate('/funcionario/menu');
         } else {
             navigate('/user/menu');
@@ -21,6 +21,7 @@ export const Solicitud = () => {
     }
     
     const onSendForm = () => {
+        console.log(solicitud);
         naigateBack();
     }
 
