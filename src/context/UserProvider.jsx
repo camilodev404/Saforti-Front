@@ -22,7 +22,7 @@ export const UserProvider = ({children}) => {
     const users = [];
     
     const { login, handlerLogin, handlerLogout, registerUser, userLoged, ugtLoged } = useAuth();
-    const { solicitud, handlerInitialFiso, handlerId } = useFiso();
+    const { solicitud, handlerInitialFiso, handlerId, handlerResetValuesForm } = useFiso();
 
     return (
         <UserContext.Provider value={
@@ -37,6 +37,7 @@ export const UserProvider = ({children}) => {
                 registerUser,
                 handlerInitialFiso,
                 handlerId,
+                handlerResetValuesForm,
             }
         }>
             {children}

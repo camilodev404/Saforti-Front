@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { Identificacion } from "./Formulario/Identificacion";
-import { generateFormId } from "../services/formularioService";
 
 export const Formulario = () => {
 

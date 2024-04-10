@@ -3,12 +3,12 @@ import { formReducer } from "../reducers/formReducer"
 
 
 const initialFiso = {
-    nroformulario: null,
-    departamentosForm: null,
-    municipiosForm: null,
-    fecha: null, 
-    tipoentrada: null,
-    idbarrido: null,
+    nroformulario: "",
+    departamentosForm: "",
+    municipiosForm: "",
+    fecha: "", 
+    tipoentrada: "",
+    idbarrido: "",
 }
 
 export const useFiso = () => {
@@ -29,10 +29,17 @@ export const useFiso = () => {
         });
     }
 
+    const handlerResetValuesForm = () => {
+        dispatch({
+            type: 'reset'
+        });
+    }
+
     return {
         solicitud,
         handlerInitialFiso,
         handlerId,
+        handlerResetValuesForm,
     };
 
 }

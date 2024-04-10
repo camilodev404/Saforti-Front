@@ -14,7 +14,16 @@ export const formReducer = (state = {}, action) => {
             return {
                 ...state,
                 nroformulario: action.payload,
-            }
+            };
+        case 'reset':
+            return {
+                nroformulario: null,
+                departamentosForm: null,
+                municipiosForm: null,
+                fecha: null,
+                tipoentrada: null,
+                idbarrido: null,
+            };
         default:
             return state;
     }

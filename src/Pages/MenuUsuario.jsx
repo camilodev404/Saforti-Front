@@ -2,12 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Informacion } from "../Components/Informacion";
 import { Solicitudes } from "../Components/Solicitudes";
 import { UserContext } from "../context/UserContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { generateFormId } from "../services/formularioService";
-
-const initialFiso = {
-    nroformulario: null,
-}
 
 export const MenuUsuario = () => {
 
