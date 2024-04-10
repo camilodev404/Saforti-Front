@@ -1,5 +1,6 @@
 
 import { useAuth } from "../hooks/useAuth";
+import { useFiso } from "../hooks/useFiso";
 import { UserContext } from "./UserContext";
 
 export const UserProvider = ({children}) => {
@@ -21,6 +22,7 @@ export const UserProvider = ({children}) => {
     const users = [];
     
     const { login, handlerLogin, handlerLogout, registerUser, userLoged, ugtLoged } = useAuth();
+    const { solicitud, handlerInitialFiso, handlerId, handlerResetValuesForm } = useFiso();
 
     return (
         <UserContext.Provider value={
@@ -28,10 +30,14 @@ export const UserProvider = ({children}) => {
                 users,
                 handlerLogin,
                 login,
+                solicitud,
                 userLoged,
                 ugtLoged,
                 handlerLogout,
                 registerUser,
+                handlerInitialFiso,
+                handlerId,
+                handlerResetValuesForm,
             }
         }>
             {children}

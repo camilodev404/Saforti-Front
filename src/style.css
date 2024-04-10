@@ -74,7 +74,7 @@
   border-radius: 10px;
   background-color: #037250;
   font-weight: bold;
-  font-size: large;
+  font-size: 1vw;
   color: #fff;
 }
 
@@ -103,7 +103,7 @@
   border-radius: 10px;
   background-color: #037250;
   font-weight: bold;
-  font-size: large;
+  font-size: 1vw;
   color: #fff;
 }
 
@@ -163,7 +163,7 @@
   border-color: #037250;
   border-width: 3px;
   border-style: solid;
-  width: 70vw;
+  width: 79vw;
   height: 8vw;
   margin-left: 10%;
   margin-top: 1vw;
@@ -174,11 +174,12 @@
   border-color: #037250;
   border-width: 3px;
   border-style: solid;
-  width: 70vw;
-  height: 100vw;
+  width: 79vw;
+  height: auto;
   margin-left: 10%;
   margin-top: 1vw;
   margin-bottom: 1vw;
+  text-align: center;
 } 
 
 .button-enviar {
