@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { Identificacion } from "./Formulario/Identificacion";
 import { Autorizaciones } from "./Formulario/Autorizaciones";
+import { InformacionAspirante } from "./Formulario/InformacionAspirante";
 
 export const Formulario = () => {
 
@@ -27,6 +28,8 @@ export const Formulario = () => {
             return <Identificacion />;
           case 2:
             return <Autorizaciones />;
+          case 3:
+            return <InformacionAspirante />
           // Agrega casos para los otros componentes aquí
           default:
             return null;
