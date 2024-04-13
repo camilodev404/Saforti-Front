@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { findAllDeptosForm, findMunByDeptoForm } from "../../services/formularioService";
 import { UserContext } from "../../context/UserContext";
+import { updateUser } from "../../services/usuarioService";
 
 export const InformacionAspirante = () => {
 
@@ -9,41 +10,42 @@ export const InformacionAspirante = () => {
         cedula: userLoged.cedula,
         tipoDocumento: userLoged.tipoDocumento,
         correo: userLoged.correo,
-        passw: userLoged.password,
-        fechaExpe: userLoged.fechaExpe ?? "",
+        password: userLoged.password,
+        fechaExpe: userLoged.fechaExpe ? userLoged.fechaExpe?.split("T")[0] : "",
         primerNombre: userLoged.primerNombre,
         segundoNombre: userLoged.segundoNombre ?? "",
         primerApellido: userLoged.primerApellido,
         segundoApellido: userLoged.segundoApellido ?? "",
-        fechaNacimi: userLoged.fechaNacimi ?? "",
+        fechaNacimiento: userLoged.fechaNacimi ? userLoged.fechaNacimi?.split("T")[0] : "",
         deptoNacimi: userLoged.deptoNacimi ?? "",
         municipioNacimi: userLoged.municipioNacimi ?? "",
         sexo: userLoged.sexo ?? "",
-        mujerCampesina: userLoged.mujerCampesina ?? "",
+        mujerCampesina: userLoged.mujerCampesina ?? null,
         orientacionSex: userLoged.orientacionSex ?? "",
         reconocimiento: userLoged.reconocimiento ?? "",
         puebloIndigena: userLoged.puebloIndigena ?? "",
         puebloRrom: userLoged.puebloRrom ?? "",
-        tieneLimitaciones: userLoged.tieneLimitaciones ?? "",
+        tieneLimitaciones: userLoged.tieneLimitaciones ?? null,
         direccion: userLoged.direccion ?? "",
         idMunicipio: userLoged.idMunicipio ?? "",
         vereda: userLoged.vereda ?? "",
         corregimiento: userLoged.corregimiento ?? "",
         telefono: userLoged.telefono ?? "",
         estadoCivil: userLoged.estadoCivil ?? "",
-        cabezaHogar: userLoged.cabezaHogar ?? "",
-        viveEsposa: userLoged.viveEsposa ?? "",
-        viveConEsposa: userLoged.viveConEsposa ?? "",
-        seSeparo: userLoged.seSeparo ?? "",
-        cuentaConSociedad: userLoged.cuentaConSociedad ?? "",
+        cabezaHogar: userLoged.cabezaHogar ?? null,
+        viveEsposa: userLoged.viveEsposa ?? null,
+        viveConEsposa: userLoged.viveConEsposa ?? null,
+        seSeparo: userLoged.seSeparo ?? null,
+        cuentaConSociedad: userLoged.cuentaConSociedad ?? null,
         conflictos: userLoged.conflictos ?? "",
         limitaciones: userLoged.limitaciones ?? "",
         ocupaciones: userLoged.ocupaciones ?? "",
     });
     const [ deptos, setDeptos ] = useState([]);
     const [ municipios, setMunicipios ] = useState([]);
-    const [ formValues, setFormValues ] = useState(solicitud);
     const [ edad, setEdad ] = useState(0);
+    const [ otrasLim, setOtrasLim ] = useState("");
+    const [ otrasOcup, setOtrasOcu ] = useState("")
 
     const [ idDepto, setIdDepto ] = useState('');
 
@@ -73,9 +75,14 @@ export const InformacionAspirante = () => {
         setIdDepto(value);
     }
 
+    const updateUsers = async(usuario) => {
+        const response = await updateUser(usuario);
+        console.log(response);
+    }
+
     const onClickButon = () => {
-        console.log(userUpdate);
-        handlerInitialFiso(formValues);
+        console.log(userLoged);
+        //updateUsers(userUpdate);
     }
 
     const onChangeBorn = ({target}) => {
@@ -84,7 +91,7 @@ export const InformacionAspirante = () => {
         setEdad(edad);
         setUserUpdate({
             ...userUpdate,
-            fechaNacimi: target.value.split("T")[0]
+            fechaNacimiento: target.value.split("T")[0]
         });
     }
 
@@ -110,7 +117,16 @@ export const InformacionAspirante = () => {
     const onChangeMunNac = ({target}) => {
         setUserUpdate({
             ...userUpdate,
-            municipioNacimi: target.value.split("T")[0],
+            municipioNacimi: target.value,
+        });
+    }
+
+    const onChangeDeptoNaci = ({target}) => {
+        const nombreDepto = deptos.find(depto => depto.idDepto === target.value );
+        const nom = nombreDepto.nombre;
+        setUserUpdate({
+            ...userUpdate,
+            deptoNacimi: nom,
         });
     }
 
@@ -131,7 +147,92 @@ export const InformacionAspirante = () => {
     const handleMujerCampesina = ({target}) => {
         setUserUpdate({
             ...userUpdate,
-            mujerCampesina: target.value
+            [target.name]: JSON.parse(target.value)
+        });
+    }
+
+    const handleOrientacion = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            orientacionSex: target.value
+        });
+    }
+
+    const handleCultura = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            reconocimiento: target.value
+        });
+    }
+
+    const hanldePuebloIndigena = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            puebloIndigena: target.value
+        });
+    }
+
+    const handleLimitaciones = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            tieneLimitaciones: JSON.parse(target.value)
+        });
+    }
+
+    const handleLimitacionesVarias = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            limitaciones: userUpdate.limitaciones === "" ? userUpdate.limitaciones + target.value : userUpdate.limitaciones +" - "+ target.value
+        });
+    }
+
+    const handleOtrasLim = ({target}) => {
+        setOtrasLim(target.value);
+    }
+
+    const cargarOtras = () => {
+        setUserUpdate({
+            ...userUpdate,
+            limitaciones: userUpdate.limitaciones + " - " + otrasLim
+        });
+    }
+
+    const handleOcupacion = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            ocupaciones: userUpdate.ocupaciones === "" ? userUpdate.ocupaciones + target.value : userUpdate.ocupaciones +" - "+ target.value
+        });
+    }
+
+    const handleOtrasOcupaciones = ({target}) => {
+        setOtrasOcu(target.value);
+    }
+
+    const cargarOtrasOcupaciones = () => {
+        setUserUpdate({
+            ...userUpdate,
+            ocupaciones: userUpdate.ocupaciones + " - " + otrasOcup
+        });
+    }
+
+    const handleDireccion = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            direccion: target.value
+        });
+    }
+
+    const handleMunicipioId = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            idMunicipio: target.value
+        });
+    }
+
+    const handlevarios = ({target}) => {
+        setUserUpdate({
+            ...userUpdate,
+            [target.name]: target.value
         });
     }
 
@@ -170,6 +271,7 @@ export const InformacionAspirante = () => {
                     <label style={{ marginRight: '1vw' }}>3. Departamento:</label>
                     <select onChange={(event)=>{
                             onHandlerChange(event);
+                            onChangeDeptoNaci(event);
                         }} className="label-register-user" id="deptoNacimi" name="deptoNacimi" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Departamento</option>
                         {deptos.map((depto, index) => (
@@ -195,9 +297,9 @@ export const InformacionAspirante = () => {
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                         <label style={{ marginRight: '1vw' }}>¿Se considera una mujer campesina jefe de hogar?: </label>
                         <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                        <input onChange={handleMujerCampesina} checked={userUpdate.mujerCampesina === true} type="radio" id="si" name="mujercampesina"  style={{ marginRight: '1vw' }}/>
+                        <input onChange={handleMujerCampesina} checked={userUpdate.mujerCampesina === true} type="radio" id="si" name="mujerCampesina" value={true} style={{ marginRight: '1vw' }}/>
                         <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                        <input onChange={handleMujerCampesina} checked={userUpdate.mujerCampesina === false} type="radio" id="no" name="mujercampesina"   />
+                        <input onChange={handleMujerCampesina} checked={userUpdate.mujerCampesina === false} type="radio" id="no" name="mujerCampesina" value={false}  />
                     </div>
                 </div>
                 <h6 style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}><b>Condición del Aspirante</b></h6>
@@ -208,7 +310,7 @@ export const InformacionAspirante = () => {
                 </p>
                 <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '1vw' }}>5. Orientación Sexual:</label>
-                    <select className="label-register-user" id="orientacion" name="orientacion" style={{ marginRight: '1vw', width: '15vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
+                    <select onChange={handleOrientacion} className="label-register-user" id="orientacionSex" name="orientacionSex" style={{ marginRight: '1vw', width: '15vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Orientación Sexual</option>
                         <option>Heterosexual</option>
                         <option>Lesbiana</option>
@@ -219,7 +321,7 @@ export const InformacionAspirante = () => {
                         <option>No sabe no response</option>
                     </select>
                     <label style={{ marginRight: '1vw' }}>6. De acuerdo con su cultura, pueblo y rasgos fisicos, es o se reconoce como:</label>
-                    <select className="label-register-user" id="orientacion" name="orientacion" style={{ marginRight: '1vw', width: '15vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
+                    <select onChange={handleCultura} className="label-register-user" id="reconocimiento" name="reconocimiento" style={{ marginRight: '1vw', width: '15vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Reconocimiento</option>
                         <option>Indigena</option>
                         <option>Gitano</option>
@@ -229,82 +331,94 @@ export const InformacionAspirante = () => {
                         <option>Ninguna de las anteriores</option>
                     </select>
                 </div>
-                <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
-                    <label style={{ marginRight: '3vw' }}>7. A que pueblo Indigena pertenece: </label>
-                    <input id="puebloindigena" name="puebloindigena" style={{ borderRadius: '10px', width: '15vw', marginRight: '2vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" value={userLoged.puebloIndigena}/>
-                </div>
-                <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
-                    <label style={{ marginRight: '3vw' }}>8. A cuál Vitsa pertenece: </label>
-                    <input id="puebloindigena" name="puebloindigena" style={{ borderRadius: '10px', width: '15vw', marginRight: '2vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" value={userLoged.puebloRrom} />
-                </div>
+                {
+                    userUpdate.reconocimiento === 'Indigena' && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
+                            <label style={{ marginRight: '3vw' }}>7. A que pueblo Indigena pertenece: </label>
+                            <input onChange={hanldePuebloIndigena} id="puebloIndigena" name="puebloIndigena" style={{ borderRadius: '10px', width: '15vw', marginRight: '2vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" defaultValue={userLoged.puebloIndigena}/>
+                        </div>
+                    )
+                }
+                {
+                    userUpdate.reconocimiento === 'Gitano' && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
+                            <label style={{ marginRight: '3vw' }}>8. A cuál Vitsa pertenece: </label>
+                            <input id="puebloindigena" name="puebloindigena" style={{ borderRadius: '10px', width: '15vw', marginRight: '2vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" defaultValue={userLoged.puebloRrom} />
+                        </div>
+                    )
+                }
                 <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '2vw' }}>9. ¿Por enfermedad, accidente o de nacimiento tiene limitantes permanentes?: </label>
                     <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input type="radio" id="si" name="limitantes" value={true} style={{ marginRight: '1vw' }}/>
+                    <input onChange={handleLimitaciones} checked={ userUpdate.tieneLimitaciones === true } type="radio" id="si" name="tieneLimitaciones" value={true} style={{ marginRight: '1vw' }}/>
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input  type="radio" id="no" name="limitantes" value={false} />
+                    <input onChange={handleLimitaciones} checked={ userUpdate.tieneLimitaciones === false } type="radio" id="no" name="tieneLimitaciones" value={false} />
                 </div>
-                <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
-                    <label style={{ marginBottom: '1vw' }}>¿Cuales? (Opción multiple): </label>
-                    <div className="checkbox-group">
-                        <div className="checkbox-column">
-                            <label htmlFor="ver" style={{ marginRight: '1vw' }}>Ver:</label>
-                            <input type="checkbox" id="ver" name="ver" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
-                            <label htmlFor="oir" style={{ marginRight: '1vw' }}>Oir:</label>
-                            <input type="checkbox" id="oir" name="oir" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
-                            <label htmlFor="hablar" style={{ marginRight: '1vw' }}>Hablar:</label>
-                            <input type="checkbox" id="hablar" name="hablar" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
-                            <label htmlFor="moverse" style={{ marginRight: '1vw' }}>Moverse o caminar por sí mismo:</label>
-                            <input type="checkbox" id="moverse" name="moverse" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
+                {
+                    userUpdate.tieneLimitaciones === true && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
+                            <label style={{ marginBottom: '1vw' }}>¿Cuales? (Opción multiple): </label>
+                            <div className="checkbox-group">
+                                <div className="checkbox-column">
+                                    <label htmlFor="ver" style={{ marginRight: '1vw' }}>Ver:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="ver" name="ver" value="Ver" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                    <label htmlFor="oir" style={{ marginRight: '1vw' }}>Oir:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="oir" name="oir" value="Oir" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                    <label htmlFor="hablar" style={{ marginRight: '1vw' }}>Hablar:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="hablar" name="hablar" value="Hablar" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                    <label htmlFor="moverse" style={{ marginRight: '1vw' }}>Moverse o caminar por sí mismo:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="moverse" name="moverse" value="Moverse o caminar por sí mismo" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                </div>
+                                <div className="checkbox-column">
+                                    <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Bañarse, vestirse o alimentarse por sí mismo:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="bañarse" name="bañarse" value="Bañarse, vestirse o alimentarse" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                    <label htmlFor="salir" style={{ marginRight: '1vw' }}>Dificultad para salir a la calle sin ayuda o compañía:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="salir" name="salir" value="Dificultad para salir" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                    <label htmlFor="entender" style={{ marginRight: '1vw' }}>Entender o Aprender:</label>
+                                    <input onChange={handleLimitacionesVarias} type="checkbox" id="entender" name="entender" value="Entender o Aprender" style={{ marginRight: '1vw' }} />
+                                    <br />
+                                    <label htmlFor="otra" style={{ marginRight: '1vw' }}>Otra ¿Cual?:</label>
+                                    <input onChange={handleOtrasLim} type="text" name="otra-text" style={{borderRadius: '10px', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw'}}/>
+                                    <button onClick={cargarOtras} style={{ borderRadius: '10px', width: '5vw', marginLeft: '1vw' }}>Cargar</button>
+                                    <br />
+                                </div>
+                            </div>
                         </div>
-                        <div className="checkbox-column">
-                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Bañarse, vestirse o alimentarse por sí mismo:</label>
-                            <input type="checkbox" id="bañarse" name="bañarse" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
-                            <label htmlFor="salir" style={{ marginRight: '1vw' }}>Dificultad para salir a la calle sin ayuda o compañía:</label>
-                            <input type="checkbox" id="salir" name="salir" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
-                            <label htmlFor="entender" style={{ marginRight: '1vw' }}>Entender o Aprender:</label>
-                            <input type="checkbox" id="entender" name="entender" value={true} style={{ marginRight: '1vw' }} />
-                            <br />
-                            <label htmlFor="otra" style={{ marginRight: '1vw' }}>Otra ¿Cual?:</label>
-                            <input type="checkbox" id="otra" name="otra" value={true} style={{ marginRight: '1vw' }} />
-                            <input type="text" name="otra-text" style={{borderRadius: '10px', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw'}}/>
-                            <br />
-                        </div>
-                    </div>
-                </div>
+                    )
+                }
                 <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginBottom: '1vw' }}>10. ¿Cual es su Ocupación? (Opción multiple): </label>
                     <div className="checkbox-group">
                         <div className="checkbox-column">
                             <label htmlFor="ver" style={{ marginRight: '1vw' }}>Empleado:</label>
-                            <input type="checkbox" id="ver" name="ver" value={true} style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="ver" name="ver" value="Empleado" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="oir" style={{ marginRight: '1vw' }}>Independiente:</label>
-                            <input type="checkbox" id="oir" name="oir" value={true} style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="oir" name="oir" value="Independiente" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="hablar" style={{ marginRight: '1vw' }}>Servicios del Hogar:</label>
-                            <input type="checkbox" id="hablar" name="hablar" value={true} style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="hablar" name="hablar" value="Servicios del Hogar" style={{ marginRight: '1vw' }} />
                             <br />
                         </div>
                         <div className="checkbox-column">
                             <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Campesino:</label>
-                            <input type="checkbox" id="bañarse" name="bañarse" value={true} style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="bañarse" name="bañarse" value="Campesino" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="salir" style={{ marginRight: '1vw' }}>Trabajador agrario:</label>
-                            <input type="checkbox" id="salir" name="salir" value={true} style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="salir" name="salir" value="Trabajador agrario" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="entender" style={{ marginRight: '1vw' }}>Incapacitado permanente para trabajar:</label>
-                            <input type="checkbox" id="entender" name="entender" value={true} style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="entender" name="entender" value="Incapacitado permanente para trabajar" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="otra" style={{ marginRight: '1vw' }}>Otra ¿Cual?:</label>
-                            <input type="checkbox" id="otra" name="otra" value={true} style={{ marginRight: '1vw' }} />
-                            <input type="text" name="otra-text" style={{borderRadius: '10px', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw'}}/>
+                            <input onChange={handleOtrasOcupaciones} type="text" name="otra-text" style={{borderRadius: '10px', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw'}}/>
+                            <button onClick={cargarOtrasOcupaciones} style={{ borderRadius: '10px', width: '5vw', marginLeft: '1vw' }}>Cargar</button>
                             <br />
                         </div>
                     </div>
@@ -312,20 +426,20 @@ export const InformacionAspirante = () => {
                 <h6 style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}><b>Datos de contacto</b></h6>
                 <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '3vw' }}>11. Dirección de Residencia: </label>
-                    <input id="direccion" name="direccion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    <input onChange={handleDireccion} id="direccion" name="direccion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" defaultValue={userUpdate.direccion}/>
                 </div>
                 <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '1vw' }}>Departamento:</label>
                     <select onChange={(event)=>{
                             onHandlerChange(event);
-                        }} className="label-register-user" id="departamentosForm" name="departamentosForm" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
+                        }} className="label-register-user" id="departamentosForm" name="departamentos" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Departamento</option>
                         {deptos.map((depto, index) => (
                             <option key={index} value={depto.idDepto}>{depto.nombre}</option>
                         ))}
                     </select>
                     <label style={{ marginRight: '1vw' }}>Municipio:</label>
-                    <select className="label-register-user" id="municipiosForm" name="municipiosForm" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
+                    <select onChange={handleMunicipioId} className="label-register-user" id="municipiosForm" name="municipios" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Municipio</option>
                         {municipios.map((mun, index) => (
                             <option key={index} value={mun.idMunicipio}>{mun.nombre}</option>
@@ -334,68 +448,114 @@ export const InformacionAspirante = () => {
                 </div>
                 <div className="col" style={{ textAlign: 'left', marginTop: '0.5vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '1vw' }}>Vereda:</label>
-                    <input id="direccion" name="direccion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    <input onChange={handlevarios} id="vereda" name="vereda" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                     <label style={{ marginRight: '1vw' }}>Corregimiento:</label>
-                    <input id="direccion" name="direccion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    <input onChange={handlevarios} id="corregimiento" name="corregimiento" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                 </div>
                 <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '1vw' }}>Número de Telefono:</label>
-                    <input id="direccion" name="direccion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    <input onChange={handlevarios} id="telefono" name="telefono" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                     <label style={{ marginRight: '1vw' }}>Correo Electronico:</label>
-                    <input id="direccion" name="direccion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" readOnly/>
+                    <input id="correo" name="correo" style={{ borderRadius: '10px', width: '17vw', marginRight: '1.5vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text" value={userUpdate.correo} readOnly/>
                 </div>
                 <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                    <label htmlFor="bañarse" style={{ marginRight: '0.5vw' }}>12. Estado Civil</label>
+                    <label htmlFor="estadoCivil" style={{ marginRight: '0.5vw' }}>12. Estado Civil</label>
                 </div>
                 <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '7.5vw' }}>
                     <label htmlFor="bañarse" style={{ marginRight: '0.5vw' }}>Casado(a):</label>
-                    <input type="checkbox" id="bañarse" name="bañarse" value={true} style={{ marginRight: '1vw' }} />
+                    <input onChange={handlevarios} type="radio" id="casado" name="estadoCivil" value="Casado" checked={userUpdate.estadoCivil === "Casado"} style={{ marginRight: '1vw' }} />
                     <br />
                     <label htmlFor="salir" style={{ marginRight: '0.5vw' }}>Soltero(a):</label>
-                    <input type="checkbox" id="salir" name="salir" value={true} style={{ marginRight: '1vw' }} />
+                    <input onChange={handlevarios} type="radio" id="soltero" name="estadoCivil" value="Soltero" checked={userUpdate.estadoCivil === "Soltero"} style={{ marginRight: '1vw' }} />
                     <br />
                     <label htmlFor="entender" style={{ marginRight: '0.5vw' }}>Viudo(a):</label>
-                    <input type="checkbox" id="entender" name="entender" value={true} style={{ marginRight: '1vw' }} />
+                    <input onChange={handlevarios} type="radio" id="viudo" name="estadoCivil" value="Viudo" checked={userUpdate.estadoCivil === "Viudo"} style={{ marginRight: '1vw' }} />
                     <br />
                     <label htmlFor="otra" style={{ marginRight: '0.5vw' }}>Separado(a):</label>
-                    <input type="checkbox" id="otra" name="otra" value={true} style={{ marginRight: '1vw' }} />
+                    <input onChange={handlevarios} type="radio" id="separado" name="estadoCivil" value="Separado" checked={userUpdate.estadoCivil === "Separado"} style={{ marginRight: '1vw' }} />
                     <br />
                     <label htmlFor="otra" style={{ marginRight: '0.5vw' }}>Union Libre:</label>
-                    <input type="checkbox" id="otra" name="otra" value={true} style={{ marginRight: '1vw' }} />
+                    <input onChange={handlevarios} type="radio" id="union" name="estadoCivil" value="Union Libre" checked={userUpdate.estadoCivil === "Union Libre"} style={{ marginRight: '1vw' }} />
                     <br />
                 </div>
-                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                    <label htmlFor="bañarse" style={{ marginRight: '0.5vw' }}>13. ¿Es cabeza de hogar?:</label>
-                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input type="radio" id="si" name="cabeza" value={true} style={{ marginRight: '1vw' }}/>
-                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input type="radio" id="no" name="cabeza" value={false} />
-                    <br />
-                    <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>14. ¿La persona con la que se casó aún vive?:</label>
-                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input  type="radio" id="si" name="caso" value={true} style={{ marginRight: '1vw' }}/>
-                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input  type="radio" id="no" name="caso" value={false} />
-                    <br />
-                    <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>15. ¿La persona con la que se casó, es con la que actualmente vive?:</label>
-                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input  type="radio" id="si" name="casovive" value={true} style={{ marginRight: '1vw' }}/>
-                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input  type="radio" id="no" name="casovive" value={false} />
-                    <br />
-                    <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>16. ¿Se separó legalmente (divorcio) de la persona con la que se casó?:</label>
-                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input  type="radio" id="si" name="casodivorcio" value={true} style={{ marginRight: '1vw' }}/>
-                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input  type="radio" id="no" name="casodivorcio" value={false} />
-                    <br />
-                    <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>17. ¿Cuenta con sociedad patrimonial o sociedad conyugal vigente?:</label>
-                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input  type="radio" id="si" name="patrimonio" value={true} style={{ marginRight: '1vw' }}/>
-                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input  type="radio" id="no" name="patrimonio" value={false} />
-                    <br />
-                </div>
+                {
+                    userUpdate.estadoCivil === "Casado" && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw' }}>13. ¿Es cabeza de hogar?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cabezaHogar === true} type="radio" id="si" name="cabezaHogar" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cabezaHogar === false} type="radio" id="no" name="cabezaHogar" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>14. ¿La persona con la que se casó aún vive?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.viveEsposa === true} type="radio" id="si" name="viveEsposa" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.viveEsposa === false} type="radio" id="no" name="viveEsposa" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>15. ¿La persona con la que se casó, es con la que actualmente vive?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.viveConEsposa === true} type="radio" id="si" name="viveConEsposa" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.viveConEsposa === false} type="radio" id="no" name="viveConEsposa" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>16. ¿Se separó legalmente (divorcio) de la persona con la que se casó?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.seSeparo === true} type="radio" id="si" name="seSeparo" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.seSeparo === false} type="radio" id="no" name="seSeparo" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>17. ¿Cuenta con sociedad patrimonial o sociedad conyugal vigente?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cuentaConSociedad === true} type="radio" id="si" name="cuentaConSociedad" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cuentaConSociedad === false} type="radio" id="no" name="cuentaConSociedad" value={false} />
+                            <br />
+                        </div>
+                    )
+                }
+                {
+                    (userUpdate.estadoCivil === "Soltero" || userUpdate.estadoCivil === "Union Libre") && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw' }}>13. ¿Es cabeza de hogar?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cabezaHogar === true} type="radio" id="si" name="cabezaHogar" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cabezaHogar === false} type="radio" id="no" name="cabezaHogar" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>17. ¿Cuenta con sociedad patrimonial o sociedad conyugal vigente?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cuentaConSociedad === true} type="radio" id="si" name="cuentaConSociedad" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cuentaConSociedad === false} type="radio" id="no" name="cuentaConSociedad" value={false} />
+                            <br />
+                        </div>
+                    )
+                }
+                {
+                    (userUpdate.estadoCivil === "Viudo" || userUpdate.estadoCivil === "Separado") && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw' }}>13. ¿Es cabeza de hogar?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cabezaHogar === true} type="radio" id="si" name="cabezaHogar" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cabezaHogar === false} type="radio" id="no" name="cabezaHogar" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>16. ¿Se separó legalmente (divorcio) de la persona con la que se casó?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.seSeparo === true} type="radio" id="si" name="seSeparo" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.seSeparo === false} type="radio" id="no" name="seSeparo" value={false} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '0.5vw', marginTop: '0.5vw' }}>17. ¿Cuenta con sociedad patrimonial o sociedad conyugal vigente?:</label>
+                            <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cuentaConSociedad === true} type="radio" id="si" name="cuentaConSociedad" value={true} style={{ marginRight: '1vw' }}/>
+                            <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                            <input onChange={handleMujerCampesina} checked={userUpdate.cuentaConSociedad === false} type="radio" id="no" name="cuentaConSociedad" value={false} />
+                            <br />
+                        </div>
+                    )
+                }
             </div>
             <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
         </div>

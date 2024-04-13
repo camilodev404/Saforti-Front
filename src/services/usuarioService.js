@@ -64,3 +64,12 @@ export const saveUser = async({cedula, tipoDocumento, correo, password, primerNo
     }
     return null;
 }
+
+export const updateUser = async(user) => {
+    try {
+        return await axios.put('http://localhost:8081/usuario/update', user);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}
