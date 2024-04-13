@@ -45,7 +45,7 @@ export const Informacion = () => {
                             </div>
                             <div className="col">
                                 <label className="label-info">Fecha Nacimiento:</label><br/>
-                                <input className="input-info" type="text" value={userLoged.fechaNacimiento ? userLoged.fechaNacimiento : ''} readOnly /><br/>
+                                <input className="input-info" type="text" value={userLoged.fechaNacimiento ? userLoged.fechaNacimiento.split("T")[0] : ''} readOnly /><br/>
                             </div>
                             <div className="col">
                                 <label className="label-info">Sexo:</label><br/>
