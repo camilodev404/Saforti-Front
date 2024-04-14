@@ -8,6 +8,7 @@ import { MenuAdmin } from "../Pages/MenuAdmin";
 import { RegistroEmpleado } from "../Pages/RegistroEmpleado";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { FamiliarForm } from "../Components/FamiliarForm";
 
 export const SafortiRoutes = () => {
 

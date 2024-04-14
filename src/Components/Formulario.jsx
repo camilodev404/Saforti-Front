@@ -3,6 +3,7 @@ import { UserContext } from "../context/UserContext";
 import { Identificacion } from "./Formulario/Identificacion";
 import { Autorizaciones } from "./Formulario/Autorizaciones";
 import { InformacionAspirante } from "./Formulario/InformacionAspirante";
+import { GrupoFamiliar } from "./Formulario/GrupoFamiliar";
 
 export const Formulario = () => {
 
@@ -30,6 +31,8 @@ export const Formulario = () => {
             return <Autorizaciones />;
           case 3:
             return <InformacionAspirante />
+          case 4:
+            return <GrupoFamiliar/>
           // Agrega casos para los otros componentes aquí
           default:
             return null;
