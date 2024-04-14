@@ -4,7 +4,6 @@ import { formReducer } from "../reducers/formReducer"
 
 const initialFiso = {
     nroformulario: "",
-    departamentosForm: "",
     municipiosForm: "",
     fecha: "", 
     tipoentrada: "",
@@ -13,6 +12,11 @@ const initialFiso = {
     autorizacion: null,
     autconyuge: null,
     idfuncionario: "",
+    haSidoBeneficiario: null,
+    acreditaBeneficio: null,
+    idAcreditacion: "",
+    numResolucion: "",
+    fechaAcreditacion: "",
 }
 
 export const useFiso = () => {
@@ -40,6 +44,13 @@ export const useFiso = () => {
         });
     }
 
+    const handlerVerificacion = (verificaciones) => {
+        dispatch({
+            type: 'verificaciones',
+            payload: verificaciones,
+        });
+    }
+
     const handlerResetValuesForm = () => {
         dispatch({
             type: 'reset'
@@ -52,6 +63,7 @@ export const useFiso = () => {
         handlerId,
         handlerResetValuesForm,
         handlerAuths,
+        handlerVerificacion,
     };
 
 }

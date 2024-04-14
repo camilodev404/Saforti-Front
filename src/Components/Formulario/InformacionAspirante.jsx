@@ -82,7 +82,7 @@ export const InformacionAspirante = () => {
 
     const onClickButon = () => {
         console.log(userLoged);
-        //updateUsers(userUpdate);
+        updateUsers(userUpdate);
     }
 
     const onChangeBorn = ({target}) => {

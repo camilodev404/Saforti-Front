@@ -61,14 +61,13 @@ export const Identificacion = () => {
             </div>
             <h6 style={{ textAlign: 'left', marginTop: '0.5vw' }}>Lugar de la solicitud</h6>
             <div className="col" style={{ textAlign: 'left' }}>
-                <label style={{ marginRight: '5vw' }}>Fecha diligenciamiento de la solicitud</label>
-                <input onChange={onChangeValuesForm} id="fecha" name="fecha" style={{ borderRadius: '10px' }} type="date"/>
+                <label style={{ marginRight: '5vw' }}>Fecha diligenciamiento de la solicitud (yyyy-mm-dd):</label>
+                <input onChange={onChangeValuesForm} id="fecha" name="fecha" style={{ borderRadius: '10px' }} type="text"/>
             </div>
             <div className="col" style={{ textAlign: 'left', marginTop: '1vw' }}>
                 <label style={{ marginRight: '1vw' }}>Departamento:</label>
                 <select onChange={(event)=>{
                         onHandlerChange(event);
-                        onChangeValuesForm(event);
                     }} className="label-register-user" id="departamentosForm" name="departamentosForm" style={{ marginRight: '1vw', width: '20vw' }}>
                     <option>Seleccione Departamento</option>
                     {deptos.map((depto, index) => (
