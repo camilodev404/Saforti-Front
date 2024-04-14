@@ -10,6 +10,7 @@ import { IdentificacionPredio } from "./Formulario/IdentificacionPredio";
 import { TradicionPredio } from "./Formulario/TradicionPredio";
 import { CaracterizacionSolicitante } from "./Formulario/CaracterizacionSolicitante";
 import { savePredio } from "../services/predioService";
+import { savePredioUsuario } from "../services/predioUsuarioService";
 
 export const Formulario = () => {
 
@@ -22,6 +23,11 @@ export const Formulario = () => {
       console.log(response);
     }
 
+    const guardarPredioUsuario = async(pu) => {
+      const response = await savePredioUsuario(pu);
+      console.log(response);
+    }
+
     const handleSiguiente = () => {
         if (paginaActual < totalPaginas) {
           if(predioUsuario.legalizarJuridica !== false){
@@ -31,6 +37,9 @@ export const Formulario = () => {
           }
           if(paginaActual === 7){
             guardarPredio(predio);
+          }
+          if(paginaActual === 8){
+            guardarPredioUsuario(predioUsuario);
           }
           
         }

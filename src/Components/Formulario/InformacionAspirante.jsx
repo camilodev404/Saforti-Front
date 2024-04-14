@@ -42,16 +42,25 @@ export const InformacionAspirante = () => {
         ocupaciones: userLoged.ocupaciones ?? "",
     });
     const [ deptos, setDeptos ] = useState([]);
+    const [ deptos1, setDeptos1 ] = useState([]);
     const [ municipios, setMunicipios ] = useState([]);
+    const [ municipios1, setMunicipios1 ] = useState([]);
     const [ edad, setEdad ] = useState(0);
     const [ otrasLim, setOtrasLim ] = useState("");
     const [ otrasOcup, setOtrasOcu ] = useState("")
 
     const [ idDepto, setIdDepto ] = useState('');
+    const [ idDepto2, setIdDepto2 ] = useState('');
 
     const getAll = async() => {
         const depas = await findAllDeptosForm();
         setDeptos(depas.data);
+        setDeptos1(depas.data);
+    }
+
+    const getAll1 = async() => {
+        const depas = await findAllDeptosForm();
+        setDeptos1(depas.data);
     }
 
     const getMunicipios = async(iddepto) => {
@@ -59,8 +68,14 @@ export const InformacionAspirante = () => {
         setMunicipios(munis.data);
     }
 
+    const getMunicipios1 = async(iddepto) => {
+        const munis = await findMunByDeptoForm(iddepto);
+        setMunicipios1(munis.data);
+    }
+
     useEffect(()=>{
         getAll();
+        getAll1();
         firstAge();
     },[])
 
@@ -70,9 +85,20 @@ export const InformacionAspirante = () => {
         }
     }, [idDepto])
 
+    useEffect(()=>{
+        if(idDepto2 !== ''){
+            getMunicipios1(idDepto2);
+        }
+    }, [idDepto2])
+
     const onHandlerChange = ({target}) => {
         const { value } = target;
         setIdDepto(value);
+    }
+
+    const onHandlerChange1 = ({target}) => {
+        const { value } = target;
+        setIdDepto2(value);
     }
 
     const updateUsers = async(usuario) => {
@@ -431,18 +457,18 @@ export const InformacionAspirante = () => {
                 <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                     <label style={{ marginRight: '1vw' }}>Departamento:</label>
                     <select onChange={(event)=>{
-                            onHandlerChange(event);
-                        }} className="label-register-user" id="departamentosForm" name="departamentos" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
+                            onHandlerChange1(event);
+                        }} className="label-register-user" id="deptovive" name="deptovive" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Departamento</option>
-                        {deptos.map((depto, index) => (
-                            <option key={index} value={depto.idDepto}>{depto.nombre}</option>
+                        {deptos1.map((depto1, index) => (
+                            <option key={index} value={depto1.idDepto}>{depto1.nombre}</option>
                         ))}
                     </select>
                     <label style={{ marginRight: '1vw' }}>Municipio:</label>
-                    <select onChange={handleMunicipioId} className="label-register-user" id="municipiosForm" name="municipios" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
+                    <select onChange={handleMunicipioId} className="label-register-user" id="munvive" name="munvive" style={{ marginRight: '1vw', width: '20vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }}>
                         <option>Seleccione Municipio</option>
-                        {municipios.map((mun, index) => (
-                            <option key={index} value={mun.idMunicipio}>{mun.nombre}</option>
+                        {municipios1.map((mun1, index) => (
+                            <option key={index} value={mun1.idMunicipio}>{mun1.nombre}</option>
                         ))}
                     </select>
                 </div>

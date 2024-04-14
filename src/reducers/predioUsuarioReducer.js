@@ -17,8 +17,10 @@ export const predioUsuarioReducer = (state = {}, action) => {
         case 'secondUpdate':
             return {
                 ...state,
-                idPredio: action.payload.idPredio,
-                cedula: action.payload.cedula,
+                id: {
+                    idPredio: action.payload.id.idPredio,
+                    cedula: action.payload.id.cedula,
+                },
                 derechoSobrePredio: action.payload.derechoSobrePredio,
                 tieneDatos: action.payload.tieneDatos,
                 nombre: action.payload.nombre,

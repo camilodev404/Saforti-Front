@@ -9,8 +9,10 @@ export const TradicionPredio = () => {
     useEffect(()=>{
         setFormsPrediosUsuarios({
             ...formsPrediosUsuarios,
-            idPredio: predio.idPredio,
-            cedula: userLoged.cedula,
+            id: {
+                idPredio: predio.idPredio,
+                cedula: userLoged.cedula,
+            }
         });
     }, []);
 
@@ -30,6 +32,7 @@ export const TradicionPredio = () => {
 
     const onClickButon = () => {
         console.log(formsPrediosUsuarios);
+        handlerSecondUpdate(formsPrediosUsuarios);
     }
 
     return (
