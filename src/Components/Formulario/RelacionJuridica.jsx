@@ -60,6 +60,7 @@ export const RelacionJuridica = () => {
 
     const onClickButon = () => {
         console.log(valuesPredioUsuario);
+        handlerRelacionJuridica(valuesPredioUsuario);
     }
 
     return (

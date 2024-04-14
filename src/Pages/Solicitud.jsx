@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 
 export const Solicitud = () => {
 
-    const { userLoged, solicitud, handlerResetValuesForm } = useContext(UserContext);
+    const { userLoged, solicitud, handlerResetValuesForm, predioUsuario } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ export const Solicitud = () => {
     
     const onSendForm = () => {
         console.log(solicitud);
+        console.log(predioUsuario);
         naigateBack();
         handlerResetValuesForm();
     }
