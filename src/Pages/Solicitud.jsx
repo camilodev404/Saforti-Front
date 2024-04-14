@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Documentos } from "../Components/Documentos";
 import { Formulario } from "../Components/Formulario";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
@@ -33,8 +32,6 @@ export const Solicitud = () => {
             </h2>
             <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw', marginTop: '4vw' }}>FORMULARIO FISO</h3>
             <Formulario/>
-            <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw' }}>DOCUMENTOS</h3>
-            <Documentos/>
             <button onClick={onSendForm} className="button-enviar">ENVIAR</button>
         </>
     );
