@@ -6,16 +6,33 @@ import { InformacionAspirante } from "./Formulario/InformacionAspirante";
 import { GrupoFamiliar } from "./Formulario/GrupoFamiliar";
 import { VerificacionAntecedentes } from "./Formulario/VerificacionAntecedentes";
 import { RelacionJuridica } from "./Formulario/RelacionJuridica";
+import { IdentificacionPredio } from "./Formulario/IdentificacionPredio";
+import { TradicionPredio } from "./Formulario/TradicionPredio";
+import { CaracterizacionSolicitante } from "./Formulario/CaracterizacionSolicitante";
+import { savePredio } from "../services/predioService";
 
 export const Formulario = () => {
 
-    const { solicitud } = useContext(UserContext);
+    const { solicitud, predioUsuario, predio } = useContext(UserContext);
     const [paginaActual, setPaginaActual] = useState(1);
-    const totalPaginas = 8;
+    const totalPaginas = 9;
+
+    const guardarPredio = async(pr) => {
+      const response = await savePredio(pr);
+      console.log(response);
+    }
 
     const handleSiguiente = () => {
         if (paginaActual < totalPaginas) {
-          setPaginaActual(paginaActual + 1);
+          if(predioUsuario.legalizarJuridica !== false){
+            setPaginaActual(paginaActual + 1);
+          } else {
+            setPaginaActual(paginaActual + 3);
+          }
+          if(paginaActual === 7){
+            guardarPredio(predio);
+          }
+          
         }
     };
     
@@ -39,6 +56,12 @@ export const Formulario = () => {
             return <VerificacionAntecedentes/>
           case 6:
             return <RelacionJuridica/>
+          case 7:
+            return <IdentificacionPredio/>
+          case 8:
+            return <TradicionPredio/>
+          case 9:
+            return <CaracterizacionSolicitante/>
           // Agrega casos para los otros componentes aquí
           default:
             return null;

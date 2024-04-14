@@ -2,6 +2,7 @@
 import { useAuth } from "../hooks/useAuth";
 import { useFamiliar } from "../hooks/useFamiliar";
 import { useFiso } from "../hooks/useFiso";
+import { usePredio } from "../hooks/usePredio";
 import { usePredioUsuario } from "../hooks/usePredioUsuario";
 import { UserContext } from "./UserContext";
 
@@ -13,6 +14,7 @@ export const UserProvider = ({children}) => {
     const { solicitud, handlerInitialFiso, handlerId, handlerResetValuesForm, handlerAuths, handlerVerificacion } = useFiso();
     const { familiares, handlerFamiliares, handlerRemove } = useFamiliar();
     const { handlerRelacionJuridica, predioUsuario } = usePredioUsuario();
+    const { predio, handlerPredio } = usePredio();
 
     return (
         <UserContext.Provider value={
@@ -25,6 +27,7 @@ export const UserProvider = ({children}) => {
                 ugtLoged,
                 familiares,
                 predioUsuario,
+                predio,
                 handlerLogout,
                 registerUser,
                 handlerInitialFiso,
@@ -35,6 +38,7 @@ export const UserProvider = ({children}) => {
                 handlerRemove,
                 handlerVerificacion,
                 handlerRelacionJuridica,
+                handlerPredio,
             }
         }>
             {children}
