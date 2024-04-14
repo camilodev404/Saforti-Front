@@ -15,7 +15,7 @@ export const Autorizaciones = () => {
         const { name, value } = target;
         setFormValues({
             ...formValues,
-            [name]: value,
+            [name]: JSON.parse(value),
         });
     }
 

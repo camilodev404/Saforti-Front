@@ -4,7 +4,6 @@ import { formReducer } from "../reducers/formReducer"
 
 const initialFiso = {
     nroformulario: "",
-    departamentosForm: "",
     municipiosForm: "",
     fecha: "", 
     tipoentrada: "",

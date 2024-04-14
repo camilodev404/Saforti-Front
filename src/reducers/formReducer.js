@@ -4,7 +4,6 @@ export const formReducer = (state = {}, action) => {
         case 'formValues':
             return {
                 ...state,
-                departamentosForm: action.payload.departamentosForm,
                 municipiosForm: action.payload.municipiosForm,
                 fecha: action.payload.fecha,
                 tipoentrada: action.payload.tipoentrada,
@@ -34,7 +33,6 @@ export const formReducer = (state = {}, action) => {
         case 'reset':
             return {
                 nroformulario: null,
-                departamentosForm: null,
                 municipiosForm: null,
                 fecha: null,
                 tipoentrada: null,
@@ -43,6 +41,11 @@ export const formReducer = (state = {}, action) => {
                 autorizacion: null,
                 autconyuge: null,
                 idfuncionario: null,
+                haSidoBeneficiario: null,
+                acreditaBeneficio: null,
+                idAcreditacion: null,
+                numResolucion: null,
+                fechaAcreditacion: null,
             };
         default:
             return state;
