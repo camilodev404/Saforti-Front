@@ -5,6 +5,7 @@ import { Autorizaciones } from "./Formulario/Autorizaciones";
 import { InformacionAspirante } from "./Formulario/InformacionAspirante";
 import { GrupoFamiliar } from "./Formulario/GrupoFamiliar";
 import { VerificacionAntecedentes } from "./Formulario/VerificacionAntecedentes";
+import { RelacionJuridica } from "./Formulario/RelacionJuridica";
 
 export const Formulario = () => {
 
@@ -36,6 +37,8 @@ export const Formulario = () => {
             return <GrupoFamiliar/>
           case 5:
             return <VerificacionAntecedentes/>
+          case 6:
+            return <RelacionJuridica/>
           // Agrega casos para los otros componentes aquí
           default:
             return null;

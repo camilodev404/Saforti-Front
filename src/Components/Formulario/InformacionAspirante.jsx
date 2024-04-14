@@ -397,24 +397,24 @@ export const InformacionAspirante = () => {
                     <div className="checkbox-group">
                         <div className="checkbox-column">
                             <label htmlFor="ver" style={{ marginRight: '1vw' }}>Empleado:</label>
-                            <input onChange={handleOcupacion} type="checkbox" id="ver" name="ver" value="Empleado" style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="Empleado" name="Empleado" value="Empleado" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="oir" style={{ marginRight: '1vw' }}>Independiente:</label>
-                            <input onChange={handleOcupacion} type="checkbox" id="oir" name="oir" value="Independiente" style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="Independiente" name="Independiente" value="Independiente" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="hablar" style={{ marginRight: '1vw' }}>Servicios del Hogar:</label>
-                            <input onChange={handleOcupacion} type="checkbox" id="hablar" name="hablar" value="Servicios del Hogar" style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="Servicios" name="Servicios" value="Servicios del Hogar" style={{ marginRight: '1vw' }} />
                             <br />
                         </div>
                         <div className="checkbox-column">
                             <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Campesino:</label>
-                            <input onChange={handleOcupacion} type="checkbox" id="bañarse" name="bañarse" value="Campesino" style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="Campesino" name="Campesino" value="Campesino" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="salir" style={{ marginRight: '1vw' }}>Trabajador agrario:</label>
-                            <input onChange={handleOcupacion} type="checkbox" id="salir" name="salir" value="Trabajador agrario" style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="Trabajador" name="Trabajador" value="Trabajador agrario" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="entender" style={{ marginRight: '1vw' }}>Incapacitado permanente para trabajar:</label>
-                            <input onChange={handleOcupacion} type="checkbox" id="entender" name="entender" value="Incapacitado permanente para trabajar" style={{ marginRight: '1vw' }} />
+                            <input onChange={handleOcupacion} type="checkbox" id="Incapacitado" name="Incapacitado" value="Incapacitado permanente para trabajar" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="otra" style={{ marginRight: '1vw' }}>Otra ¿Cual?:</label>
                             <input onChange={handleOtrasOcupaciones} type="text" name="otra-text" style={{borderRadius: '10px', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw'}}/>
