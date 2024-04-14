@@ -2,8 +2,10 @@ import { useReducer } from "react";
 import { predioUsuarioReducer } from "../reducers/predioUsuarioReducer";
 
 const initialPredioUsuario = {
-    idPredio: "",
-    cedula: "",
+    id : {
+        idPredio: "",
+        cedula: "",
+    },
     derechoSobrePredio: "",
     tieneDatos: null,
     nombre: "",
@@ -32,9 +34,17 @@ export const usePredioUsuario = () => {
         });
     }
 
+    const handlerSecondUpdate = (predUsr) => {
+        dispatch({
+            type: 'secondUpdate',
+            payload: predUsr,
+        });
+    }
+
     return {
         predioUsuario,
         handlerRelacionJuridica,
+        handlerSecondUpdate,
     };
 
 }

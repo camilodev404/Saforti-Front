@@ -14,6 +14,19 @@ export const predioUsuarioReducer = (state = {}, action) => {
                 explotanOtros: action.payload.explotanOtros,
                 derechoExplotacion: action.payload.derechoExplotacion
             };
+        case 'secondUpdate':
+            return {
+                ...state,
+                id: {
+                    idPredio: action.payload.id.idPredio,
+                    cedula: action.payload.id.cedula,
+                },
+                derechoSobrePredio: action.payload.derechoSobrePredio,
+                tieneDatos: action.payload.tieneDatos,
+                nombre: action.payload.nombre,
+                ubicacion: action.payload.ubicacion,
+                telefono: action.payload.telefono,
+            }
         default:
             return state;
     }
