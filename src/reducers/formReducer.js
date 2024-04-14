@@ -22,6 +22,15 @@ export const formReducer = (state = {}, action) => {
                 autorizacion: action.payload.autorizacion,
                 autconyuge: action.payload.autconyuge,
             };
+        case 'verificaciones':
+            return {
+                ...state,
+                haSidoBeneficiario: action.payload.haSidoBeneficiario,
+                acreditaBeneficio: action.payload.acreditaBeneficio,
+                idAcreditacion: action.payload.idAcreditacion,
+                numResolucion: action.payload.numResolucion,
+                fechaAcreditacion: action.payload.fechaAcreditacion,
+            }
         case 'reset':
             return {
                 nroformulario: null,

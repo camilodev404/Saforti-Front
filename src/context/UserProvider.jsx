@@ -9,7 +9,7 @@ export const UserProvider = ({children}) => {
     const users = [];
     
     const { login, handlerLogin, handlerLogout, registerUser, userLoged, ugtLoged } = useAuth();
-    const { solicitud, handlerInitialFiso, handlerId, handlerResetValuesForm, handlerAuths } = useFiso();
+    const { solicitud, handlerInitialFiso, handlerId, handlerResetValuesForm, handlerAuths, handlerVerificacion } = useFiso();
     const { familiares, handlerFamiliares, handlerRemove } = useFamiliar();
 
     return (
@@ -30,6 +30,7 @@ export const UserProvider = ({children}) => {
                 handlerAuths,
                 handlerFamiliares,
                 handlerRemove,
+                handlerVerificacion,
             }
         }>
             {children}
