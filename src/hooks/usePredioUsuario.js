@@ -32,9 +32,17 @@ export const usePredioUsuario = () => {
         });
     }
 
+    const handlerSecondUpdate = (predUsr) => {
+        dispatch({
+            type: 'secondUpdate',
+            payload: predUsr,
+        });
+    }
+
     return {
         predioUsuario,
         handlerRelacionJuridica,
+        handlerSecondUpdate,
     };
 
 }
