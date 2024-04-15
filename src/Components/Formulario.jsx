@@ -88,7 +88,6 @@ export const Formulario = () => {
             return <TradicionPredio/>
           case 9:
             return <CaracterizacionSolicitante/>
-          // Agrega casos para los otros componentes aquí
           default:
             return null;
         }
@@ -97,15 +96,23 @@ export const Formulario = () => {
     return (
         <>
             <div className="div-formulario">
-                <p style={{ fontWeight: 'bold', marginTop: '0.1vw', fontSize: '2vw', color: '#4f4f4d' }}>Número de Formulario {solicitud.nroformulario}</p>
+                <p style={{ fontWeight: 'bold', marginTop: '0.1vw', fontSize: '2vw', color: '#4f4f4d' }}>Número de Formulario {solicitud.nroFormulario}</p>
                 <p style={{ fontWeight: 'bold', marginTop: '0.1vw', fontSize: '2vw', color: '#4f4f4d' }}>Persona Natural</p>
                 <p style={{ marginTop: '0.1vw', fontSize: '1vw', color: '#4f4f4d' }}>Este documento esta dispuesto por la agencia nacional de tierras de manera GRATUITA es decir NO tiene ningun costo</p>
                 <div style={{ padding: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', marginTop: '1vw', marginLeft: '1vw', marginRight: '1vw', marginBottom: '1vw', height: 'auto' }}>
                     {renderizarComponenteActual()}
                 </div>
                 <div style={{ marginBottom: '1vw' }}>
-                    <button style={{ marginRight: '1vw', backgroundColor: '#037250', color: 'white', borderRadius: '10px' }} onClick={handleAnterior} disabled={paginaActual === 1}>Anterior</button>
-                    <button style={{ backgroundColor: '#037250', color: 'white', borderRadius: '10px' }} onClick={handleSiguiente} disabled={paginaActual === totalPaginas}>Siguiente</button>
+                    {
+                      paginaActual !== 1 && (
+                        <button style={{ marginRight: '1vw', backgroundColor: '#037250', color: 'white', borderRadius: '10px' }} onClick={handleAnterior} disabled={paginaActual === 1}>Anterior</button>
+                      )
+                    }
+                    {
+                      paginaActual !== 9 && (
+                        <button style={{ backgroundColor: '#037250', color: 'white', borderRadius: '10px' }} onClick={handleSiguiente} disabled={paginaActual === totalPaginas}>Siguiente</button>
+                      )
+                    }
                 </div>
             </div>
         </>

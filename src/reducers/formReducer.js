@@ -32,7 +32,7 @@ export const formReducer = (state = {}, action) => {
             }
         case 'reset':
             return {
-                nroformulario: null,
+                nroFormulario: null,
                 municipiosForm: null,
                 fecha: null,
                 tipoentrada: null,
