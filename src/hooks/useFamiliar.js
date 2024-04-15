@@ -19,10 +19,18 @@ export const useFamiliar = () => {
         });
     }
 
+    const handlerReplace = (arr) => {
+        dispatch({
+            type: 'replace',
+            payload: arr
+        });
+    }
+
     return {
         familiares,
         handlerFamiliares,
-        handlerRemove
+        handlerRemove,
+        handlerReplace,
     }
 
 }

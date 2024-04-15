@@ -16,8 +16,10 @@ const initialValueFamiliar = {
     parentesco: "",
     ocupaciones: "",
     dependeUsuario: null,
-    idPredio: "",
-    cedula: ""
+    foranea: {
+        idPredio: "",
+        cedula: ""
+    }
 }
 
 export const FamiliarForm = ({onClose}) => {

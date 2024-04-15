@@ -14,9 +14,23 @@ import { savePredioUsuario } from "../services/predioUsuarioService";
 
 export const Formulario = () => {
 
-    const { solicitud, predioUsuario, predio } = useContext(UserContext);
+    const { solicitud, predioUsuario, predio, familiares, userLoged, handlerReplace } = useContext(UserContext);
+    const { cedula } = userLoged;
+    const { idPredio } = predio;
     const [paginaActual, setPaginaActual] = useState(1);
     const totalPaginas = 9;
+
+    const completarFamiliares = () => {
+      const nuevosFamiliares = familiares.map( (fam) => ({
+        ...fam,
+        foranea: {
+          idpredio: idPredio,
+          cedula: cedula,
+        }
+      }));
+      console.log("Hola",nuevosFamiliares);
+      return nuevosFamiliares;
+    }
 
     const guardarPredio = async(pr) => {
       const response = await savePredio(pr);
@@ -40,6 +54,9 @@ export const Formulario = () => {
           }
           if(paginaActual === 8){
             guardarPredioUsuario(predioUsuario);
+            if (familiares !== null){
+              handlerReplace(completarFamiliares());
+            }
           }
           
         }

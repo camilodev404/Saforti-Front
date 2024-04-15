@@ -12,7 +12,7 @@ export const UserProvider = ({children}) => {
     
     const { login, handlerLogin, handlerLogout, registerUser, userLoged, ugtLoged } = useAuth();
     const { solicitud, handlerInitialFiso, handlerId, handlerResetValuesForm, handlerAuths, handlerVerificacion } = useFiso();
-    const { familiares, handlerFamiliares, handlerRemove } = useFamiliar();
+    const { familiares, handlerFamiliares, handlerRemove, handlerReplace } = useFamiliar();
     const { handlerRelacionJuridica, predioUsuario, handlerSecondUpdate } = usePredioUsuario();
     const { predio, handlerPredio } = usePredio();
 
@@ -40,6 +40,7 @@ export const UserProvider = ({children}) => {
                 handlerRelacionJuridica,
                 handlerPredio,
                 handlerSecondUpdate,
+                handlerReplace,
             }
         }>
             {children}

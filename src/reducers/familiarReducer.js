@@ -10,6 +10,8 @@ export const familiarReducer = (state = [], action) => {
         case 'remove':
             const newState = state.filter(user => user.idFamiliar !== action.payload);
             return newState;
+        case 'replace':
+            return [ action.payload ];
         default:
             return state;
     }
