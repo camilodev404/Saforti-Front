@@ -37,7 +37,7 @@ const initialFiso = {
     deptoAcceso: "",
     municipioAcceso: "",
     tiempoResidencia: "",
-    beneficiarioRestitucion: "",
+    beneficiarioRestitucion: null,
     segundoOcupante: null,
     beneficiarioDerechosPro: null,
     deseaSerIncluidoProgramas: null,

@@ -1,4 +1,31 @@
+import { useEffect, useState } from "react";
+import { findAllDeptosForm, findMunByDeptoForm } from "../../services/formularioService";
+
 export const CaracterizacionSolicitante = () => {
+
+    const [ deptos, setDeptos ] = useState([]);
+    const [ municipios, setMunicipios ] = useState([]);
+    const [ idDepto, setIdDepto ] = useState('');
+
+    const getAll = async() => {
+        const depas = await findAllDeptosForm();
+        setDeptos(depas.data);
+    }
+
+    const getMunicipios = async(iddepto) => {
+        const munis = await findMunByDeptoForm(iddepto);
+        setMunicipios(munis.data);
+    }
+
+    useEffect(()=>{
+        getAll();
+    },[])
+
+    useEffect(()=>{
+        if(idDepto !== ''){
+            getMunicipios(idDepto);
+        }
+    }, [idDepto])
 
     const handleChangePatrimonio = ({target}) => {
 
@@ -14,6 +41,15 @@ export const CaracterizacionSolicitante = () => {
 
     const onClickButon = () => {
         console.log("");
+    }
+
+    const onHandlerChange = ({target}) => {
+        const { value } = target;
+        setIdDepto(value);
+    }
+
+    const onChengeMun = () => {
+
     }
 
     return (
@@ -112,6 +148,144 @@ export const CaracterizacionSolicitante = () => {
                     <input onChange={handlerChangeBool} type="radio" id="si" name="haTomadoCursos" value={true} style={{ marginRight: '1vw' }}/>
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
                     <input onChange={handlerChangeBool} type="radio" id="no" name="haTomadoCursos" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginBottom: '1vw' }}>55. ¿Cuál es el nivel más alto en ciencias agropecuarias, ambientales o afines a las mismas alcanzado?</label>
+                    <div className="checkbox-group">
+                        <div className="checkbox-column">
+                            <label htmlFor="ver" style={{ marginRight: '1vw' }}>Técnica</label>
+                            <input onChange={handleChange} type="radio" id="Tecnica" name="nivelMasAlto" value="Tecnica" style={{ marginRight: '1vw' }} />
+                            <br />
+                            <label htmlFor="oir" style={{ marginRight: '1vw' }}>Tecnólogo</label>
+                            <input onChange={handleChange} type="radio" id="Tecnologo" name="nivelMasAlto" value="Tecnologo" style={{ marginRight: '1vw' }} />
+                            <br />
+                            <label htmlFor="hablar" style={{ marginRight: '1vw' }}>Universitario</label>
+                            <input onChange={handleChange} type="radio" id="Universitario" name="nivelMasAlto" value="Universitario" style={{ marginRight: '1vw' }} />
+                            <br />
+                        </div>
+                        <div className="checkbox-column">
+                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Posgrado</label>
+                            <input onChange={handleChange} type="radio" id="Posgrado" name="nivelMasAlto" value="Posgrado" style={{ marginRight: '1vw' }} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Ninguno</label>
+                            <input onChange={handleChange} type="radio" id="Ninguno" name="nivelMasAlto" value="Ninguno" style={{ marginRight: '1vw' }} />
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                //FIXME CONDICIONAR LA 56
+                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                    <label style={{ marginRight: '1vw' }}>56. Número de periodos aprobados</label>
+                    <input onChange={handleChange} id="numPeriodosAprobados" name="numPeriodosAprobados" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>57. ¿Hace parte de programas de reubicación y reasentamiento con el fin de proteger el medio
+                    ambiente y fortalecer la producción alimentaría a través de la erradicación de cultívos ilícitos?</label><br />
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="programaReubicacion" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="programaReubicacion" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>58. ¿Ha sido declarado o está en curso en algún procedimiento de la declaratoria
+                    de ocupación indebida de tierras baldias o fiscales patrimoniales?</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="ocupacionIndebida" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="ocupacionIndebida" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                    <label style={{ marginRight: '1vw', marginBottom: '1vw' }}>59. Indique el municipio donde pretende acceder a tierra</label><br />
+                    <label style={{ marginRight: '1vw' }}>Departamento:</label>
+                    <select onChange={(event)=>{
+                            onHandlerChange(event);
+                        }} className="label-register-user" id="departamentosForm" name="departamentosForm" style={{ marginRight: '1vw', width: '20vw' }}>
+                        <option>Seleccione Departamento</option>
+                        {deptos.map((depto, index) => (
+                            <option key={index} value={depto.idDepto}>{depto.nombre}</option>
+                        ))}
+                    </select>
+                    <label style={{ marginRight: '1vw' }}>Municipio:</label>
+                    <select onChange={onChengeMun} className="label-register-user" id="idMunicipio" name="idMunicipio" style={{ marginRight: '1vw', width: '20vw' }}>
+                        <option>Seleccione Municipio</option>
+                        {municipios.map((mun, index) => (
+                            <option key={index} value={mun.idMunicipio}>{mun.nombre}</option>
+                        ))}
+                    </select>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw' }}>
+                        <label style={{ marginRight: '1vw' }}>Si reside o residió en el municipio o región, indique cuál es el tiempo de residencia (meses)</label>
+                        <input onChange={handleChange} id="tiempoResidencia" name="tiempoResidencia" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>60. ¿Ha sido beneficiario del proceso de restitución de tierras?</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="beneficiarioRestitucion" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="beneficiarioRestitucion" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>61. ¿Ha sido reconocido como segundo ocupante dentro del proceso de restitución de tierras?</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="segundoOcupante" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="segundoOcupante" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>62. ¿Ha sido usted beneficiario de la entrega, adjudicación o reconocimiento de derechos de la propiedad?</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="beneficiarioDerechosPro" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="beneficiarioDerechosPro" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>63. En caso de encontrarse explotando u ocupando un baldio inadjudicable desea ser incluido en los programas de acceso a tierras de la ANT</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="deseaSerIncluidoProgramas" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="deseaSerIncluidoProgramas" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>64. ¿Ha sido favorecido con sentencias judiciales que ordenen a la ANT la adjudicación o la reubicación?</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="beneficiarioSentencias" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="beneficiarioSentencias" value={false}  />
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <label style={{ marginBottom: '0.5vw' }}>65. Tipo de Solicitud</label>
+                    <div className="checkbox-group">
+                        <div className="checkbox-column">
+                            <label htmlFor="ver" style={{ marginRight: '1vw' }}>Acceso a tierra</label>
+                            <input onChange={handleChange} type="radio" id="acceso" name="tipoSolicitud" value="Acceso a tierra" style={{ marginRight: '1vw' }} />
+                            <br />
+                            <label htmlFor="oir" style={{ marginRight: '1vw' }}>Formalización de la propiedad</label>
+                            <input onChange={handleChange} type="radio" id="formalizacion" name="tipoSolicitud" value="Formalización de la propiedad" style={{ marginRight: '1vw' }} />
+                            <br />
+                            <label htmlFor="hablar" style={{ marginRight: '1vw' }}>Proceso o prestaciones agrarias</label>
+                            <input onChange={handleChange} type="radio" id="procesos" name="tipoSolicitud" value="Proceso o prestaciones agrarias" style={{ marginRight: '1vw' }} />
+                            <br />
+                        </div>
+                        <div className="checkbox-column">
+                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Administració</label>
+                            <input onChange={handleChange} type="radio" id="administracion" name="tipoSolicitud" value="Administració" style={{ marginRight: '1vw' }} />
+                            <br />
+                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Otro</label>
+                            <input onChange={handleChange} type="radio" id="otro" name="tipoSolicitud" value="Otro" style={{ marginRight: '1vw' }} />
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                    <h6 style={{ textAlign: 'left', marginTop: '0.5vw' }}><b>Observaciones:</b></h6>
+                    <textarea onChange={handleChange} id="observaciones" name="observaciones" rows="10" cols="80"></textarea>
+                </div>
+                <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '0.5vw' }}>
+                    <label style={{ marginRight: '1vw' }}>Firma:</label>
+                    <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                    <input onChange={handlerChangeBool} type="radio" id="si" name="firmas" value={true} style={{ marginRight: '1vw' }}/>
+                    <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                    <input onChange={handlerChangeBool} type="radio" id="no" name="firmas" value={false}  />
                 </div>
             </div>
             <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
