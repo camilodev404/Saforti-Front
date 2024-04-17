@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { findAllDeptosForm, findMunByDeptoForm, generateFormId } from "../../services/formularioService";
+import { allUgts, asignacionFun, funcionarioByUgt } from "../../services/ugtService";
 
 export const Identificacion = () => {
 
@@ -8,6 +9,9 @@ export const Identificacion = () => {
     const [ deptos, setDeptos ] = useState([]);
     const [ municipios, setMunicipios ] = useState([]);
     const [ formValues, setFormValues ] = useState(solicitud);
+    const [ sucursales, setSucursales ] = useState([]);
+    const [  idSucursal, setIdSucursal ] = useState("");
+    const [ funcionarios, setFuncionarios ] = useState([]);
 
     const [ idDepto, setIdDepto ] = useState('');
 
@@ -16,13 +20,46 @@ export const Identificacion = () => {
         setDeptos(depas.data);
     }
 
+    const getAllUgts = async() => {
+        const ugts = await allUgts();
+        setSucursales(ugts.data);
+    }
+
     const getMunicipios = async(iddepto) => {
         const munis = await findMunByDeptoForm(iddepto);
         setMunicipios(munis.data);
     }
 
+    const getFuncionarios = async(iden) => {
+        const funcs = await funcionarioByUgt(iden);
+        setFuncionarios(funcs.data);
+    }
+
+    useEffect(()=>{
+        const n = funcionarios.length;
+        if (n>0){
+            if(n === 1){
+                const idfun = funcionarios[0].idFuncionario;
+                console.log(idfun);
+                setFormValues({
+                    ...formValues,
+                    idFuncionario: idfun,
+                });
+            } else {
+                const ins = asignacionFun(n);
+                const idfun = funcionarios[ins].idFuncionario;
+                console.log(idfun);
+                setFormValues({
+                    ...formValues,
+                    idFuncionario: idfun,
+                });
+            }
+        }
+    }, [funcionarios])
+
     useEffect(()=>{
         getAll();
+        getAllUgts();
     },[])
 
     useEffect(()=>{
@@ -42,6 +79,11 @@ export const Identificacion = () => {
             ...formValues,
             [name]: value,
         });
+    }
+
+    const onChangeUgt = ({target}) => {
+        setIdSucursal(target.value);
+        getFuncionarios(target.value);
     }
 
     const onClickButon = () => {
@@ -95,6 +137,15 @@ export const Identificacion = () => {
                         </div>
                     )
                 }
+                <div className="col" style={{ textAlign: 'left', marginTop: '1vw' }}>
+                    <label style={{ marginRight: '1vw' }}>UGT:</label>
+                    <select onChange={onChangeUgt} className="label-register-user" id="ugtes" name="ugtes" style={{ marginRight: '1vw', width: '20vw' }}>
+                        <option>Seleccione Departamento</option>
+                        {sucursales.map((ugtes, index) => (
+                            <option key={index} value={ugtes.idugt}>{ugtes.nombre}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
             <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
         </div>

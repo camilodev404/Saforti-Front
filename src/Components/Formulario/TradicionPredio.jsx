@@ -10,7 +10,6 @@ export const TradicionPredio = () => {
     useEffect(()=>{
         setFormForaneaSolicitud({
             ...formForaneaSolicitud,
-            idFuncionario: "FUN1712483171711",
             foranea: {
                 idPredio: predio.idPredio,
                 cedula: userLoged.cedula,

@@ -98,7 +98,6 @@ export const useFiso = () => {
     }
 
     const handlerFinalValues = (forms) => {
-        console.log("AAAAAAAAAA", forms);
         dispatch({
             type: 'finalValues',
             payload: forms,

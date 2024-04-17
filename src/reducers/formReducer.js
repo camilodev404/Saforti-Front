@@ -56,6 +56,7 @@ export const formReducer = (state = {}, action) => {
         case 'formValues':
             return {
                 ...state,
+                idFuncionario: action.payload.idFuncionario,
                 idMunicipio: action.payload.idMunicipio,
                 fecha: action.payload.fecha,
                 tipoEntrada: action.payload.tipoEntrada,
@@ -85,7 +86,6 @@ export const formReducer = (state = {}, action) => {
         case 'foranea':
             return {
                 ...state,
-                idFuncionario: action.payload.idFuncionario,
                 foranea: {
                     idPredio: action.payload.foranea.idPredio,
                     cedula: action.payload.foranea.cedula,
