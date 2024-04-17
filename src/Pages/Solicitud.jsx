@@ -3,10 +3,12 @@ import { Formulario } from "../Components/Formulario";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { saveFormulario } from "../services/formularioService";
+import { saveAllFamiliares } from "../services/predioUsuarioService";
 
 export const Solicitud = () => {
 
     const { userLoged, solicitud, handlerResetValuesForm, predioUsuario, familiares } = useContext(UserContext);
+    const fams = familiares && familiares.length > 0 ? familiares[0] : null;
 
     const navigate = useNavigate();
 
@@ -20,12 +22,19 @@ export const Solicitud = () => {
         }
     }
 
+    const guardarFamilia = async(familias) => {
+        for(const familier of familias) {
+            await saveAllFamiliares(familier);
+        }
+    }
+
     const guardarForm = async(formsvalues) => {
         const res = await saveFormulario(formsvalues);
         console.log(res);
     }
     
     const onSendForm = () => {
+        guardarFamilia(fams);
         guardarForm(solicitud);
         naigateBack();
         handlerResetValuesForm();

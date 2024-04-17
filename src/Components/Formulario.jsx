@@ -24,11 +24,10 @@ export const Formulario = () => {
       const nuevosFamiliares = familiares.map( (fam) => ({
         ...fam,
         foranea: {
-          idpredio: idPredio,
+          idPredio: idPredio,
           cedula: cedula,
         }
       }));
-      console.log("Hola",nuevosFamiliares);
       return nuevosFamiliares;
     }
 
