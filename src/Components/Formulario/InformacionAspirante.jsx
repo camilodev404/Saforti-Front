@@ -16,7 +16,7 @@ export const InformacionAspirante = () => {
         segundoNombre: userLoged.segundoNombre ?? "",
         primerApellido: userLoged.primerApellido,
         segundoApellido: userLoged.segundoApellido ?? "",
-        fechaNacimiento: userLoged.fechaNacimi ? userLoged.fechaNacimi?.split("T")[0] : "",
+        fechaNacimiento: userLoged.fechaNacimiento ? userLoged.fechaNacimiento?.split("T")[0] : "",
         deptoNacimi: userLoged.deptoNacimi ?? "",
         municipioNacimi: userLoged.municipioNacimi ?? "",
         sexo: userLoged.sexo ?? "",
@@ -74,6 +74,7 @@ export const InformacionAspirante = () => {
     }
 
     useEffect(()=>{
+        console.log(userLoged);
         getAll();
         getAll1();
         firstAge();
@@ -103,10 +104,10 @@ export const InformacionAspirante = () => {
 
     const updateUsers = async(usuario) => {
         const response = await updateUser(usuario);
-        console.log(response);
     }
 
     const onClickButon = () => {
+        console.log(userUpdate);
         console.log(userLoged);
         updateUsers(userUpdate);
     }
@@ -117,7 +118,7 @@ export const InformacionAspirante = () => {
         setEdad(edad);
         setUserUpdate({
             ...userUpdate,
-            fechaNacimiento: target.value.split("T")[0]
+            fechaNacimiento: target.value
         });
     }
 

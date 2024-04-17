@@ -9,12 +9,6 @@ export const MenuAdmin = () => {
     const { userLoged, ugtLoged } = useContext(UserContext);
     const navigate = useNavigate()
 
-    const onNuevaSolicitud = () => {
-        console.log(userLoged);
-        console.log(ugtLoged);
-        navigate("/solicitud");
-    }
-
     const onNuevoFuncionario = () => {
         navigate("/funcionario/register");
     }
@@ -25,12 +19,6 @@ export const MenuAdmin = () => {
             <h3 style={{ color: '#4f4f4d', fontWeight: '700', marginLeft: '10vw', marginTop: '4vw' }}>INFORMACIÓN DEL FUNCIONARIO ADMINISTRADOR</h3>
             <Informacion/>
             <div className="row" style={{ marginTop: '5vw' }}>
-                <button 
-                    className="button-nuevo-registro"
-                    onClick={onNuevaSolicitud}
-                >
-                NUEVO REGISTRO
-                </button>
                 <button 
                     className="button-nuevo-registro"
                     onClick={onNuevoFuncionario}
