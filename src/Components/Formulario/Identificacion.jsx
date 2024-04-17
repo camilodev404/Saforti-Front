@@ -9,10 +9,6 @@ export const Identificacion = () => {
     const [ municipios, setMunicipios ] = useState([]);
     const [ formValues, setFormValues ] = useState(solicitud);
 
-
-    //FIXME: Desde la solicitud creada por el campesino no tiene ugt asignada, asignarla una vez se asigne abogado.
-    const ugt = 'Occidente';
-
     const [ idDepto, setIdDepto ] = useState('');
 
     const getAll = async() => {
@@ -75,7 +71,7 @@ export const Identificacion = () => {
                     ))}
                 </select>
                 <label style={{ marginRight: '1vw' }}>Municipio:</label>
-                <select onChange={onChangeValuesForm} className="label-register-user" id="municipiosForm" name="municipiosForm" style={{ marginRight: '1vw', width: '20vw' }}>
+                <select onChange={onChangeValuesForm} className="label-register-user" id="municipiosForm" name="idMunicipio" style={{ marginRight: '1vw', width: '20vw' }}>
                     <option>Seleccione Municipio</option>
                     {municipios.map((mun, index) => (
                         <option key={index} value={mun.idMunicipio}>{mun.nombre}</option>
@@ -84,7 +80,7 @@ export const Identificacion = () => {
             </div>
             <div className="col" style={{ textAlign: 'left', marginTop: '1vw' }}>
                 <label style={{ marginRight: '1vw' }}>Tipo de Entrada:</label>
-                <select onChange={onChangeValuesForm} className="label-register-user" id="tipoentrada" name="tipoentrada" style={{ marginRight: '1vw', width: '20vw' }}>
+                <select onChange={onChangeValuesForm} className="label-register-user" id="tipoentrada" name="tipoEntrada" style={{ marginRight: '1vw', width: '20vw' }}>
                     <option>Seleccion Tipo de Entrada</option>
                     <option value="Oficina ANT">Inscripcion en la Oficina ANT</option>
                     <option value="Barrido Predial">Barrido Predial</option>
@@ -92,10 +88,7 @@ export const Identificacion = () => {
                     <option value="Decisiones Judiciales">Decisiones Judiciales</option>
                 </select>
                 <label style={{ marginRight: '1vw', marginLeft: '1vw' }}>ID Barrido ANT:</label>
-                <input id="idbarrido" name="idbarrido" onChange={onChangeValuesForm} style={{ borderRadius: '10px' }}/>
-            </div>
-            <div className="col" style={{ textAlign: 'left', marginTop: '1vw' }}>
-                <label>Responsable del diligenciamiento de la solicitud: <b>UGT { ugtLoged ? ugtLoged.nombre : '' }</b></label>
+                <input id="idbarrido" name="idBarrido" onChange={onChangeValuesForm} style={{ borderRadius: '10px' }}/>
             </div>
             <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
         </div>

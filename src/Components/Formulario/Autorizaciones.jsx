@@ -42,9 +42,9 @@ export const Autorizaciones = () => {
                 </p>
                 <div style={{ textAlign: 'left', marginBottom: '1vw' }}>
                     <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input onChange={onChangeValuesForm} type="radio" id="si" name="declaroverdad" value={true} style={{ marginRight: '1vw' }}/>
+                    <input onChange={onChangeValuesForm} type="radio" id="si" name="declaroVerdad" value={true} style={{ marginRight: '1vw' }}/>
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input onChange={onChangeValuesForm} type="radio" id="no" name="declaroverdad" value={false} />
+                    <input onChange={onChangeValuesForm} type="radio" id="no" name="declaroVerdad" value={false} />
                 </div>
                 <p style={{ textAlign: 'justify' }}>
                     2. Autorizo a la ANT para remitir mensajes a través del correo electrónico del estado y/o avance del proceso
@@ -77,9 +77,9 @@ export const Autorizaciones = () => {
                 </p>
                 <div style={{ textAlign: 'left', marginBottom: '1vw' }}>
                     <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                    <input onChange={onChangeValuesForm} type="radio" id="si" name="autconyuge" value={true} style={{ marginRight: '1vw' }}/>
+                    <input onChange={onChangeValuesForm} type="radio" id="si" name="autConyuge" value={true} style={{ marginRight: '1vw' }}/>
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                    <input onChange={onChangeValuesForm} type="radio" id="no" name="autconyuge" value={false}/>
+                    <input onChange={onChangeValuesForm} type="radio" id="no" name="autConyuge" value={false}/>
                 </div>
                 <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
             </div>

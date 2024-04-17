@@ -3,10 +3,19 @@ import { UserContext } from "../../context/UserContext";
 
 export const TradicionPredio = () => {
 
-    const { predioUsuario, handlerSecondUpdate, predio, userLoged } = useContext(UserContext);
+    const { predioUsuario, handlerSecondUpdate, predio, userLoged, solicitud, handlerForanea } = useContext(UserContext);
     const [ formsPrediosUsuarios, setFormsPrediosUsuarios ] = useState(predioUsuario);
+    const [ formForaneaSolicitud, setFormForaneaSolicitud ] = useState(solicitud);
 
     useEffect(()=>{
+        setFormForaneaSolicitud({
+            ...formForaneaSolicitud,
+            idFuncionario: "FUN1712483171711",
+            foranea: {
+                idPredio: predio.idPredio,
+                cedula: userLoged.cedula,
+            }
+        });
         setFormsPrediosUsuarios({
             ...formsPrediosUsuarios,
             id: {
@@ -33,6 +42,7 @@ export const TradicionPredio = () => {
     const onClickButon = () => {
         console.log(formsPrediosUsuarios);
         handlerSecondUpdate(formsPrediosUsuarios);
+        handlerForanea(formForaneaSolicitud);
     }
 
     return (

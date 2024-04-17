@@ -4,19 +4,52 @@ import { formReducer } from "../reducers/formReducer"
 
 const initialFiso = {
     nroFormulario: "",
-    municipiosForm: "",
+    idMunicipio: "",
     fecha: "", 
-    tipoentrada: "",
-    idbarrido: "",
-    declaroverdad: null,
+    tipoEntrada: "",
+    idBarrido: "",
+    declaroVerdad: null,
     autorizacion: null,
-    autconyuge: null,
-    idfuncionario: "",
+    autConyuge: null,
+    idFuncionario: "",
     haSidoBeneficiario: null,
     acreditaBeneficio: null,
     idAcreditacion: "",
     numResolucion: "",
     fechaAcreditacion: "",
+    patrimonio: 0,
+    esPropietario: null,
+    areaPredioPropiedad: 0,
+    tipoDestinacion: "",
+    asociacionCampesina: null,
+    nombre: "",
+    compuestaMujeres: null,
+    parteDirectiva: null,
+    encuentraReserva: null,
+    tieneExperiencia: null,
+    cualesCuanto: "",
+    haEntregadoPredios: "",
+    haTomadoCursos: "",
+    nivelMasAlto: "",
+    numPeriodosAprobados: "",
+    programaReubicacion: null,
+    ocupacionIndebida: null,
+    deptoAcceso: "",
+    municipioAcceso: "",
+    tiempoResidencia: "",
+    beneficiarioRestitucion: null,
+    segundoOcupante: null,
+    beneficiarioDerechosPro: null,
+    deseaSerIncluidoProgramas: null,
+    beneficiarioSentencias: null,
+    tipoSolicitud: "",
+    firmas: null,
+    estado: "",
+    observaciones: "",
+    foranea: {
+        idPredio: "",
+        cedula: "",
+    }
 }
 
 export const useFiso = () => {
@@ -51,9 +84,24 @@ export const useFiso = () => {
         });
     }
 
+    const handlerForanea = (foran) => {
+        dispatch({
+            type: 'foranea',
+            payload: foran,
+        });
+    }
+
     const handlerResetValuesForm = () => {
         dispatch({
             type: 'reset'
+        });
+    }
+
+    const handlerFinalValues = (forms) => {
+        console.log("AAAAAAAAAA", forms);
+        dispatch({
+            type: 'finalValues',
+            payload: forms,
         });
     }
 
@@ -64,6 +112,8 @@ export const useFiso = () => {
         handlerResetValuesForm,
         handlerAuths,
         handlerVerificacion,
+        handlerForanea,
+        handlerFinalValues,
     };
 
 }

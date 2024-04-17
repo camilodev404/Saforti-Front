@@ -21,7 +21,7 @@ export const VerificacionAntecedentes = () => {
     }
 
     const onClickButon = () => {
-        console.log(verifValues);
+        handlerVerificacion(verifValues);
     }
 
     return (

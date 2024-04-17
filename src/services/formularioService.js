@@ -24,3 +24,12 @@ export const findMunByDeptoForm = async(iddepto) => {
     }
     return null;
 }
+
+export const saveFormulario = async(soli) => {
+    try {
+        return await axios.post('http://localhost:8085/solicitud/save/solicitud', soli);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

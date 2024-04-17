@@ -1,25 +1,77 @@
+
+
+const initialFiso = {
+    nroFormulario: "",
+    idMunicipio: "",
+    fecha: "", 
+    tipoEntrada: "",
+    idBarrido: "",
+    declaroVerdad: null,
+    autorizacion: null,
+    autConyuge: null,
+    idFuncionario: "",
+    haSidoBeneficiario: null,
+    acreditaBeneficio: null,
+    idAcreditacion: "",
+    numResolucion: "",
+    fechaAcreditacion: "",
+    patrimonio: 0,
+    esPropietario: null,
+    areaPredioPropiedad: 0,
+    tipoDestinacion: "",
+    asociacionCampesina: null,
+    nombre: "",
+    compuestaMujeres: null,
+    parteDirectiva: null,
+    encuentraReserva: null,
+    tieneExperiencia: null,
+    cualesCuanto: "",
+    haEntregadoPredios: "",
+    haTomadoCursos: "",
+    nivelMasAlto: "",
+    numPeriodosAprobados: "",
+    programaReubicacion: null,
+    ocupacionIndebida: null,
+    deptoAcceso: "",
+    municipioAcceso: "",
+    tiempoResidencia: "",
+    beneficiarioRestitucion: "",
+    segundoOcupante: null,
+    beneficiarioDerechosPro: null,
+    deseaSerIncluidoProgramas: null,
+    beneficiarioSentencias: null,
+    tipoSolicitud: "",
+    firmas: null,
+    estado: "",
+    observaciones: "",
+    foranea: {
+        idPredio: "",
+        cedula: "",
+    }
+}
+
 export const formReducer = (state = {}, action) => {
 
     switch (action.type) {
         case 'formValues':
             return {
                 ...state,
-                municipiosForm: action.payload.municipiosForm,
+                idMunicipio: action.payload.idMunicipio,
                 fecha: action.payload.fecha,
-                tipoentrada: action.payload.tipoentrada,
-                idbarrido: action.payload.idbarrido,
+                tipoEntrada: action.payload.tipoEntrada,
+                idBarrido: action.payload.idBarrido,
             };
         case 'id':
             return {
                 ...state,
-                nroformulario: action.payload,
+                nroFormulario: action.payload,
             };
         case 'autorizaciones':
             return {
                 ...state,
-                declaroverdad: action.payload.declaroverdad,
+                declaroVerdad: action.payload.declaroVerdad,
                 autorizacion: action.payload.autorizacion,
-                autconyuge: action.payload.autconyuge,
+                autConyuge: action.payload.autConyuge,
             };
         case 'verificaciones':
             return {
@@ -30,23 +82,19 @@ export const formReducer = (state = {}, action) => {
                 numResolucion: action.payload.numResolucion,
                 fechaAcreditacion: action.payload.fechaAcreditacion,
             }
-        case 'reset':
+        case 'foranea':
             return {
-                nroFormulario: null,
-                municipiosForm: null,
-                fecha: null,
-                tipoentrada: null,
-                idbarrido: null,
-                declaroverdad: null,
-                autorizacion: null,
-                autconyuge: null,
-                idfuncionario: null,
-                haSidoBeneficiario: null,
-                acreditaBeneficio: null,
-                idAcreditacion: null,
-                numResolucion: null,
-                fechaAcreditacion: null,
-            };
+                ...state,
+                idFuncionario: action.payload.idFuncionario,
+                foranea: {
+                    idPredio: action.payload.foranea.idPredio,
+                    cedula: action.payload.foranea.cedula,
+                }
+            }
+        case 'finalValues':
+            return action.payload;
+        case 'reset':
+            return initialFiso;
         default:
             return state;
     }
