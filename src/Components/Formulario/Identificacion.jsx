@@ -87,8 +87,14 @@ export const Identificacion = () => {
                     <option value="INCODER">Registro Administrativo</option>
                     <option value="Decisiones Judiciales">Decisiones Judiciales</option>
                 </select>
-                <label style={{ marginRight: '1vw', marginLeft: '1vw' }}>ID Barrido ANT:</label>
-                <input id="idbarrido" name="idBarrido" onChange={onChangeValuesForm} style={{ borderRadius: '10px' }}/>
+                {
+                    formValues.tipoEntrada === "Barrido Predial" && (
+                        <div>
+                            <label style={{ marginRight: '1vw', marginLeft: '1vw' }}>ID Barrido ANT:</label>
+                            <input id="idbarrido" name="idBarrido" onChange={onChangeValuesForm} style={{ borderRadius: '10px' }}/>
+                        </div>
+                    )
+                }
             </div>
             <button style={{ marginTop: '1vw' }} onClick={onClickButon}>Guardar</button>
         </div>
