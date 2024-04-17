@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Formulario } from "../Components/Formulario";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { saveFormulario } from "../services/formularioService";
 
 export const Solicitud = () => {
 
@@ -18,8 +19,14 @@ export const Solicitud = () => {
             navigate('/user/menu');
         }
     }
+
+    const guardarForm = async(formsvalues) => {
+        const res = await saveFormulario(formsvalues);
+        console.log(res);
+    }
     
     const onSendForm = () => {
+        guardarForm(solicitud);
         naigateBack();
         handlerResetValuesForm();
     }

@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { findAllDeptosForm, findMunByDeptoForm } from "../../services/formularioService";
+import { UserContext } from "../../context/UserContext";
 
 export const CaracterizacionSolicitante = () => {
 
+    const { solicitud, handlerFinalValues } = useContext(UserContext);
+    const [ finalValues, setFinalValues ] = useState(solicitud);
     const [ deptos, setDeptos ] = useState([]);
     const [ municipios, setMunicipios ] = useState([]);
     const [ idDepto, setIdDepto ] = useState('');
@@ -28,28 +31,52 @@ export const CaracterizacionSolicitante = () => {
     }, [idDepto])
 
     const handleChangePatrimonio = ({target}) => {
-
+        setFinalValues({
+            ...finalValues,
+            [target.name]: parseInt(target.value),
+        });
     }
 
     const handlerChangeBool = ({target}) => {
-
+        setFinalValues({
+            ...finalValues,
+            [target.name]: JSON.parse(target.value)
+        });
     }
 
     const handleChange = ({target}) => {
-
+        setFinalValues({
+            ...finalValues,
+            [target.name]: target.value
+        });
     }
 
     const onClickButon = () => {
-        console.log("");
+        console.log(finalValues);
+        handlerFinalValues(finalValues);
     }
 
     const onHandlerChange = ({target}) => {
         const { value } = target;
         setIdDepto(value);
+        setFinalValues({
+            ...finalValues,
+            deptoAcceso: target.value
+        });
     }
 
-    const onChengeMun = () => {
+    const onChengeMun = ({target}) => {
+        setFinalValues({
+            ...finalValues,
+            municipioAcceso: target.value
+        });
+    }
 
+    const handlerChangeDestination = ({target}) => {
+        setFinalValues({
+            ...finalValues,
+            [target.name]: target.value
+        });
     }
 
     return (
@@ -69,22 +96,25 @@ export const CaracterizacionSolicitante = () => {
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
                     <input onChange={handlerChangeBool} type="radio" id="no" name="esPropietario" value={false}  />
                 </div>
-                //FIXME: PONER EL CONDICIONAL DE LA 45 - 46
-                <div>
-                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                        <label style={{ marginRight: '1vw' }}>45. Área de este predio (m2)</label>
-                        <input onChange={handleChangePatrimonio} id="areaPredioPropiedad" name="areaPredioPropiedad" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                    </div>
-                    <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
-                        <label style={{ marginRight: '1vw' }}>46. Tipo de destinación del predio:</label> <br/>
-                        <label htmlFor="si" style={{ marginRight: '1vw' }}>Exclusivamente para vivienda:</label>
-                        <input onChange={handlerChangeBool} type="radio" id="vivienda" name="tipoDestinacion" value="Exclusiva Vivienda" style={{ marginRight: '1vw' }}/>
-                        <label htmlFor="no" style={{ marginRight: '1vw' }}>Implementación de un Proyecto productivo:</label>
-                        <input onChange={handlerChangeBool} type="radio" id="proyecto" name="tipoDestinacion" value="Proyecto productivo"  />
-                        <label style={{ marginRight: '1vw', marginLeft: '1vw' }}>Otro ¿Cuál?:</label>
-                        <input onChange={handleChangePatrimonio} id="otro" name="tipoDestinacion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                    </div>
-                </div>
+                {
+                    finalValues.esPropietario && (
+                        <div>
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}>45. Área de este predio (m2)</label>
+                                <input onChange={handleChangePatrimonio} id="areaPredioPropiedad" name="areaPredioPropiedad" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                            </div>
+                            <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                                <label style={{ marginRight: '1vw' }}>46. Tipo de destinación del predio:</label> <br/>
+                                <label htmlFor="si" style={{ marginRight: '1vw' }}>Exclusivamente para vivienda:</label>
+                                <input onChange={handlerChangeDestination} type="radio" id="vivienda" name="tipoDestinacion" value="Exclusiva Vivienda" style={{ marginRight: '1vw' }}/>
+                                <label htmlFor="no" style={{ marginRight: '1vw' }}>Implementación de un Proyecto productivo:</label>
+                                <input onChange={handlerChangeDestination} type="radio" id="proyecto" name="tipoDestinacion" value="Proyecto productivo"  />
+                                <label style={{ marginRight: '1vw', marginLeft: '1vw' }}>Otro ¿Cuál?:</label>
+                                <input onChange={handlerChangeDestination} id="otro" name="tipoDestinacion" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                            </div>
+                        </div>
+                    )
+                }
                 <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
                     <label style={{ marginRight: '1vw' }}>47. ¿Hace parte de alguna asociación campesina, de economía solidaria o cualquier otro instrumento
                     de asociación cuyo objeto esté dirigido a la producción agropecuaria, forestal, acuícola o de servicios ambientales con fines 
@@ -94,27 +124,30 @@ export const CaracterizacionSolicitante = () => {
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
                     <input onChange={handlerChangeBool} type="radio" id="no" name="asociacionCampesina" value={false}  />
                 </div>
-                //FIXME: PONER EL CONDICIONAL DE LA 48 - 50
-                <div>
-                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                        <label style={{ marginRight: '1vw' }}>48. Nombre o razón social de la asociación - NIT</label>
-                        <input onChange={handleChange} id="nombre" name="nombre" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                    </div>
-                    <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
-                        <label style={{ marginRight: '1vw' }}>49. ¿La organización esta compuesta sólo por mujeres?:</label>
-                        <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                        <input onChange={handlerChangeBool} type="radio" id="si" name="compuestaMujeres" value={true} style={{ marginRight: '1vw' }}/>
-                        <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                        <input onChange={handlerChangeBool} type="radio" id="no" name="compuestaMujeres" value={false}  />
-                    </div>
-                    <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
-                        <label style={{ marginRight: '1vw' }}>50. ¿La solicitante pertenece a la parte directiva de la asociación?:</label>
-                        <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
-                        <input onChange={handlerChangeBool} type="radio" id="si" name="parteDirectiva" value={true} style={{ marginRight: '1vw' }}/>
-                        <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
-                        <input onChange={handlerChangeBool} type="radio" id="no" name="parteDirectiva" value={false}  />
-                    </div>
-                </div>
+                {
+                    finalValues.asociacionCampesina && (
+                        <div>
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}>48. Nombre o razón social de la asociación - NIT</label>
+                                <input onChange={handleChange} id="nombre" name="nombre" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                            </div>
+                            <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                                <label style={{ marginRight: '1vw' }}>49. ¿La organización esta compuesta sólo por mujeres?:</label>
+                                <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                                <input onChange={handlerChangeBool} type="radio" id="si" name="compuestaMujeres" value={true} style={{ marginRight: '1vw' }}/>
+                                <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                                <input onChange={handlerChangeBool} type="radio" id="no" name="compuestaMujeres" value={false}  />
+                            </div>
+                            <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                                <label style={{ marginRight: '1vw' }}>50. ¿La solicitante pertenece a la parte directiva de la asociación?:</label>
+                                <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
+                                <input onChange={handlerChangeBool} type="radio" id="si" name="parteDirectiva" value={true} style={{ marginRight: '1vw' }}/>
+                                <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
+                                <input onChange={handlerChangeBool} type="radio" id="no" name="parteDirectiva" value={false}  />
+                            </div>
+                        </div>
+                    )
+                }
                 <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
                     <label style={{ marginRight: '1vw' }}>51. El predio que actualmente ocupa se encuentra en una reserva o resguardos
                     indigenas en el que se este adelantando procesos de resolución amistosa de conflictos:</label>
@@ -130,10 +163,16 @@ export const CaracterizacionSolicitante = () => {
                     <label htmlFor="no" style={{ marginRight: '1vw' }}>No</label>
                     <input onChange={handlerChangeBool} type="radio" id="no" name="tieneExperiencia" value={false}  />
                 </div>
-                //FIXME CONDICIONARLA
-                <div>
-
-                </div>
+                {
+                    finalValues.tieneExperiencia && (
+                        <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
+                            <h6 style={{ textAlign: 'left', marginTop: '0.5vw' }}>¿Por cuanto tiempo ha realizado eesta actividad? Indicar 
+                                el valor en meses. (Agropecuarias, Pecuarias, Acuicolas, Forestales, Servicios ecosistemicos que permiten la preservación 
+                                y/o restauración de áreas y ecosistemas estratégicos, Economia del cuidado, Exclusivamente para vivienda, Otro)</h6>
+                            <textarea onChange={handleChange} id="cualesCuanto" name="cualesCuanto" rows="10" cols="80"></textarea>
+                        </div>
+                    )
+                }
                 <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
                     <label style={{ marginRight: '1vw' }}>53. ¿Voluntareamente ha entregado un predio a la ANT o ha suscrito acuerdos de aprovechamiento //o reconversión del suelo con la ANT o CAR?</label>
                     <label htmlFor="si" style={{ marginRight: '1vw' }}>Si</label>
@@ -173,11 +212,14 @@ export const CaracterizacionSolicitante = () => {
                         </div>
                     </div>
                 </div>
-                //FIXME CONDICIONAR LA 56
-                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                    <label style={{ marginRight: '1vw' }}>56. Número de periodos aprobados</label>
-                    <input onChange={handleChange} id="numPeriodosAprobados" name="numPeriodosAprobados" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                </div>
+                {
+                    finalValues.nivelMasAlto !== "Ninguno" && (
+                        <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                            <label style={{ marginRight: '1vw' }}>56. Número de periodos aprobados</label>
+                            <input onChange={handleChange} id="numPeriodosAprobados" name="numPeriodosAprobados" style={{ borderRadius: '10px', width: '17vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        </div>
+                    )
+                }
                 <div className="col" style={{ textAlign: 'left', marginLeft: '0.5vw', marginTop: '1vw' }}>
                     <label style={{ marginRight: '1vw' }}>57. ¿Hace parte de programas de reubicación y reasentamiento con el fin de proteger el medio
                     ambiente y fortalecer la producción alimentaría a través de la erradicación de cultívos ilícitos?</label><br />
@@ -199,14 +241,14 @@ export const CaracterizacionSolicitante = () => {
                     <label style={{ marginRight: '1vw' }}>Departamento:</label>
                     <select onChange={(event)=>{
                             onHandlerChange(event);
-                        }} className="label-register-user" id="departamentosForm" name="departamentosForm" style={{ marginRight: '1vw', width: '20vw' }}>
+                        }} className="label-register-user" id="departamentosForm" name="deptoAcceso" style={{ marginRight: '1vw', width: '20vw' }}>
                         <option>Seleccione Departamento</option>
                         {deptos.map((depto, index) => (
                             <option key={index} value={depto.idDepto}>{depto.nombre}</option>
                         ))}
                     </select>
                     <label style={{ marginRight: '1vw' }}>Municipio:</label>
-                    <select onChange={onChengeMun} className="label-register-user" id="idMunicipio" name="idMunicipio" style={{ marginRight: '1vw', width: '20vw' }}>
+                    <select onChange={onChengeMun} className="label-register-user" id="idMunicipio" name="municipioAcceso" style={{ marginRight: '1vw', width: '20vw' }}>
                         <option>Seleccione Municipio</option>
                         {municipios.map((mun, index) => (
                             <option key={index} value={mun.idMunicipio}>{mun.nombre}</option>
@@ -267,7 +309,7 @@ export const CaracterizacionSolicitante = () => {
                             <br />
                         </div>
                         <div className="checkbox-column">
-                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Administració</label>
+                            <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Administración</label>
                             <input onChange={handleChange} type="radio" id="administracion" name="tipoSolicitud" value="Administració" style={{ marginRight: '1vw' }} />
                             <br />
                             <label htmlFor="bañarse" style={{ marginRight: '1vw' }}>Otro</label>

@@ -58,20 +58,20 @@ export const formReducer = (state = {}, action) => {
                 ...state,
                 idMunicipio: action.payload.idMunicipio,
                 fecha: action.payload.fecha,
-                tipoentrada: action.payload.tipoentrada,
-                idbarrido: action.payload.idbarrido,
+                tipoEntrada: action.payload.tipoEntrada,
+                idBarrido: action.payload.idBarrido,
             };
         case 'id':
             return {
                 ...state,
-                nroformulario: action.payload,
+                nroFormulario: action.payload,
             };
         case 'autorizaciones':
             return {
                 ...state,
-                declaroverdad: action.payload.declaroverdad,
+                declaroVerdad: action.payload.declaroVerdad,
                 autorizacion: action.payload.autorizacion,
-                autconyuge: action.payload.autconyuge,
+                autConyuge: action.payload.autConyuge,
             };
         case 'verificaciones':
             return {
@@ -82,6 +82,17 @@ export const formReducer = (state = {}, action) => {
                 numResolucion: action.payload.numResolucion,
                 fechaAcreditacion: action.payload.fechaAcreditacion,
             }
+        case 'foranea':
+            return {
+                ...state,
+                idFuncionario: action.payload.idFuncionario,
+                foranea: {
+                    idPredio: action.payload.foranea.idPredio,
+                    cedula: action.payload.foranea.cedula,
+                }
+            }
+        case 'finalValues':
+            return action.payload;
         case 'reset':
             return initialFiso;
         default:

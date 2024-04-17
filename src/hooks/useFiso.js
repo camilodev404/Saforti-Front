@@ -84,9 +84,24 @@ export const useFiso = () => {
         });
     }
 
+    const handlerForanea = (foran) => {
+        dispatch({
+            type: 'foranea',
+            payload: foran,
+        });
+    }
+
     const handlerResetValuesForm = () => {
         dispatch({
             type: 'reset'
+        });
+    }
+
+    const handlerFinalValues = (forms) => {
+        console.log("AAAAAAAAAA", forms);
+        dispatch({
+            type: 'finalValues',
+            payload: forms,
         });
     }
 
@@ -97,6 +112,8 @@ export const useFiso = () => {
         handlerResetValuesForm,
         handlerAuths,
         handlerVerificacion,
+        handlerForanea,
+        handlerFinalValues,
     };
 
 }
