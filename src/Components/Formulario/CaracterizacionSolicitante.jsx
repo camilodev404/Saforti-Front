@@ -52,7 +52,6 @@ export const CaracterizacionSolicitante = () => {
     }
 
     const onClickButon = () => {
-        console.log(finalValues);
         handlerFinalValues(finalValues);
     }
 
@@ -68,7 +67,8 @@ export const CaracterizacionSolicitante = () => {
     const onChengeMun = ({target}) => {
         setFinalValues({
             ...finalValues,
-            municipioAcceso: target.value
+            municipioAcceso: target.value,
+            estado: "Pendiente"
         });
     }
 

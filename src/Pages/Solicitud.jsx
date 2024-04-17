@@ -34,7 +34,9 @@ export const Solicitud = () => {
     }
     
     const onSendForm = () => {
-        guardarFamilia(fams);
+        if(fams !== null){
+            guardarFamilia(fams);
+        }
         guardarForm(solicitud);
         naigateBack();
         handlerResetValuesForm();
