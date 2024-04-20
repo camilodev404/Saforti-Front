@@ -14,7 +14,7 @@ export const UserProvider = ({children}) => {
     const { solicitud, handlerInitialFiso, handlerId, 
         handlerResetValuesForm, handlerAuths, 
         handlerVerificacion, handlerForanea, handlerFinalValues } = useFiso();
-    const { familiares, handlerFamiliares, handlerRemove, handlerReplace } = useFamiliar();
+    const { familiares, handlerFamiliares, handlerRemove, handlerReplace, handlerReset } = useFamiliar();
     const { handlerRelacionJuridica, predioUsuario, handlerSecondUpdate } = usePredioUsuario();
     const { predio, handlerPredio } = usePredio();
 
@@ -45,6 +45,7 @@ export const UserProvider = ({children}) => {
                 handlerReplace,
                 handlerForanea,
                 handlerFinalValues,
+                handlerReset,
             }
         }>
             {children}

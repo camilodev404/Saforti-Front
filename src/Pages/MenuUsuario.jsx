@@ -12,6 +12,7 @@ export const MenuUsuario = () => {
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
+        console.log(familiares);
         const id = generateFormId();
         handlerId(id);
         navigate("/solicitud");

@@ -26,11 +26,18 @@ export const useFamiliar = () => {
         });
     }
 
+    const handlerReset = () => {
+        dispatch({
+            type: 'reset',
+        });
+    }
+
     return {
         familiares,
         handlerFamiliares,
         handlerRemove,
         handlerReplace,
+        handlerReset,
     }
 
 }
