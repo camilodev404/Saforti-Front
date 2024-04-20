@@ -73,3 +73,12 @@ export const updateUser = async(user) => {
     }
     return null;
 }
+
+export const findUserById = async(idUser) => {
+    try {
+        return await axios.get(`http://localhost:8081/usuario/${idUser}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}
