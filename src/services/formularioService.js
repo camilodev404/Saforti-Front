@@ -33,3 +33,12 @@ export const saveFormulario = async(soli) => {
     }
     return null;
 }
+
+export const solicitudesUser = async(ced) => {
+    try {
+        return await axios.get(`http://localhost:8085/solicitud/cedula/${ced}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}
