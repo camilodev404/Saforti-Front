@@ -1,5 +1,25 @@
+import { useContext, useEffect, useState } from "react";
+import { solicitudesUser } from "../services/formularioService";
+import { UserContext } from "../context/UserContext";
 
 export const Solicitudes = () => {
+
+    const { userLoged } = useContext(UserContext);
+    const [ fisos, setFisos ] = useState([]);
+
+    const traerSolicitudesUsuario = async(ced) => {
+        const result = await solicitudesUser(ced);
+        setFisos(result.data);
+    }
+
+    useEffect(()=>{
+        traerSolicitudesUsuario(userLoged.cedula);
+    },[])
+
+    const formatDate = (dateString) => {
+        return dateString.slice(0, 10);
+    }
+
     return (
         <> 
             <div className="div-menu-solicitud" >
@@ -10,55 +30,17 @@ export const Solicitudes = () => {
                             <th>Fecha</th>
                             <th>Estado</th>
                             <th>Ver</th>
-                            <th>Editar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>0123</td>
-                            <td>01-02-2024</td>
-                            <td>Enviado</td>
-                            <td>
-                                <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
-                                    Ver
-                                </button>
-                            </td>
-                            <td>
-                                <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0123</td>
-                            <td>01-02-2024</td>
-                            <td>Enviado</td>
-                            <td>
-                                <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
-                                    Ver
-                                </button>
-                            </td>
-                            <td>
-                                <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0123</td>
-                            <td>01-02-2024</td>
-                            <td>Enviado</td>
-                            <td>
-                                <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
-                                    Ver
-                                </button>
-                            </td>
-                            <td>
-                                <button className="btn" style={{ backgroundColor: '#037250', color: 'white' }}>
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
+                        {fisos.map((fiso, index) =>(
+                            <tr key={index}>
+                                <td>{fiso.nroFormulario}</td>
+                                <td>{formatDate(fiso.fecha)}</td>
+                                <td>{fiso.estado}</td>
+                                <td><button className="btn btn-primary">Editar</button></td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
