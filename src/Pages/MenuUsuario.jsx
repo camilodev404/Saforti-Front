@@ -8,7 +8,7 @@ import { generateFormId } from "../services/formularioService";
 export const MenuUsuario = () => {
 
 
-    const { handlerId, familiares, predio } = useContext(UserContext);
+    const { handlerId, familiares, predio, solicitud, predioUsuario } = useContext(UserContext);
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {

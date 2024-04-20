@@ -10,15 +10,23 @@ import { IdentificacionPredio } from "./Formulario/IdentificacionPredio";
 import { TradicionPredio } from "./Formulario/TradicionPredio";
 import { CaracterizacionSolicitante } from "./Formulario/CaracterizacionSolicitante";
 import { savePredio } from "../services/predioService";
-import { savePredioUsuario } from "../services/predioUsuarioService";
+import { predioUsuarioFinder, savePredioUsuario } from "../services/predioUsuarioService";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const Formulario = () => {
 
-    const { solicitud, predioUsuario, predio, familiares, userLoged, handlerReplace } = useContext(UserContext);
+    const { solicitud, predioUsuario, predio, 
+      familiares, userLoged, handlerReplace, handlerResetValuesForm,
+      handlerReset,
+      handleResetPredio,
+      handleResetPredioUsuario } = useContext(UserContext);
     const { cedula } = userLoged;
     const { idPredio } = predio;
     const [paginaActual, setPaginaActual] = useState(1);
     const totalPaginas = 9;
+    const navigate = useNavigate();
+    let res = null;
 
     const completarFamiliares = () => {
       const nuevosFamiliares = familiares.map( (fam) => ({
@@ -31,6 +39,16 @@ export const Formulario = () => {
       return nuevosFamiliares;
     }
 
+    const naigateBack = () => {
+      if(userLoged && userLoged.rol == "Administrativo"){
+          navigate('/administrador/menu');
+      } else if (userLoged && userLoged.rol == "Empleado"){
+          navigate('/funcionario/menu');
+      } else {
+          navigate('/user/menu');
+      }
+  }
+
     const guardarPredio = async(pr) => {
       const response = await savePredio(pr);
     }
@@ -39,16 +57,42 @@ export const Formulario = () => {
       const response = await savePredioUsuario(pu);
     }
 
-    const handleSiguiente = () => {
+    const validarExistenciaPredioUsuario = async(idpre, cedu) => {
+      const response = await predioUsuarioFinder(idpre, cedu);
+      return response.data;
+    }
+
+    const handleSiguiente = async() => {
         if (paginaActual < totalPaginas) {
           if(predioUsuario.legalizarJuridica !== false){
             setPaginaActual(paginaActual + 1);
           } else {
-            setPaginaActual(paginaActual + 3);
-            guardarPredioUsuario(predioUsuario);
-            if (familiares !== null){
-              handlerReplace(completarFamiliares());
+            
+            try {
+              res = await validarExistenciaPredioUsuario("PRED-01", userLoged.cedula);
+            } catch (error) {
+              if (error.response && error.response.status === 404) {
+                  guardarPredioUsuario(predioUsuario);
+                  if (familiares !== null){
+                    handlerReplace(completarFamiliares());
+                  }
+                  setPaginaActual(paginaActual + 3);
+              } else {
+                  console.error("Ocurrió un error:", error);
+              }
             }
+            if(res){
+              Swal.fire('Error Solicitud', 'Ya tiene una solicitud en curso de tierra', 'error').then((result) => {
+                if (result.isConfirmed) {
+                  handlerResetValuesForm();
+                  handlerReset();
+                  handleResetPredio();
+                  handleResetPredioUsuario();
+                  naigateBack();
+                }
+              });
+            }
+            
           }
           if(paginaActual === 7){
             guardarPredio(predio);

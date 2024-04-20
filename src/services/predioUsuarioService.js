@@ -17,3 +17,12 @@ export const saveAllFamiliares = async(familia) => {
     }
     return null;
 }
+
+export const predioUsuarioFinder = async(idpredio, cedula) => {
+    try {
+        return await axios.get(`http://localhost:8084/prediousuario/${idpredio}/${cedula}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}
