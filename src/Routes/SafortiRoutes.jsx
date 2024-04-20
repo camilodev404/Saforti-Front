@@ -9,6 +9,7 @@ import { RegistroEmpleado } from "../Pages/RegistroEmpleado";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { FamiliarForm } from "../Components/FamiliarForm";
+import { SolicitudDetail } from "../Pages/SolicitudDetail";
 
 export const SafortiRoutes = () => {
 
@@ -58,6 +59,11 @@ export const SafortiRoutes = () => {
                         <Route
                             path="funcionario/register"
                             element={<RegistroEmpleado/>}
+                        >
+                        </Route>
+                        <Route
+                            path="/solicitud/detail"    
+                            element={<SolicitudDetail/>}
                         >
                         </Route>
                     </>

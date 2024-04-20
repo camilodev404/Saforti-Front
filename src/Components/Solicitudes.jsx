@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { solicitudByFun, solicitudesUser } from "../services/formularioService";
 import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const Solicitudes = () => {
 
     const { userLoged } = useContext(UserContext);
     const [ fisos, setFisos ] = useState([]);
-    const [ esFuncionario, setEsFuncionario ] = useState(false);
+    const navigate = useNavigate();
 
     const traerSolicitudesUsuario = async(ced) => {
         const result = await solicitudesUser(ced);
@@ -30,6 +31,10 @@ export const Solicitudes = () => {
         return dateString.slice(0, 10);
     }
 
+    const detailForm = (fiso) => {
+        navigate("/solicitud/detail", { state: { fiso } });
+    }
+
     return (
         <> 
             <div className="div-menu-solicitud" >
@@ -48,7 +53,7 @@ export const Solicitudes = () => {
                                 <td>{fiso.nroFormulario}</td>
                                 <td>{formatDate(fiso.fecha)}</td>
                                 <td>{fiso.estado}</td>
-                                <td><button className="btn btn-primary">Editar</button></td>
+                                <td><button onClick={() => detailForm(fiso)} className="btn btn-primary">Editar</button></td>
                             </tr>
                         ))}
                     </tbody>
