@@ -16,7 +16,7 @@ export const UserProvider = ({children}) => {
         handlerVerificacion, handlerForanea, handlerFinalValues } = useFiso();
     const { familiares, handlerFamiliares, handlerRemove, handlerReplace, handlerReset } = useFamiliar();
     const { handlerRelacionJuridica, predioUsuario, handlerSecondUpdate } = usePredioUsuario();
-    const { predio, handlerPredio } = usePredio();
+    const { predio, handlerPredio, handleResetPredio } = usePredio();
 
     return (
         <UserContext.Provider value={
@@ -46,6 +46,7 @@ export const UserProvider = ({children}) => {
                 handlerForanea,
                 handlerFinalValues,
                 handlerReset,
+                handleResetPredio,
             }
         }>
             {children}

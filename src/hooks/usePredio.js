@@ -31,9 +31,16 @@ export const usePredio = () => {
         });
     }
 
+    const handleResetPredio = () =>{
+        dispatch({
+            type: 'reset'
+        });
+    }
+
     return {
         predio,
         handlerPredio,
+        handleResetPredio,
     };
 
 }

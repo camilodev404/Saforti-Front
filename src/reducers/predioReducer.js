@@ -1,4 +1,24 @@
 
+
+const initialPredio = {
+    idPredio: "",
+    numPredialAnti: "",
+    nupre: "",
+    idMunicipio: "",
+    numPredialNal: "",
+    numFolio: "",
+    vereda: "",
+    corregimiento: "",
+    centroPoblado: "",
+    direccion: "",
+    nombre: "",
+    pertenencia: null,
+    nombrePertenece: "",
+    areaPredioSolicitud: 0,
+    tieneConflictos: null,
+    conflictos: ""
+}
+
 export const predioReducer = (state = {}, action) => {
     switch (action.type) {
         case 'setPredio':
@@ -21,6 +41,8 @@ export const predioReducer = (state = {}, action) => {
                 tieneConflictos: action.payload.tieneConflictos,
                 conflictos: action.payload.conflictos
             };
+        case 'reset':
+            return initialPredio;
         default:
             return state;
     }
