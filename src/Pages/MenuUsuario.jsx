@@ -12,7 +12,6 @@ export const MenuUsuario = () => {
     const navigate = useNavigate();
 
     const onNuevaSolicitud = () => {
-        console.log(predio);
         const id = generateFormId();
         handlerId(id);
         navigate("/solicitud");

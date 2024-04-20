@@ -8,7 +8,7 @@ import { saveAllFamiliares } from "../services/predioUsuarioService";
 export const Solicitud = () => {
 
     const { userLoged, solicitud, handlerResetValuesForm, predioUsuario, 
-        familiares, handlerReset, predio, handleResetPredio } = useContext(UserContext);
+        familiares, handlerReset, predio, handleResetPredio, handleResetPredioUsuario } = useContext(UserContext);
     const fams = familiares && familiares.length > 0 ? familiares[0] : null;
 
     const navigate = useNavigate();
@@ -31,7 +31,6 @@ export const Solicitud = () => {
 
     const guardarForm = async(formsvalues) => {
         const res = await saveFormulario(formsvalues);
-        console.log(res);
     }
     
     const onSendForm = () => {
@@ -43,7 +42,7 @@ export const Solicitud = () => {
         handlerResetValuesForm();
         handlerReset();
         handleResetPredio();
-        console.log("predio", predio);
+        handleResetPredioUsuario();
     }
 
     return (

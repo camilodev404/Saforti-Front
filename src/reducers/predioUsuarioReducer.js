@@ -1,3 +1,25 @@
+const initialPredioUsuario = {
+    id : {
+        idPredio: "",
+        cedula: "",
+    },
+    derechoSobrePredio: "",
+    tieneDatos: null,
+    nombre: "",
+    ubicacion: "",
+    telefono: "",
+    legalizarJuridica: null,
+    inicioTramite: null,
+    entidad: "",
+    fechaSolicitud: null,
+    numSolicitud: "",
+    habitaExplota: null,
+    fechaHabitaExplota: null,
+    explotaciones: "",
+    explotanOtros: null,
+    derechoExplotacion: ""
+}
+
 export const predioUsuarioReducer = (state = {}, action) => {
     switch (action.type) {
         case 'firstPredioUsuario':
@@ -27,6 +49,8 @@ export const predioUsuarioReducer = (state = {}, action) => {
                 ubicacion: action.payload.ubicacion,
                 telefono: action.payload.telefono,
             }
+        case 'reset':
+            return initialPredioUsuario;
         default:
             return state;
     }

@@ -14,10 +14,10 @@ const initialPredioUsuario = {
     legalizarJuridica: null,
     inicioTramite: null,
     entidad: "",
-    fechaSolicitud: "",
+    fechaSolicitud: null,
     numSolicitud: "",
-    habitaExplota: "",
-    fechaHabitaExplota: "",
+    habitaExplota: null,
+    fechaHabitaExplota: null,
     explotaciones: "",
     explotanOtros: null,
     derechoExplotacion: ""
@@ -41,10 +41,17 @@ export const usePredioUsuario = () => {
         });
     }
 
+    const handleResetPredioUsuario = () =>{
+        dispatch({
+            type: 'reset'
+        });
+    }
+
     return {
         predioUsuario,
         handlerRelacionJuridica,
         handlerSecondUpdate,
+        handleResetPredioUsuario,
     };
 
 }
