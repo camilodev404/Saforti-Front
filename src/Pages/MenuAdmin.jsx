@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Informacion } from "../Components/Informacion";
 import { Solicitudes } from "../Components/Solicitudes";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 
 export const MenuAdmin = () => {

@@ -42,3 +42,12 @@ export const solicitudesUser = async(ced) => {
     }
     return null;
 }
+
+export const solicitudByFun = async(idfun) => {
+    try {
+        return await axios.get(`http://localhost:8085/solicitud/func/${idfun}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

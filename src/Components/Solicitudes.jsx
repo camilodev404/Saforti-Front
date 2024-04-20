@@ -1,19 +1,29 @@
 import { useContext, useEffect, useState } from "react";
-import { solicitudesUser } from "../services/formularioService";
+import { solicitudByFun, solicitudesUser } from "../services/formularioService";
 import { UserContext } from "../context/UserContext";
 
 export const Solicitudes = () => {
 
     const { userLoged } = useContext(UserContext);
     const [ fisos, setFisos ] = useState([]);
+    const [ esFuncionario, setEsFuncionario ] = useState(false);
 
     const traerSolicitudesUsuario = async(ced) => {
         const result = await solicitudesUser(ced);
         setFisos(result.data);
     }
 
+    const traerSolicitudesFuncionario = async(iden) => {
+        const result = await solicitudByFun(iden);
+        setFisos(result.data);
+    }
+
     useEffect(()=>{
-        traerSolicitudesUsuario(userLoged.cedula);
+        if(userLoged.cargo){
+            traerSolicitudesFuncionario(userLoged.idFuncionario);
+        }else{
+            traerSolicitudesUsuario(userLoged.cedula);
+        }
     },[])
 
     const formatDate = (dateString) => {

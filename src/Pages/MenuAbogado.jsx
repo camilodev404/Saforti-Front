@@ -1,8 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Informacion } from "../Components/Informacion";
 import { Solicitudes } from "../Components/Solicitudes";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../context/UserContext";
 
 export const MenuAbodago = () => {
+
+    const { userLoged } = useContext(UserContext);
 
     const navigate = useNavigate()
 
