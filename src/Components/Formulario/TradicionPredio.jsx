@@ -39,7 +39,6 @@ export const TradicionPredio = () => {
     }
 
     const onClickButon = () => {
-        console.log(formsPrediosUsuarios);
         handlerSecondUpdate(formsPrediosUsuarios);
         handlerForanea(formForaneaSolicitud);
     }

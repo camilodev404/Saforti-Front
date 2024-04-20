@@ -1,12 +1,30 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 
 export const RelacionJuridica = () => {
 
-    const { predioUsuario, handlerRelacionJuridica } = useContext(UserContext);
+    const { predioUsuario, handlerRelacionJuridica, userLoged, solicitud, handlerForanea } = useContext(UserContext);
+    const [ formForaneaSolicitud, setFormForaneaSolicitud ] = useState(solicitud);
     const [ valuesPredioUsuario, setValuesPredioUsuario ] = useState(predioUsuario);
     const [ otrasExpl, setOtrasExpl ] = useState("");
     const [ otroDerecho, setOtroDerecho ] = useState("");
+
+    useEffect(()=>{
+        setValuesPredioUsuario({
+            ...valuesPredioUsuario,
+            id: {
+                idPredio: "PRED-01",
+                cedula: userLoged.cedula,
+            }
+        });
+        setFormForaneaSolicitud({
+            ...formForaneaSolicitud,
+            foranea: {
+                idPredio: "PRED-01",
+                cedula: userLoged.cedula,
+            }
+        });
+    },[valuesPredioUsuario.legalizarJuridica])
 
     const handlerChangeBool = ({target}) => {
         setValuesPredioUsuario({
@@ -59,8 +77,8 @@ export const RelacionJuridica = () => {
     }
 
     const onClickButon = () => {
-        console.log(valuesPredioUsuario);
         handlerRelacionJuridica(valuesPredioUsuario);
+        handlerForanea(formForaneaSolicitud);
     }
 
     return (

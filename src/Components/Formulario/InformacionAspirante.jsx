@@ -74,7 +74,6 @@ export const InformacionAspirante = () => {
     }
 
     useEffect(()=>{
-        console.log(userLoged);
         getAll();
         getAll1();
         firstAge();
@@ -107,8 +106,6 @@ export const InformacionAspirante = () => {
     }
 
     const onClickButon = () => {
-        console.log(userUpdate);
-        console.log(userLoged);
         updateUsers(userUpdate);
     }
 

@@ -40,7 +40,6 @@ export const Identificacion = () => {
         if (n>0){
             if(n === 1){
                 const idfun = funcionarios[0].idFuncionario;
-                console.log(idfun);
                 setFormValues({
                     ...formValues,
                     idFuncionario: idfun,
@@ -48,7 +47,6 @@ export const Identificacion = () => {
             } else {
                 const ins = asignacionFun(n);
                 const idfun = funcionarios[ins].idFuncionario;
-                console.log(idfun);
                 setFormValues({
                     ...formValues,
                     idFuncionario: idfun,
@@ -87,7 +85,6 @@ export const Identificacion = () => {
     }
 
     const onClickButon = () => {
-        console.log(formValues);
         handlerInitialFiso(formValues);
     }
 

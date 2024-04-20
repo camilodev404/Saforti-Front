@@ -33,12 +33,10 @@ export const Formulario = () => {
 
     const guardarPredio = async(pr) => {
       const response = await savePredio(pr);
-      console.log(response);
     }
 
     const guardarPredioUsuario = async(pu) => {
       const response = await savePredioUsuario(pu);
-      console.log(response);
     }
 
     const handleSiguiente = () => {
@@ -47,6 +45,10 @@ export const Formulario = () => {
             setPaginaActual(paginaActual + 1);
           } else {
             setPaginaActual(paginaActual + 3);
+            guardarPredioUsuario(predioUsuario);
+            if (familiares !== null){
+              handlerReplace(completarFamiliares());
+            }
           }
           if(paginaActual === 7){
             guardarPredio(predio);

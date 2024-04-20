@@ -25,6 +25,10 @@ export const predioUsuarioReducer = (state = {}, action) => {
         case 'firstPredioUsuario':
             return {
                 ...state,
+                id: {
+                    idPredio: action.payload.id.idPredio,
+                    cedula: action.payload.id.cedula,
+                },
                 legalizarJuridica: action.payload.legalizarJuridica,
                 inicioTramite: action.payload.inicioTramite,
                 entidad: action.payload.entidad,

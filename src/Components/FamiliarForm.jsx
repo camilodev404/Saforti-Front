@@ -50,7 +50,6 @@ export const FamiliarForm = ({onClose}) => {
     }
 
     const gaudarforms = () => {
-        console.log(formFamiliar);
         handlerFamiliares(formFamiliar);
         onClose(false);
     }

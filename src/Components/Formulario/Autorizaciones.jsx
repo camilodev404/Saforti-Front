@@ -7,10 +7,6 @@ export const Autorizaciones = () => {
 
     const [ formValues, setFormValues ] = useState(solicitud);
 
-    useEffect(()=>{
-        console.log(solicitud);
-    }, [])
-
     const onChangeValuesForm = ({target}) => {
         const { name, value } = target;
         setFormValues({
@@ -20,7 +16,6 @@ export const Autorizaciones = () => {
     }
 
     const onClickButon = () => {
-        console.log(formValues);
         handlerAuths(formValues);
     }
 

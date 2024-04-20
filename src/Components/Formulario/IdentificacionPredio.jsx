@@ -94,7 +94,6 @@ export const IdentificacionPredio = () => {
 
     const onClickButon = () => {
         handlerPredio(predioValues);
-        console.log(predioValues);
     }
 
     return(
