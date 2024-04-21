@@ -1,10 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { findMunicipio, findMunicipioByDepto, findUserById } from "../services/usuarioService";
 import { familiarByCedula } from "../services/familiarService";
 import { getPredioById } from "../services/predioService";
 import { predioUsuarioFinder } from "../services/predioUsuarioService";
+import { actualizarForm } from "../services/formularioService";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 export const SolicitudValues = ({fiso}) => {
+
+    const { solicitud, predioUsuario, predio, 
+        familiares, userLoged, handlerReplace, handlerResetValuesForm,
+        handlerReset,
+        handleResetPredio,
+        handleResetPredioUsuario } = useContext(UserContext);
 
     const [ solicitudPendiente, setSolicitudPendiente ] = useState(fiso);
     const [ usuario, setUsuario ] = useState({});
@@ -19,6 +28,18 @@ export const SolicitudValues = ({fiso}) => {
     const [ deptoFiso, setDeptoFiso ] = useState("");
     const [ munFisoAcceso, setMunFisoAcceso ] = useState("");
     const [ deptoFisoAcceso, setDeptoFisoAcceso] = useState("");
+
+    const navigate = useNavigate();
+
+    const naigateBack = () => {
+        if(userLoged && userLoged.rol == "Administrativo"){
+            navigate('/administrador/menu');
+        } else if (userLoged && userLoged.rol == "Empleado"){
+            navigate('/funcionario/menu');
+        } else {
+            navigate('/user/menu');
+        }
+    }
 
     const buscarUsuario = async(iduser) => {
         const res = await findUserById(iduser);
@@ -120,7 +141,7 @@ export const SolicitudValues = ({fiso}) => {
             buscarMunicipioFiso(solicitudPendiente.idMunicipio);
             buscarMunicipioFisoAcceso(solicitudPendiente.municipioAcceso);
         }
-    }, [solicitudPendiente.idMunicipio])
+    }, [solicitudPendiente])
 
     const formatDate = (dateString) => {
         if(dateString!==undefined && dateString!== null){
@@ -131,17 +152,45 @@ export const SolicitudValues = ({fiso}) => {
     }
 
     const handlerAcept = () => {
-        
+        aprobar();
+        naigateBack();
     }
     const handlerReject = () => {
-        
+        rechazar();
+        naigateBack();
+    }
+
+    const handlerBack = () => {
+        naigateBack();
     }
 
     const handlerChangeObservaciones = ({target}) => {
         setSolicitudPendiente({
             ...solicitudPendiente,
             observaciones: target.value,
-        })
+        });
+    }
+
+    const guardarFiso = async(form) => {
+        const res = await actualizarForm(form);
+    }
+
+    const aprobar = () => {
+        
+        const newData = {
+            ...solicitudPendiente,
+            estado: 'Aprobada',
+        }
+        guardarFiso(newData)
+        
+    }
+
+    const rechazar = () => {
+        const newData = {
+            ...solicitudPendiente,
+            estado: 'Rechazada',
+        }
+        guardarFiso(newData)
     }
 
     return(
@@ -194,13 +243,13 @@ export const SolicitudValues = ({fiso}) => {
                         usuario.tieneLimitaciones && (
                             <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                                 <label style={{ marginRight: '1vw' }}><b>Cuales:</b></label>
-                                <textarea id="limitaciones" name="limitaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={usuario.limitaciones}/>
+                                <textarea id="limitaciones" name="limitaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={usuario.limitaciones} readOnly/>
                             </div>
                         )
                     }
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                                 <label style={{ marginRight: '1vw' }}><b>Ocupaciones:</b></label>
-                                <textarea id="ocupaciones" name="ocupaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={usuario.ocupaciones}/>
+                                <textarea id="ocupaciones" name="ocupaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={usuario.ocupaciones} readOnly/>
                             </div>
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                         <label style={{ marginRight: '1vw' }}><b>Dirección Residencia:</b></label>
@@ -340,7 +389,7 @@ export const SolicitudValues = ({fiso}) => {
                         territorio.tieneConflictos && (
                             <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                                 <label style={{ marginRight: '1vw' }}><b>Cuales:</b></label>
-                                <textarea id="conflictos" name="conflictos" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={territorio.conflictos}/>
+                                <textarea id="conflictos" name="conflictos" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={territorio.conflictos} readOnly/>
                             </div>
                         )
                     }
@@ -552,15 +601,21 @@ export const SolicitudValues = ({fiso}) => {
                     </div>
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                         <label style={{ marginRight: '1vw' }}><b>Observaciones:</b></label>
-                        <textarea onChange={handlerChangeObservaciones} id="observaciones" name="observaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} defaultValue={solicitudPendiente.observaciones} />
+                        <textarea onChange={handlerChangeObservaciones} id="observaciones" name="observaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} defaultValue={solicitudPendiente.observaciones} readOnly={solicitudPendiente.estado !== "Pendiente" || !userLoged?.documento}/>
                     </div>
                 </div>
             </div>
             <div>
-                <div style={{ marginBottom: '2vw', marginTop: '2vw' }}>
-                    <button onClick={handlerAcept} className="btn btn-primary" style={{ backgroundColor: '#037250', marginRight: '3vw' }}>Aprobar</button>
-                    <button onClick={handlerReject} className="btn btn-danger">Rechazar</button>
-                </div>
+                {
+                    solicitudPendiente.estado === "Pendiente" && userLoged?.documento ? (
+                        <div style={{ marginBottom: '2vw', marginTop: '2vw' }}>
+                            <button onClick={handlerAcept} className="btn btn-primary" style={{ backgroundColor: '#037250', marginRight: '3vw' }}>Aprobar</button>
+                            <button onClick={handlerReject} className="btn btn-danger">Rechazar</button>
+                        </div>
+                    ) : (
+                        <button onClick={handlerBack} className="btn btn-primary" style={{ backgroundColor: '#037250', marginRight: '3vw', marginBottom: '1vw' }}>Regresar</button>
+                    )
+                }
             </div>
         </div>
     );

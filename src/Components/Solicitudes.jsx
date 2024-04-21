@@ -53,7 +53,7 @@ export const Solicitudes = () => {
                                 <td>{fiso.nroFormulario}</td>
                                 <td>{formatDate(fiso.fecha)}</td>
                                 <td>{fiso.estado}</td>
-                                <td><button onClick={() => detailForm(fiso)} className="btn btn-primary">Editar</button></td>
+                                <td><button onClick={() => detailForm(fiso)} className="btn btn-primary">Ver</button></td>
                             </tr>
                         ))}
                     </tbody>
