@@ -7,7 +7,6 @@ import { predioUsuarioFinder } from "../services/predioUsuarioService";
 export const SolicitudValues = ({fiso}) => {
 
     const [ solicitudPendiente, setSolicitudPendiente ] = useState(fiso);
-    const [ respuestSolicitud, setRespuestSolicitu ] = useState(false);
     const [ usuario, setUsuario ] = useState({});
     const [ mun, setMun ] = useState("");
     const [ depto, setDepto ] = useState("");
@@ -16,6 +15,10 @@ export const SolicitudValues = ({fiso}) => {
     const [ munPred, setMunPred ] = useState("");
     const [ deptoPred, setDeptoPred ] = useState("");
     const [ territorioUsuario, setTerritorioUsuario ] = useState({});
+    const [ munFiso, setMunFiso ] = useState("");
+    const [ deptoFiso, setDeptoFiso ] = useState("");
+    const [ munFisoAcceso, setMunFisoAcceso ] = useState("");
+    const [ deptoFisoAcceso, setDeptoFisoAcceso] = useState("");
 
     const buscarUsuario = async(iduser) => {
         const res = await findUserById(iduser);
@@ -65,6 +68,34 @@ export const SolicitudValues = ({fiso}) => {
         setTerritorioUsuario(res.data);
     }
 
+    const buscarDeptoFiso = async(idd) => {
+        const res = await findMunicipioByDepto(idd);
+        const id = res.data;
+        return id;
+    }
+
+    const buscarMunicipioFiso = async(idm) => {
+        const res = await findMunicipio(idm);
+        const id = res.data.nombre;
+        setMunFiso(id);
+        const deptoId = await buscarDeptoFiso(res.data.idDepto);
+        setDeptoFiso(deptoId.nombre);
+    }
+
+    const buscarDeptoFisoAcceso = async(idd) => {
+        const res = await findMunicipioByDepto(idd);
+        const id = res.data;
+        return id;
+    }
+
+    const buscarMunicipioFisoAcceso = async(idm) => {
+        const res = await findMunicipio(idm);
+        const id = res.data.nombre;
+        setMunFisoAcceso(id);
+        const deptoId = await buscarDeptoFisoAcceso(res.data.idDepto);
+        setDeptoFisoAcceso(deptoId.nombre);
+    }
+
     useEffect(()=>{
         buscarUsuario(solicitudPendiente.foranea.cedula);
         buscarFamiliares(solicitudPendiente.foranea.cedula, solicitudPendiente.foranea.idPredio);
@@ -84,6 +115,13 @@ export const SolicitudValues = ({fiso}) => {
         }
     }, [territorio.idMunicipio])
 
+    useEffect(()=>{
+        if(solicitudPendiente.idMunicipio){
+            buscarMunicipioFiso(solicitudPendiente.idMunicipio);
+            buscarMunicipioFisoAcceso(solicitudPendiente.municipioAcceso);
+        }
+    }, [solicitudPendiente.idMunicipio])
+
     const formatDate = (dateString) => {
         if(dateString!==undefined && dateString!== null){
             return dateString.slice(0, 10);
@@ -93,14 +131,17 @@ export const SolicitudValues = ({fiso}) => {
     }
 
     const handlerAcept = () => {
-        setRespuestSolicitu(true);
-        console.log("USUARIO:", usuario);
-        console.log("FAMILARES", families);
-        console.log("PREDIO", territorio);
-        console.log("Relacion", territorioUsuario);
+        
     }
     const handlerReject = () => {
-        setRespuestSolicitu(true);
+        
+    }
+
+    const handlerChangeObservaciones = ({target}) => {
+        setSolicitudPendiente({
+            ...solicitudPendiente,
+            observaciones: target.value,
+        })
     }
 
     return(
@@ -309,18 +350,216 @@ export const SolicitudValues = ({fiso}) => {
                 <div style={{ backgroundColor: '#037250', width: '36vw', padding: '0.1vw' }}>
                     <h5 style={{ textAlign: 'left', color: 'white', marginLeft: '1vw', marginTop: '0.5vw' }}>RELACION PREDIO CON SOLICITANTE</h5>
                 </div>
-                
+                <div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Legalización Juridica:</b></label>
+                        <input id="legalizarJuridica" name="legalizarJuridica" value={territorioUsuario.legalizarJuridica ? "Si" : territorioUsuario.legalizarJuridica === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    {
+                        territorioUsuario.legalizarJuridica && (
+                            <div>
+                                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                    <label style={{ marginRight: '1vw' }}><b>Inicio Tramite:</b></label>
+                                    <input id="inicioTramite" name="inicioTramite" value={territorioUsuario.inicioTramite ? "Si" : territorioUsuario.inicioTramite === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                    <label style={{ marginRight: '1vw' }}><b>Entidad:</b></label>
+                                    <input id="entidad" name="entidad" value={territorioUsuario.entidad} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                </div>
+                                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                    <label style={{ marginRight: '1vw' }}><b>Fecha Tramite:</b></label>
+                                    <input id="fechaSolicitud" name="fechaSolicitud" value={formatDate(territorioUsuario.fechaSolicitud)} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                    <label style={{ marginRight: '1vw' }}><b>Número Radicado:</b></label>
+                                    <input id="numSolicitud" name="numSolicitud" value={territorioUsuario.numSolicitud} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                </div>
+                                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                    <label style={{ marginRight: '1vw' }}><b>Habita o Explota:</b></label>
+                                    <input id="habitaExplota" name="habitaExplota" value={territorioUsuario.habitaExplota ? "Si" : territorioUsuario.habitaExplota === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                    <label style={{ marginRight: '1vw' }}><b>Fecha:</b></label>
+                                    <input id="fechaHabita" name="fechaHabita" value={formatDate(territorioUsuario.fechaHabitaExplota)} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                </div>
+                                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                    <label style={{ marginRight: '1vw' }}><b>Explotaciones:</b></label>
+                                    <textarea id="explotaciones" name="explotaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={territorioUsuario.explotaciones} readOnly/>
+                                    <label style={{ marginRight: '1vw' }}><b>Explotan Otros Predios:</b></label>
+                                    <input id="explotanOtros" name="explotanOtros" value={territorioUsuario.explotanOtros ? "Si" : territorioUsuario.explotanOtros === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                </div>
+                                {
+                                    territorioUsuario.explotanOtros && (
+                                        <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                            <label style={{ marginRight: '1vw' }}><b>Derechos de Explotación:</b></label>
+                                            <textarea id="derechoExplotacion" name="derechoExplotacion" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={territorioUsuario.derechoExplotacion} readOnly/>
+                                        </div>
+                                    )
+                                }
+                                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                    <label style={{ marginRight: '1vw' }}><b>Derecho Sobre Predio:</b></label>
+                                    <input id="derechoSobrePredio" name="derechoSobrePredio" value={territorioUsuario.derechoSobrePredio} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                    <label style={{ marginRight: '1vw' }}><b>Tiene Datos:</b></label>
+                                    <input id="tieneDatos" name="tieneDatos" value={territorioUsuario.tieneDatos ? "Si" : territorioUsuario.tieneDatos === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                </div>
+                                {
+                                    territorioUsuario.tieneDatos && (
+                                        <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                            <label style={{ marginRight: '1vw' }}><b>Nombre:</b></label>
+                                            <input id="telefono2" name="telefono2" value={territorioUsuario.nombre} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                            <label style={{ marginRight: '1vw' }}><b>Telefono:</b></label>
+                                            <input id="telefono2" name="telefono2" value={territorioUsuario.telefono} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                            <label style={{ marginRight: '1vw' }}><b>Ubicación:</b></label>
+                                            <input id="ubicacion2" name="ubicacion2" value={territorioUsuario.ubicacion} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
+                </div>
             </div>
             <div style={{ padding: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', marginTop: '1vw', marginLeft: '1vw', marginRight: '1vw', marginBottom: '1vw', height: 'auto' }}>
                 <div style={{ backgroundColor: '#037250', width: '16vw', padding: '0.1vw' }}>
                     <h5 style={{ textAlign: 'left', color: 'white', marginLeft: '1vw', marginTop: '0.5vw' }}>SOLICITUD</h5>
                 </div>
-                
+                <div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Fecha:</b></label>
+                        <input id="fechaFiso" name="fechaFiso" value={formatDate(solicitudPendiente.fecha)} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Departamento:</b></label>
+                        <input id="deptoPred" name="deptoPred" value={deptoFiso} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Municipio:</b></label>
+                        <input id="munPred" name="munPred" value={munFiso} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Tipo Entrada:</b></label>
+                        <input id="tipoEntrada" name="tipoEntrada" value={solicitudPendiente.tipoEntrada} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        {
+                            solicitudPendiente.tipoEntrada === "Barrido Predial" && (
+                                <div>
+                                    <label style={{ marginRight: '1vw' }}><b>ID Barrido:</b></label>
+                                    <input id="idBarrido" name="idBarrido" value={solicitudPendiente.idBarrido} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                </div>
+                            )
+                        }
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Declara Verdad:</b></label>
+                        <input id="declaroVerdad" name="declaroVerdad" value={solicitudPendiente.declaroVerdad ? "Si" : solicitudPendiente.declaroVerdad === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Autorización:</b></label>
+                        <input id="autorizacion" name="autorizacion" value={solicitudPendiente.autorizacion ? "Si" : solicitudPendiente.autorizacion === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Autorización Conyuge:</b></label>
+                        <input id="autConyuge" name="autConyuge" value={solicitudPendiente.autConyuge ? "Si" : solicitudPendiente.autConyuge === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Ha Sido Beneficiario:</b></label>
+                        <input id="haSidoBeneficiario" name="haSidoBeneficiario" value={solicitudPendiente.haSidoBeneficiario ? "Si" : solicitudPendiente.haSidoBeneficiario === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Acredita Beneficio:</b></label>
+                        <input id="acreditaBeneficio" name="acreditaBeneficio" value={solicitudPendiente.acreditaBeneficio ? "Si" : solicitudPendiente.acreditaBeneficio === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>ID Acreditación:</b></label>
+                        <input id="idAcreditacion" name="idAcreditacion" value={solicitudPendiente.idAcreditacion} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Número Resolución:</b></label>
+                        <input id="numResolucion" name="numResolucion" value={solicitudPendiente.numResolucion} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Fecha:</b></label>
+                        <input id="fechaAcreditacion" name="fechaAcreditacion" value={formatDate(solicitudPendiente.fechaAcreditacion)} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Patrimonio:</b></label>
+                        <input id="patrimonio" name="patrimonio" value={solicitudPendiente.patrimonio} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Es Propietario:</b></label>
+                        <input id="esPropietario" name="esPropietario" value={solicitudPendiente.esPropietario ? "Si" : solicitudPendiente.esPropietario === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>                                      
+                    </div>
+                    {
+                        solicitudPendiente.esPropietario && (
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Área Predio:</b></label>
+                                <input id="areaPredioPropiedad" name="areaPredioPropiedad" value={solicitudPendiente.areaPredioPropiedad} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                <label style={{ marginRight: '1vw' }}><b>Tipo Destinación:</b></label>
+                                <input id="tipoDestinación" name="tipoDestinación" value={solicitudPendiente.tipoDestinación ?? "" } readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                            </div>
+                        )
+                    }
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Asociación Campesina:</b></label>
+                        <input id="asociacionCampesina" name="asociacionCampesina" value={solicitudPendiente.asociacionCampesina ? "Si" : solicitudPendiente.esPropietario === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>                                      
+                    </div>
+                    {
+                        solicitudPendiente.asociacionCampesina && (
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Razón Social o NIT:</b></label>
+                                <input id="nombre3" name="nombre3" value={solicitudPendiente.nombre} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                <label style={{ marginRight: '1vw' }}><b>Compuesta Mujeres:</b></label>
+                                <input id="compuestaMujeres" name="compuestaMujeres" value={solicitudPendiente.compuestaMujeres ? "Si" : solicitudPendiente.compuestaMujeres === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                                <label style={{ marginRight: '1vw' }}><b>Pertenece Directiva:</b></label>
+                                <input id="parteDirectiva" name="parteDirectiva" value={solicitudPendiente.parteDirectiva ? "Si" : solicitudPendiente.parteDirectiva === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                            </div>
+                        )
+                    }
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Se encuentra en una Reserva:</b></label>
+                        <input id="encuentraReserva" name="encuentraReserva" value={solicitudPendiente.encuentraReserva ? "Si" : solicitudPendiente.encuentraReserva === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Tiene Experiencia:</b></label>
+                        <input id="tieneExperiencia" name="tieneExperiencia" value={solicitudPendiente.tieneExperiencia ? "Si" : solicitudPendiente.tieneExperiencia === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    {
+                        solicitudPendiente.tieneExperiencia && (
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Cuales y Cuanto:</b></label>
+                                <textarea id="cualesCuanto" name="cualesCuanto" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={solicitudPendiente.cualesCuanto} readOnly/>
+                            </div>
+                        )
+                    }
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Ha Entregado Predios:</b></label>
+                        <input id="haEntregadoPredios" name="haEntregadoPredios" value={solicitudPendiente.haEntregadoPredios ? "Si" : solicitudPendiente.haEntregadoPredios === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Ha Tomado Cursos:</b></label>
+                        <input id="haTomadoCursos" name="haTomadoCursos" value={solicitudPendiente.haTomadoCursos ? "Si" : solicitudPendiente.haTomadoCursos === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Nivel Educativo:</b></label>
+                        <input id="nivelMasAlto" name="nivelMasAlto" value={solicitudPendiente.nivelMasAlto} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Número Periodos Aprobados:</b></label>
+                        <input id="numPeriodosAprobados" name="numPeriodosAprobados" value={solicitudPendiente.numPeriodosAprobados} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Programas Reubicación:</b></label>
+                        <input id="programaReubicacion" name="programaReubicacion" value={solicitudPendiente.programaReubicacion ? "Si" : solicitudPendiente.programaReubicacion === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Ocupación Indebida:</b></label>
+                        <input id="ocupacionIndebida" name="ocupacionIndebida" value={solicitudPendiente.ocupacionIndebida ? "Si" : solicitudPendiente.ocupacionIndebida === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Departamento Pretende Acceder:</b></label>
+                        <input id="deptoPred" name="deptoPred" value={deptoFisoAcceso} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Municipio:</b></label>
+                        <input id="munPred" name="munPred" value={munFisoAcceso} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Tiempo Residencia:</b></label>
+                        <input id="tiempoResidencia" name="tiempoResidencia" value={solicitudPendiente.tiempoResidencia} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Beneficiario Restitución:</b></label>
+                        <input id="beneficiarioRestitucion" name="beneficiarioRestitucion" value={solicitudPendiente.beneficiarioRestitucion ? "Si" : solicitudPendiente.beneficiarioRestitucion === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Segundo Ocupante:</b></label>
+                        <input id="segundoOcupante" name="segundoOcupante" value={solicitudPendiente.segundoOcupante ? "Si" : solicitudPendiente.segundoOcupante === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Beneficiario Derechos Propiedad:</b></label>
+                        <input id="beneficiarioDerechosPro" name="beneficiarioDerechosPro" value={solicitudPendiente.beneficiarioDerechosPro ? "Si" : solicitudPendiente.beneficiarioDerechosPro === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Deseo Inclusión Programas:</b></label>
+                        <input id="deseaSerIncluidoProgramas" name="deseaSerIncluidoProgramas" value={solicitudPendiente.deseaSerIncluidoProgramas ? "Si" : solicitudPendiente.deseaSerIncluidoProgramas === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '6vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Favorecido Sentencias Judiciales:</b></label>
+                        <input id="beneficiarioSentencias" name="beneficiarioSentencias" value={solicitudPendiente.beneficiarioSentencias ? "Si" : solicitudPendiente.beneficiarioSentencias === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '6vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Tipo Solicitud:</b></label>
+                        <input id="tipoSolicitud" name="tipoSolicitud" value={solicitudPendiente.tipoSolicitud} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Firma:</b></label>
+                        <input id="firmas" name="firmas" value={solicitudPendiente.firmas ? "Si" : solicitudPendiente.firmas === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '6vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Observaciones:</b></label>
+                        <textarea onChange={handlerChangeObservaciones} id="observaciones" name="observaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} defaultValue={solicitudPendiente.observaciones} />
+                    </div>
+                </div>
             </div>
             <div>
                 <div style={{ marginBottom: '2vw', marginTop: '2vw' }}>
-                    <button onClick={handlerAcept} className="btn btn-primary" style={{ backgroundColor: '#037250', marginRight: '3vw' }} disabled={respuestSolicitud}>Aprobar</button>
-                    <button onClick={handlerReject} className="btn btn-danger" disabled={respuestSolicitud}>Rechazar</button>
+                    <button onClick={handlerAcept} className="btn btn-primary" style={{ backgroundColor: '#037250', marginRight: '3vw' }}>Aprobar</button>
+                    <button onClick={handlerReject} className="btn btn-danger">Rechazar</button>
                 </div>
             </div>
         </div>
