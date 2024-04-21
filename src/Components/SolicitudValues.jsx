@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { findMunicipio, findMunicipioByDepto, findUserById } from "../services/usuarioService";
 import { familiarByCedula } from "../services/familiarService";
+import { getPredioById } from "../services/predioService";
+import { predioUsuarioFinder } from "../services/predioUsuarioService";
 
 export const SolicitudValues = ({fiso}) => {
 
@@ -10,6 +12,10 @@ export const SolicitudValues = ({fiso}) => {
     const [ mun, setMun ] = useState("");
     const [ depto, setDepto ] = useState("");
     const [ families, setFamilies ] = useState([]);
+    const [ territorio, setTerritorio ] = useState({});
+    const [ munPred, setMunPred ] = useState("");
+    const [ deptoPred, setDeptoPred ] = useState("");
+    const [ territorioUsuario, setTerritorioUsuario ] = useState({});
 
     const buscarUsuario = async(iduser) => {
         const res = await findUserById(iduser);
@@ -35,9 +41,35 @@ export const SolicitudValues = ({fiso}) => {
         setFamilies(res.data);
     }
 
+    const buscarPredio = async(id) => {
+        const res = await getPredioById(id);
+        setTerritorio(res.data);
+    }
+
+    const buscarDeptoPredio = async(idd) => {
+        const res = await findMunicipioByDepto(idd);
+        const id = res.data;
+        return id;
+    }
+
+    const buscarMunicipioPredio = async(idm) => {
+        const res = await findMunicipio(idm);
+        const id = res.data.nombre;
+        setMunPred(id);
+        const deptoId = await buscarDeptoPredio(res.data.idDepto);
+        setDeptoPred(deptoId.nombre);
+    }
+
+    const buscarPredioUsuario = async(idpre, cedu) => {
+        const res = await predioUsuarioFinder(idpre, cedu);
+        setTerritorioUsuario(res.data);
+    }
+
     useEffect(()=>{
         buscarUsuario(solicitudPendiente.foranea.cedula);
         buscarFamiliares(solicitudPendiente.foranea.cedula, solicitudPendiente.foranea.idPredio);
+        buscarPredio(solicitudPendiente.foranea.idPredio);
+        buscarPredioUsuario(solicitudPendiente.foranea.idPredio, solicitudPendiente.foranea.cedula);
     },[])
 
     useEffect(()=>{
@@ -45,6 +77,12 @@ export const SolicitudValues = ({fiso}) => {
             buscarMunicipio(usuario.idMunicipio);
         }
     }, [usuario.idMunicipio]);
+
+    useEffect(()=>{
+        if(territorio.idMunicipio){
+            buscarMunicipioPredio(territorio.idMunicipio);
+        }
+    }, [territorio.idMunicipio])
 
     const formatDate = (dateString) => {
         if(dateString!==undefined && dateString!== null){
@@ -58,6 +96,8 @@ export const SolicitudValues = ({fiso}) => {
         setRespuestSolicitu(true);
         console.log("USUARIO:", usuario);
         console.log("FAMILARES", families);
+        console.log("PREDIO", territorio);
+        console.log("Relacion", territorioUsuario);
     }
     const handlerReject = () => {
         setRespuestSolicitu(true);
@@ -147,11 +187,11 @@ export const SolicitudValues = ({fiso}) => {
                     </div>
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
                         <label style={{ marginRight: '1vw' }}><b>Se Separo:</b></label>
-                        <input id="seSeparo" name="seSeparo" value={usuario.seSeparo ? "Si" : usuario.seSeparo === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <input id="seSeparo" name="seSeparo" value={usuario.seSeparo ? "Si" : usuario.seSeparo === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                         <label style={{ marginRight: '1vw' }}><b>Vive con Esposa:</b></label>
-                        <input id="viveConEsposa" name="viveConEsposa" value={usuario.viveConEsposa ? "Si" : usuario.viveConEsposa === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <input id="viveConEsposa" name="viveConEsposa" value={usuario.viveConEsposa ? "Si" : usuario.viveConEsposa === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                         <label style={{ marginRight: '1vw' }}><b>Vive Esposa:</b></label>
-                        <input id="viveEsposa" name="viveEsposa" value={usuario.viveEsposa ? "Si" : usuario.viveEsposa === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <input id="viveEsposa" name="viveEsposa" value={usuario.viveEsposa ? "Si" : usuario.viveEsposa === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                     </div>
                 </div>
             </div>
@@ -206,7 +246,64 @@ export const SolicitudValues = ({fiso}) => {
                 <div style={{ backgroundColor: '#037250', width: '16vw', padding: '0.1vw' }}>
                     <h5 style={{ textAlign: 'left', color: 'white', marginLeft: '1vw', marginTop: '0.5vw' }}>PREDIO</h5>
                 </div>
-                
+                <div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Nupre:</b></label>
+                        <input id="nupre" name="nupre" value={territorio.nupre} readOnly style={{ borderRadius: '10px', width: '25vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Número Predial Antiguo:</b></label>
+                        <input id="numPredialAnti" name="numPredialAnti" value={territorio.numPredialAnti} readOnly style={{ borderRadius: '10px', width: '25vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Número Predial Nacional:</b></label>
+                        <input id="numPredialNal" name="numPredialNal" value={territorio.numPredialNal} readOnly style={{ borderRadius: '10px', width: '22vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Número Folio Matricula:</b></label>
+                        <input id="numFolio" name="numFolio" value={territorio.numFolio} readOnly style={{ borderRadius: '10px', width: '20vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Departamento:</b></label>
+                        <input id="deptoPred" name="deptoPred" value={deptoPred} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Municipio:</b></label>
+                        <input id="munPred" name="munPred" value={munPred} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Vereda:</b></label>
+                        <input id="vereda1" name="vereda1" value={territorio.vereda} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Corregimiento:</b></label>
+                        <input id="corregimiento1" name="corregimiento1" value={territorio.corregimiento} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Centro Poblado:</b></label>
+                        <input id="centroPoblado1" name="centroPoblado1" value={territorio.centroPoblado} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Dirección:</b></label>
+                        <input id="direccion1" name="direccion1" value={territorio.direccion} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Nombre:</b></label>
+                        <input id="nombre1" name="nombre1" value={territorio.nombre} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Pertenencia:</b></label>
+                        <input id="pertenencia" name="pertenencia" value={territorio.pertenencia ? "Si" : territorio.pertenencia === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    {
+                        territorio.pertenencia && (
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Nombre:</b></label>
+                                <input id="nombrePertenece" name="nombrePertenece" value={territorio.nombrePertenece} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                            </div>
+                        )
+                    }
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Area m2:</b></label>
+                        <input id="areaPredioSolicitud" name="areaPredioSolicitud" value={territorio.areaPredioSolicitud} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Conflictos:</b></label>
+                        <input id="tieneConflictos" name="tieneConflictos" value={territorio.tieneConflictos ? "Si" : territorio.tieneConflictos === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    {
+                        territorio.tieneConflictos && (
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Cuales:</b></label>
+                                <textarea id="conflictos" name="conflictos" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={territorio.conflictos}/>
+                            </div>
+                        )
+                    }
+                </div>
             </div>
             <div style={{ padding: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', marginTop: '1vw', marginLeft: '1vw', marginRight: '1vw', marginBottom: '1vw', height: 'auto' }}>
                 <div style={{ backgroundColor: '#037250', width: '36vw', padding: '0.1vw' }}>
