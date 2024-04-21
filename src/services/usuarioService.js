@@ -82,3 +82,21 @@ export const findUserById = async(idUser) => {
     }
     return null;
 }
+
+export const findMunicipio = async(id) => {
+    try {
+        return await axios.get(`http://localhost:8081/municipio/${id}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}
+
+export const findMunicipioByDepto = async(id) => {
+    try {
+        return await axios.get(`http://localhost:8081/departamento/${id}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

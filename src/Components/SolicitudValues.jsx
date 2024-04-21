@@ -1,23 +1,49 @@
 import { useEffect, useState } from "react";
-import { findUserById } from "../services/usuarioService";
+import { findMunicipio, findMunicipioByDepto, findUserById } from "../services/usuarioService";
 
 export const SolicitudValues = ({fiso}) => {
 
     const [ solicitudPendiente, setSolicitudPendiente ] = useState(fiso);
     const [ respuestSolicitud, setRespuestSolicitu ] = useState(false);
     const [ usuario, setUsuario ] = useState({});
+    const [ mun, setMun ] = useState("");
+    const [ depto, setDepto ] = useState("");
 
     const buscarUsuario = async(iduser) => {
         const res = await findUserById(iduser);
         setUsuario(res.data);
     }
 
+    const buscarDepto = async(idd) => {
+        const res = await findMunicipioByDepto(idd);
+        const id = res.data;
+        return id;
+    }
+
+    const buscarMunicipio = async(idm) => {
+        const res = await findMunicipio(idm);
+        const id = res.data.nombre;
+        setMun(id);
+        const deptoId = await buscarDepto(res.data.idDepto);
+        setDepto(deptoId.nombre);
+    }
+
     useEffect(()=>{
         buscarUsuario(solicitudPendiente.foranea.cedula);
     },[])
 
+    useEffect(()=>{
+        if(usuario.idMunicipio){
+            buscarMunicipio(usuario.idMunicipio);
+        }
+    }, [usuario.idMunicipio]);
+
     const formatDate = (dateString) => {
-        return dateString.slice(0, 10);
+        if(dateString!==undefined && dateString!== null){
+            return dateString.slice(0, 10);
+        } else {
+            return "";
+        } 
     }
 
     const handlerAcept = () => {
@@ -37,30 +63,86 @@ export const SolicitudValues = ({fiso}) => {
                 </div>
                 <div>
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                        <label style={{ marginRight: '1vw' }}>Primer Nombre</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.primerNombre} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Segundo Nombre</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.segundoNombre} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Primer Apellido</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.primerApellido} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Segundo Apellido</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.segundoApellido} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Primer Nombre:</b></label>
+                        <input id="primerNombre" name="primerNombre" value={usuario.primerNombre} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Segundo Nombre:</b></label>
+                        <input id="segundonombre" name="segundonombre" value={usuario.segundoNombre} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Primer Apellido:</b></label>
+                        <input id="primerapellido" name="primerapellido" value={usuario.primerApellido} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Segundo Apellido:</b></label>
+                        <input id="segundoApellido" name="segundoApellido" value={usuario.segundoApellido} readOnly style={{ borderRadius: '10px', width: '7vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                     </div>
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                        <label style={{ marginRight: '1vw' }}>Tipo Documento</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.tipoDocumento} readOnly style={{ borderRadius: '10px', width: '4vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Documento</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.cedula} readOnly style={{ borderRadius: '10px', width: '9vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Fecha Expedición</label>
-                        <input id="patrimonio" name="patrimonio" value={formatDate(usuario.fechaExpe)} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Fecha Nacimiento</label>
-                        <input id="patrimonio" name="patrimonio" value={formatDate(usuario.fechaNacimiento)} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Tipo Documento:</b></label>
+                        <input id="tipoDocumento" name="tipoDocumento" value={usuario.tipoDocumento} readOnly style={{ borderRadius: '10px', width: '4vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Documento:</b></label>
+                        <input id="cedula" name="cedula" value={usuario.cedula} readOnly style={{ borderRadius: '10px', width: '9vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Fecha Expedición:</b></label>
+                        <input id="fechaExpe" name="fechaExpe" value={formatDate(usuario.fechaExpe)} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Fecha Nacimiento:</b></label>
+                        <input id="fechaNacimiento" name="fechaNacimiento" value={formatDate(usuario.fechaNacimiento)} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                     </div>
                     <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
-                        <label style={{ marginRight: '1vw' }}>Departamento Nacimiento</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.deptoNacimi} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
-                        <label style={{ marginRight: '1vw' }}>Municipio Nacimiento</label>
-                        <input id="patrimonio" name="patrimonio" value={usuario.municipioNacimi} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Departamento Nacimiento:</b></label>
+                        <input id="deptoNacimi" name="deptoNacimi" value={usuario.deptoNacimi} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Municipio Nacimiento:</b></label>
+                        <input id="municipioNacimi" name="municipioNacimi" value={usuario.municipioNacimi} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Sexo:</b></label>
+                        <input id="sexo" name="sexo" value={usuario.sexo} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Mujer Campesina:</b></label>
+                        <input id="mujerCampesina" name="mujerCampesina" value={usuario.mujerCampesina ? "Si" : usuario.mujerCampesina === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '5vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Orientación Sexual:</b></label>
+                        <input id="orientacionSex" name="orientacionSex" value={usuario.orientacionSex} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Reconocimiento:</b></label>
+                        <input id="reconocimiento" name="reconocimiento" value={usuario.reconocimiento} readOnly style={{ borderRadius: '10px', width: '8vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Limitaciones:</b></label>
+                        <input id="tieneLimitaciones" name="tieneLimitaciones" value={usuario.tieneLimitaciones ? "Si" : usuario.tieneLimitaciones === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '5vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    {
+                        usuario.tieneLimitaciones && (
+                            <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Cuales:</b></label>
+                                <textarea id="limitaciones" name="limitaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={usuario.limitaciones}/>
+                            </div>
+                        )
+                    }
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                                <label style={{ marginRight: '1vw' }}><b>Ocupaciones:</b></label>
+                                <textarea id="ocupaciones" name="ocupaciones" rows="10" cols="80" style={{ borderRadius: '10px', width: 'auto', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} value={usuario.ocupaciones}/>
+                            </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Dirección Residencia:</b></label>
+                        <input id="direccion" name="direccion" value={usuario.direccion} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Departamento:</b></label>
+                        <input id="depto" name="depto" value={depto} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Municipio:</b></label>
+                        <input id="munic" name="munic" value={mun} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Vereda:</b></label>
+                        <input id="vereda" name="vereda" value={usuario.vereda} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Corregimiento:</b></label>
+                        <input id="corregimiento" name="corregimiento" value={usuario.corregimiento} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Telefono:</b></label>
+                        <input id="telefono" name="telefono" value={usuario.telefono} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Estado Civil:</b></label>
+                        <input id="estadoCivil" name="estadoCivil" value={usuario.estadoCivil} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Cabeza de Hogar:</b></label>
+                        <input id="corregimiento" name="corregimiento" value={usuario.cabezaHogar ? "Si" : usuario.cabezaHogar === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Cuenta con Sociedad:</b></label>
+                        <input id="cuentaConSociedad" name="cuentaConSociedad" value={usuario.cuentaConSociedad ? "Si" : usuario.cuentaConSociedad === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                    </div>
+                    <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                        <label style={{ marginRight: '1vw' }}><b>Se Separo:</b></label>
+                        <input id="seSeparo" name="seSeparo" value={usuario.seSeparo ? "Si" : usuario.seSeparo === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Vive con Esposa:</b></label>
+                        <input id="viveConEsposa" name="viveConEsposa" value={usuario.viveConEsposa ? "Si" : usuario.viveConEsposa === false ? "No" : "" } readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
+                        <label style={{ marginRight: '1vw' }}><b>Vive Esposa:</b></label>
+                        <input id="viveEsposa" name="viveEsposa" value={usuario.viveEsposa ? "Si" : usuario.viveEsposa === false ? "No" : ""} readOnly style={{ borderRadius: '10px', width: '15vw', marginRight: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', height: '1.5vw' }} type="text"/>
                     </div>
                 </div>
             </div>
