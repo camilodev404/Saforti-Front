@@ -47,7 +47,7 @@ export const Formulario = () => {
       } else {
           navigate('/user/menu');
       }
-  }
+    }
 
     const guardarPredio = async(pr) => {
       const response = await savePredio(pr);

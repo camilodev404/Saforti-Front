@@ -51,3 +51,12 @@ export const solicitudByFun = async(idfun) => {
     }
     return null;
 }
+
+export const actualizarForm = async(form) => {
+    try {
+        return await axios.put('http://localhost:8085/solicitud/update/solicitud', form);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

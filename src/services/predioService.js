@@ -14,3 +14,12 @@ export const savePredio = async(predio) => {
     }
     return null;
 }
+
+export const getPredioById = async(id) => {
+    try {
+        return await axios.get(`http://localhost:8083/predio/${id}`);
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}
