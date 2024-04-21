@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { findMunicipio, findMunicipioByDepto, findUserById } from "../services/usuarioService";
+import { familiarByCedula } from "../services/familiarService";
 
 export const SolicitudValues = ({fiso}) => {
 
@@ -8,6 +9,7 @@ export const SolicitudValues = ({fiso}) => {
     const [ usuario, setUsuario ] = useState({});
     const [ mun, setMun ] = useState("");
     const [ depto, setDepto ] = useState("");
+    const [ families, setFamilies ] = useState([]);
 
     const buscarUsuario = async(iduser) => {
         const res = await findUserById(iduser);
@@ -28,8 +30,14 @@ export const SolicitudValues = ({fiso}) => {
         setDepto(deptoId.nombre);
     }
 
+    const buscarFamiliares = async(ced, pred) => {
+        const res = await familiarByCedula(ced, pred);
+        setFamilies(res.data);
+    }
+
     useEffect(()=>{
         buscarUsuario(solicitudPendiente.foranea.cedula);
+        buscarFamiliares(solicitudPendiente.foranea.cedula, solicitudPendiente.foranea.idPredio);
     },[])
 
     useEffect(()=>{
@@ -49,6 +57,7 @@ export const SolicitudValues = ({fiso}) => {
     const handlerAcept = () => {
         setRespuestSolicitu(true);
         console.log("USUARIO:", usuario);
+        console.log("FAMILARES", families);
     }
     const handlerReject = () => {
         setRespuestSolicitu(true);
@@ -150,7 +159,48 @@ export const SolicitudValues = ({fiso}) => {
                 <div style={{ backgroundColor: '#037250', width: '26vw', padding: '0.1vw' }}>
                     <h5 style={{ textAlign: 'left', color: 'white', marginLeft: '1vw', marginTop: '0.5vw' }}>FAMILIA DEL SOLICITANTE</h5>
                 </div>
-                
+                <div className="col" style={{ textAlign: 'left', marginTop: '1vw', marginLeft: '0.5vw' }}>
+                    <table  className="table table-hover table-striped" style={{ borderRadius: '10px', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid' }}>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Documento</th>
+                                <th>Primer Nombre</th>
+                                <th>Segundo Nombre</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Apellido</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Parentesco</th>
+                                <th>Sexo</th>
+                                <th>Limitaciones</th>
+                                <th>Ocupacion</th>
+                                <th>Depende</th>
+                            </tr>
+                        </thead>
+                        {
+                            (families !== null || families !== undefined) && (
+                                <tbody>
+                                    {families && Object.values(families).map((familiar, index) => (
+                                        <tr key={index}>
+                                            <td>{familiar.tipoDocumento}</td>
+                                            <td>{familiar.documento}</td>
+                                            <td>{familiar.primerNombre}</td>
+                                            <td>{familiar.segundoNombre}</td>
+                                            <td>{familiar.primerApellido}</td>
+                                            <td>{familiar.segundoApellido}</td>
+                                            <td>{familiar.fechaNacimiento}</td>
+                                            <td>{familiar.parentesco}</td>
+                                            <td>{familiar.sexo}</td>
+                                            <td>{familiar.limitantes}</td>
+                                            <td>{familiar.ocupaciones}</td>
+                                            <td>{familiar.dependeUsuario === true ? 'Sí' : familiar.dependeUsuario === false ? 'No' : ""}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>  
+                            )
+                        }
+                    </table>
+                </div>
             </div>
             <div style={{ padding: '1vw', borderColor: '#037250', borderWidth: '1px', borderStyle: 'solid', marginTop: '1vw', marginLeft: '1vw', marginRight: '1vw', marginBottom: '1vw', height: 'auto' }}>
                 <div style={{ backgroundColor: '#037250', width: '16vw', padding: '0.1vw' }}>
