@@ -4,7 +4,7 @@ import { UserContext } from "../../context/UserContext";
 
 export const CaracterizacionSolicitante = () => {
 
-    const { solicitud, handlerFinalValues } = useContext(UserContext);
+    const { solicitud, handlerFinalValues, predio } = useContext(UserContext);
     const [ finalValues, setFinalValues ] = useState(solicitud);
     const [ deptos, setDeptos ] = useState([]);
     const [ municipios, setMunicipios ] = useState([]);
@@ -52,6 +52,7 @@ export const CaracterizacionSolicitante = () => {
     }
 
     const onClickButon = () => {
+        console.log("asd",predio)
         handlerFinalValues(finalValues);
     }
 

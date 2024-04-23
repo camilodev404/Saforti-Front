@@ -39,6 +39,17 @@ export const Formulario = () => {
       return nuevosFamiliares;
     }
 
+    const completarFamiliares1 = () => {
+      const nuevosFamiliares = familiares.map( (fam) => ({
+        ...fam,
+        foranea: {
+          idPredio: "PRED-01",
+          cedula: cedula,
+        }
+      }));
+      return nuevosFamiliares;
+    }
+
     const naigateBack = () => {
       if(userLoged && userLoged.rol == "Administrativo"){
           navigate('/administrador/menu');
@@ -71,14 +82,12 @@ export const Formulario = () => {
             try {
               res = await validarExistenciaPredioUsuario("PRED-01", userLoged.cedula);
             } catch (error) {
-              if (error.response && error.response.status === 404) {
+              if (error) {
                   guardarPredioUsuario(predioUsuario);
                   if (familiares !== null){
-                    handlerReplace(completarFamiliares());
+                    handlerReplace(completarFamiliares1());
                   }
                   setPaginaActual(paginaActual + 3);
-              } else {
-                  console.error("Ocurrió un error:", error);
               }
             }
             if(res){
@@ -98,8 +107,9 @@ export const Formulario = () => {
             guardarPredio(predio);
           }
           if(paginaActual === 8){
+            console.log("asdasd",predio);
             guardarPredioUsuario(predioUsuario);
-            if (familiares !== null){
+            if (familiares !== null && predio.idPredio !== ""){
               handlerReplace(completarFamiliares());
             }
           }
@@ -132,6 +142,7 @@ export const Formulario = () => {
           case 8:
             return <TradicionPredio/>
           case 9:
+            console.log(familiares);
             return <CaracterizacionSolicitante/>
           default:
             return null;
